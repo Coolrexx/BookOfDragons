@@ -9,6 +9,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import software.bernie.geckolib3.GeckoLib;
 
 @Mod(BookOfDragons.MOD_ID)
 public class BookOfDragons {
@@ -27,6 +28,8 @@ public class BookOfDragons {
         BODItems.ITEMS.register(bus);
 
         bus.addListener(this::commonSetup);
+
+        GeckoLib.initialize();
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
