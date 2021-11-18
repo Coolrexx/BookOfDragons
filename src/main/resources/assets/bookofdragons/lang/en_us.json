@@ -1,5 +1,7 @@
 {
   "itemGroup.bookofdragons": "Book of Dragons",
 
-  "item.bookofdragons.eel": "Eel"
+  "item.bookofdragons.eel": "Eel",
+
+  "entity.bookofdragons.eel": "Eel"
 }
