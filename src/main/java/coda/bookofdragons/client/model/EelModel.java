@@ -20,7 +20,7 @@ public class EelModel extends AnimatedTickingGeoModel<EelEntity> {
 
     @Override
     public ResourceLocation getAnimationFileLocation(EelEntity animatable) {
-        return new ResourceLocation(BookOfDragons.MOD_ID, "animations/entity/eel.animation.json");
+        return new ResourceLocation(BookOfDragons.MOD_ID, "animations/entity/eel.animations.json");
     }
 
     @Override
