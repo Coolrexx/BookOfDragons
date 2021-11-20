@@ -102,7 +102,7 @@ public class FlyingDragonWanderGoal extends Goal {
         }
 
         if (!land) {
-            flyTime = dragon.level.random.nextInt(1800) + 600;
+            flyTime = dragon.level.random.nextInt(200) + 100;
             return getAirPosition();
         }
 
@@ -139,5 +139,4 @@ public class FlyingDragonWanderGoal extends Goal {
         double rotation = Math.toRadians(ownerDistanceX * ownerDistanceX + ownerDistanceZ * ownerDistanceZ > 1024 ? Mth.atan2(ownerDistanceZ, ownerDistanceX) + 90 : dragon.level.random.nextInt(361));
         return new Vec3(pos.getX() + Math.sin(rotation) * xDistance, pos.getY(), pos.getZ() + Math.cos(-rotation) * zDistance);
     }
-
 }

@@ -4,10 +4,12 @@ import coda.bookofdragons.common.entities.util.goal.FlyingDragonWanderGoal;
 import coda.bookofdragons.init.BODItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.*;
@@ -20,12 +22,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
-import javax.annotation.Nullable;
 import java.util.function.Predicate;
 
 public abstract class AbstractFlyingDragonEntity extends TamableAnimal implements FlyingAnimal {
     public static final Predicate<LivingEntity> NOT_HOLDING_EEL = (p_20436_) -> {
-        return !p_20436_.getOffhandItem().is(BODItems.EEL.get()) && !p_20436_.getMainHandItem().is(BODItems.EEL.get());
+        return !p_20436_.getOffhandItem().is(BODItems.EEL.get()) || !p_20436_.getMainHandItem().is(BODItems.EEL.get());
     };
 
     protected AbstractFlyingDragonEntity(EntityType<? extends TamableAnimal> type, Level world) {
@@ -41,15 +42,9 @@ public abstract class AbstractFlyingDragonEntity extends TamableAnimal implement
         this.goalSelector.addGoal(2, new FollowParentGoal(this, 1.25D));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 15, 1));
         this.goalSelector.addGoal(4, new FlyingDragonWanderGoal(this));
+        //TODO - fix the eel thing
         this.goalSelector.addGoal(5, new AvoidEntityGoal<>(this, LivingEntity.class, 6.0F, 1.0D, 1.2D, NOT_HOLDING_EEL));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
-
-    }
-
-    @Nullable
-    @Override
-    public AgeableMob getBreedOffspring(ServerLevel world, AgeableMob ageableMob) {
-        return null;
     }
 
     public abstract Ingredient getIngredient();
@@ -61,10 +56,6 @@ public abstract class AbstractFlyingDragonEntity extends TamableAnimal implement
 
     public boolean isHighEnough(int altitude) {
         return this.getAltitude(altitude) >= altitude;
-    }
-
-    public double getAltitude() {
-        return this.getAltitude(-1);
     }
 
     public double getAltitude(int limit) {

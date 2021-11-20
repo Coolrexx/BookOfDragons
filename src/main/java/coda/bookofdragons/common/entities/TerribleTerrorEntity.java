@@ -1,13 +1,18 @@
 package coda.bookofdragons.common.entities;
 
 import coda.bookofdragons.common.entities.util.AbstractFlyingDragonEntity;
+import coda.bookofdragons.init.BODEntities;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.FlyingAnimal;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -19,7 +24,8 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-// quite a bit of this is from Wolf, thank you Wolf
+import javax.annotation.Nullable;
+
 public class TerribleTerrorEntity extends AbstractFlyingDragonEntity implements FlyingAnimal, IAnimatable, IAnimationTickable {
     private final AnimationFactory factory = new AnimationFactory(this);
 
@@ -33,7 +39,18 @@ public class TerribleTerrorEntity extends AbstractFlyingDragonEntity implements 
 
     @Override
     public Ingredient getIngredient() {
-        return Ingredient.of(ItemTags.FISHES);
+        return Ingredient.of(Items.COD);
+    }
+
+    @Override
+    public boolean isFood(ItemStack stack) {
+        return stack.is(ItemTags.FISHES);
+    }
+
+    @Nullable
+    @Override
+    public AgeableMob getBreedOffspring(ServerLevel world, AgeableMob ageableMob) {
+        return BODEntities.TERRIBLE_TERROR.get().create(world);
     }
 
     @Override
