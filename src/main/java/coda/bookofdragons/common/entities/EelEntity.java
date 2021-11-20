@@ -68,7 +68,7 @@ public class EelEntity extends WaterAnimal implements IAnimatable, IAnimationTic
 
     public void travel(Vec3 p_27490_) {
         if (this.isEffectiveAi() && this.isInWater()) {
-            if (!level.getBlockState(blockPosition().below()).is(Blocks.WATER)) {
+            if (!level.getBlockState(blockPosition().below()).is(Blocks.WATER) && !level.getBlockState(blockPosition().above()).isAir()) {
                 this.setDeltaMovement(this.getDeltaMovement().add(0, 0.015, 0));
             }
             this.moveRelative(0.01F, p_27490_);
