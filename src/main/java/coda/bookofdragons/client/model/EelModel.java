@@ -36,5 +36,9 @@ public class EelModel extends AnimatedTickingGeoModel<EelEntity> {
             head.setRotationX(extraData.headPitch * ((float) Math.PI / 180F));
             head.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 350F));
         }
+        else {
+            head.setRotationX(0);
+            head.setRotationY(0);
+        }
     }
 }
