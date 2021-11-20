@@ -1,5 +1,6 @@
 package coda.bookofdragons.common.entities;
 
+import coda.bookofdragons.common.entities.goal.EelLeapAtTargetGoal;
 import coda.bookofdragons.init.BODItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -21,8 +22,9 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
-import net.minecraft.world.entity.ai.goal.LeapAtTargetGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
@@ -33,7 +35,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.AmphibiousNodeEvaluator;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -54,34 +55,39 @@ public class EelEntity extends WaterAnimal implements IAnimatable, IAnimationTic
 
     public EelEntity(EntityType<? extends WaterAnimal> type, Level world) {
         super(type, world);
-        this.moveControl = new SmoothSwimmingMoveControl(this, 85, 10, 0.02F, 0.1F, true);
-        this.lookControl = new SmoothSwimmingLookControl(this, 10);
-        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+        this.moveControl = new SmoothSwimmingMoveControl(this, 85, 40, 0.02F, 0.1F, true);
+        this.lookControl = new SmoothSwimmingLookControl(this, 40);
     }
 
     protected void registerGoals() {
+        this.goalSelector.addGoal(0, new EelLeapAtTargetGoal(this, 0.4F));
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.0D, true));
-        this.goalSelector.addGoal(1, new LeapAtTargetGoal(this, 0.3F));
         this.goalSelector.addGoal(1, new RandomSwimmingGoal(this, 1.0D, 1));
+        this.goalSelector.addGoal(2, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 20.0F, 0.0005F, false));
         this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
 
     public void travel(Vec3 p_27490_) {
         if (this.isEffectiveAi() && this.isInWater()) {
+            this.moveRelative(0.01F, p_27490_);
             this.move(MoverType.SELF, this.getDeltaMovement());
             this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
             if (this.getTarget() == null) {
-                this.moveRelative(0.01F, p_27490_);
                 this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.005D, 0.0D));
             }
-        } else {
-            super.travel(p_27490_);
+        } else if (this.isEffectiveAi() && !this.isInWater()) {
+            this.setSpeed(2.0F);
         }
-
+        super.travel(p_27490_);
     }
 
     protected PathNavigation createNavigation(Level p_27480_) {
         return new EelPathNavigation(this, p_27480_);
+    }
+
+    @Override
+    protected void handleAirSupply(int p_30344_) {
     }
 
     @Override
@@ -179,58 +185,22 @@ public class EelEntity extends WaterAnimal implements IAnimatable, IAnimationTic
         return tickCount;
     }
 
-    static class FishMoveControl extends MoveControl {
-        private final EelEntity eel;
-
-        FishMoveControl(EelEntity p_27501_) {
-            super(p_27501_);
-            this.eel = p_27501_;
-        }
-
-        public void tick() {
-            if (this.eel.isEyeInFluid(FluidTags.WATER)) {
-                this.eel.setDeltaMovement(this.eel.getDeltaMovement().add(0.0D, 0.005D, 0.0D));
-            }
-
-            if (this.operation == MoveControl.Operation.MOVE_TO && !this.eel.getNavigation().isDone()) {
-                float f = (float)(this.speedModifier * this.eel.getAttributeValue(Attributes.MOVEMENT_SPEED));
-                this.eel.setSpeed(Mth.lerp(0.125F, this.eel.getSpeed(), f));
-                double d0 = this.wantedX - this.eel.getX();
-                double d1 = this.wantedY - this.eel.getY();
-                double d2 = this.wantedZ - this.eel.getZ();
-                if (d1 != 0.0D) {
-                    double d3 = Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
-                    this.eel.setDeltaMovement(this.eel.getDeltaMovement().add(0.0D, (double)this.eel.getSpeed() * (d1 / d3) * 0.1D, 0.0D));
-                }
-
-                if (d0 != 0.0D || d2 != 0.0D) {
-                    float f1 = (float)(Mth.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
-                    this.eel.setYRot(this.rotlerp(this.eel.getYRot(), f1, 90.0F));
-                    this.eel.yBodyRot = this.eel.getYRot();
-                }
-
-            } else {
-                this.eel.setSpeed(0.0F);
-            }
-        }
+static class EelPathNavigation extends WaterBoundPathNavigation {
+    EelPathNavigation(EelEntity p_149218_, Level p_149219_) {
+        super(p_149218_, p_149219_);
     }
 
-    static class EelPathNavigation extends WaterBoundPathNavigation {
-        EelPathNavigation(EelEntity p_149218_, Level p_149219_) {
-            super(p_149218_, p_149219_);
-        }
-
-        protected boolean canUpdatePath() {
-            return true;
-        }
-
-        protected PathFinder createPathFinder(int p_149222_) {
-            this.nodeEvaluator = new AmphibiousNodeEvaluator(false);
-            return new PathFinder(this.nodeEvaluator, p_149222_);
-        }
-
-        public boolean isStableDestination(BlockPos p_149224_) {
-            return !this.level.getBlockState(p_149224_.below()).isAir();
-        }
+    protected boolean canUpdatePath() {
+        return true;
     }
+
+    protected PathFinder createPathFinder(int p_149222_) {
+        this.nodeEvaluator = new AmphibiousNodeEvaluator(false);
+        return new PathFinder(this.nodeEvaluator, p_149222_);
+    }
+
+    public boolean isStableDestination(BlockPos p_149224_) {
+        return !this.level.getBlockState(p_149224_.below()).isAir();
+    }
+}
 }
