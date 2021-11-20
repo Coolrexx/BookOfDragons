@@ -72,7 +72,7 @@ public class EelEntity extends WaterAnimal implements IAnimatable, IAnimationTic
         if (this.isEffectiveAi() && this.isInWater()) {
             this.moveRelative(0.01F, p_27490_);
             this.move(MoverType.SELF, this.getDeltaMovement());
-            this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
+            this.setDeltaMovement(this.getDeltaMovement().scale(1.2D));
             if (this.getTarget() == null) {
                 this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.005D, 0.0D));
             }
