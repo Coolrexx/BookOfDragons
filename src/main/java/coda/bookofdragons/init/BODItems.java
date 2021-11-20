@@ -18,6 +18,7 @@ public class BODItems {
 
     public static final RegistryObject<Item> RAW_GRONCKLE_IRON = ITEMS.register("raw_gronckle_iron", () -> new Item(new Item.Properties().tab(BookOfDragons.GROUP)));
     public static final RegistryObject<Item> GRONCKLE_IRON_INGOT = ITEMS.register("gronckle_iron_ingot", () -> new Item(new Item.Properties().tab(BookOfDragons.GROUP)));
+    public static final RegistryObject<Item> GRONCKLE_IRON_NUGGET_ = ITEMS.register("gronckle_iron_nugget", () -> new Item(new Item.Properties().tab(BookOfDragons.GROUP)));
     public static final RegistryObject<Item> GRONCKLE_IRON_SWORD = ITEMS.register("gronckle_iron_sword", () -> new SwordItem(BODItemTier.GRONKLE_IRON, 3, -2.1F, new Item.Properties().tab(BookOfDragons.GROUP).stacksTo(1)));
     public static final RegistryObject<Item> GRONCKLE_IRON_PICKAXE = ITEMS.register("gronckle_iron_pickaxe", () -> new PickaxeItem(BODItemTier.GRONKLE_IRON, 1, -2.5F, new Item.Properties().tab(BookOfDragons.GROUP).stacksTo(1)));
     public static final RegistryObject<Item> GRONCKLE_IRON_AXE = ITEMS.register("gronckle_iron_axe", () -> new AxeItem(BODItemTier.GRONKLE_IRON, 5, -2.85F, new Item.Properties().tab(BookOfDragons.GROUP).stacksTo(1)));

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X",
+    "#",
+    "#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:stick"
+    },
+    "X": {
+      "item": "bookofdragons:gronckle_iron_ingot"
+    }
+  },
+  "result": {
+    "item": "bookofdragons:gronckle_iron_shovel"
+  }
+}
