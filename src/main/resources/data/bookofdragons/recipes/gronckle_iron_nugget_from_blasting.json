@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": [
+    {
+      "item": "bookofdragons:gronckle_iron_pickaxe"
+    },
+    {
+      "item": "bookofdragons:gronckle_iron_shovel"
+    },
+    {
+      "item": "bookofdragons:gronckle_iron_axe"
+    },
+    {
+      "item": "bookofdragons:gronckle_iron_hoe"
+    },
+    {
+      "item": "bookofdragons:gronckle_iron_sword"
+    }
+  ],
+  "result": "bookofdragons:gronckle_iron_nugget",
+  "experience": 0.1,
+  "cookingtime": 100
+}

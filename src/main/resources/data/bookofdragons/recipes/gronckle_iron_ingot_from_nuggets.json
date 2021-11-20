@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "bookofdragons:gronckle_iron_nugget"
+    }
+  },
+  "result": {
+    "item": "bookofdragons:gronckle_iron_ingot"
+  }
+}

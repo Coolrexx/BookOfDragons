@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "bookofdragons:gronckle_iron_ingot"
+    }
+  ],
+  "result": {
+    "item": "bookofdragons:gronckle_iron_nugget",
+    "count": 9
+  }
+}

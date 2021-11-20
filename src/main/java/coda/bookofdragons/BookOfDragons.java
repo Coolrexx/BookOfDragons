@@ -1,6 +1,7 @@
 package coda.bookofdragons;
 
 import coda.bookofdragons.common.entities.EelEntity;
+import coda.bookofdragons.init.BODBlocks;
 import coda.bookofdragons.init.BODEntities;
 import coda.bookofdragons.init.BODItems;
 import net.minecraft.world.item.CreativeModeTab;
@@ -30,6 +31,7 @@ public class BookOfDragons {
 
         BODItems.ITEMS.register(bus);
         BODEntities.ENTITIES.register(bus);
+        BODBlocks.BLOCKS.register(bus);
 
         bus.addListener(this::commonSetup);
         bus.addListener(this::registerAttributes);
