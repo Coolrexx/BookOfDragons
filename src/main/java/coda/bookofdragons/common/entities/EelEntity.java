@@ -32,6 +32,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.AmphibiousNodeEvaluator;
 import net.minecraft.world.level.pathfinder.PathFinder;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.IAnimationTickable;
@@ -55,8 +56,8 @@ public class EelEntity extends WaterAnimal implements IAnimatable, IAnimationTic
 
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new MeleeAttackGoal(this, 1.0D, true));
-        this.goalSelector.addGoal(0, new LeapAtTargetGoal(this, 0.3F));
-        this.goalSelector.addGoal(1, new RandomSwimmingGoal(this, 1.0D, 1));
+        this.goalSelector.addGoal(1, new LeapAtTargetGoal(this, 0.3F));
+        this.goalSelector.addGoal(2, new RandomSwimmingGoal(this, 1.0D, 1));
         this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
 
@@ -112,6 +113,11 @@ public class EelEntity extends WaterAnimal implements IAnimatable, IAnimationTic
     @Override
     public SoundEvent getPickupSound() {
         return SoundEvents.BUCKET_FILL_FISH;
+    }
+
+    @Override
+    public ItemStack getPickedResult(HitResult target) {
+        return new ItemStack(BODItems.EEL_SPAWN_EGG.get());
     }
 
     public InteractionResult mobInteract(Player p_149155_, InteractionHand p_149156_) {

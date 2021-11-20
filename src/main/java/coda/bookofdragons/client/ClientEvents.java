@@ -2,8 +2,12 @@ package coda.bookofdragons.client;
 
 import coda.bookofdragons.BookOfDragons;
 import coda.bookofdragons.client.renderer.EelRenderer;
+import coda.bookofdragons.common.items.BODSpawnEggItem;
 import coda.bookofdragons.init.BODEntities;
+import net.minecraft.client.color.item.ItemColor;
+import net.minecraft.client.color.item.ItemColors;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -14,5 +18,12 @@ public class ClientEvents {
     @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(BODEntities.EEL.get(), EelRenderer::new);
+    }
+
+    @SubscribeEvent
+    public static void itemColors(ColorHandlerEvent.Item event) {
+        ItemColors handler = event.getItemColors();
+        ItemColor eggColor = (stack, tintIndex) -> ((BODSpawnEggItem) stack.getItem()).getColor(tintIndex);
+        for (BODSpawnEggItem e : BODSpawnEggItem.UNADDED_EGGS) handler.register(eggColor, e);
     }
 }
