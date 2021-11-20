@@ -13,51 +13,51 @@
 			"bones": [
 				{
 					"name": "head",
-					"pivot": [-1, 1, -8],
+					"pivot": [0, 1, -8],
 					"cubes": [
-						{"origin": [-2, 0, -13], "size": [2, 2, 5], "uv": [0, 0]}
+						{"origin": [-1, 0, -13], "size": [2, 2, 5], "uv": [0, 0]}
 					]
 				},
 				{
 					"name": "finl",
 					"parent": "head",
-					"pivot": [-2, 0, -9],
+					"pivot": [-1, 0, -9],
 					"cubes": [
-						{"origin": [-4, 0, -10], "size": [2, 0, 2], "pivot": [-2, 0, -9], "rotation": [0, 0, -32.5], "uv": [7, 2], "mirror": true}
+						{"origin": [-3, 0, -10], "size": [2, 0, 2], "pivot": [-1, 0, -9], "rotation": [0, 0, -32.5], "uv": [7, 2], "mirror": true}
 					]
 				},
 				{
 					"name": "finr",
 					"parent": "head",
-					"pivot": [0, 0, -9],
+					"pivot": [1, 0, -9],
 					"cubes": [
-						{"origin": [0, 0, -10], "size": [2, 0, 2], "pivot": [0, 0, -9], "rotation": [0, 0, 32.5], "uv": [7, 0], "mirror": true}
+						{"origin": [1, 0, -10], "size": [2, 0, 2], "pivot": [1, 0, -9], "rotation": [0, 0, 32.5], "uv": [7, 0], "mirror": true}
 					]
 				},
 				{
 					"name": "body1",
 					"parent": "head",
-					"pivot": [-1, 1, -8],
+					"pivot": [0, 1, -8],
 					"cubes": [
-						{"origin": [-2, 0, -8], "size": [2, 2, 14], "uv": [0, 17]},
-						{"origin": [-1, 2, -7], "size": [0, 1, 13], "uv": [18, 4]}
+						{"origin": [-1, 0, -8], "size": [2, 2, 14], "uv": [0, 17]},
+						{"origin": [0, 2, -7], "size": [0, 1, 13], "uv": [18, 4]}
 					]
 				},
 				{
 					"name": "body2",
 					"parent": "body1",
-					"pivot": [-1, 1, 6],
+					"pivot": [0, 1, 6],
 					"cubes": [
-						{"origin": [-2, 0, 5], "size": [2, 2, 15], "uv": [0, 0]},
-						{"origin": [-1, 2, 6], "size": [0, 1, 15], "uv": [0, 18]}
+						{"origin": [-1, 0, 5], "size": [2, 2, 15], "uv": [0, 0]},
+						{"origin": [0, 2, 6], "size": [0, 1, 15], "uv": [0, 18]}
 					]
 				},
 				{
 					"name": "tail",
 					"parent": "body2",
-					"pivot": [-1, 1, 21],
+					"pivot": [0, 1, 21],
 					"cubes": [
-						{"origin": [-1, 0, 20], "size": [0, 2, 3], "uv": [0, 4]}
+						{"origin": [0, 0, 20], "size": [0, 2, 3], "uv": [0, 4]}
 					]
 				}
 			]

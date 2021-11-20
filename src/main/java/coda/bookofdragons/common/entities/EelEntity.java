@@ -1,6 +1,7 @@
 package coda.bookofdragons.common.entities;
 
 import coda.bookofdragons.init.BODItems;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -29,6 +30,8 @@ import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.pathfinder.AmphibiousNodeEvaluator;
+import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.IAnimationTickable;
@@ -72,7 +75,7 @@ public class EelEntity extends WaterAnimal implements IAnimatable, IAnimationTic
     }
 
     protected PathNavigation createNavigation(Level p_27480_) {
-        return new WaterBoundPathNavigation(this, p_27480_);
+        return new EelPathNavigation(this, p_27480_);
     }
 
     @Override
@@ -103,12 +106,12 @@ public class EelEntity extends WaterAnimal implements IAnimatable, IAnimationTic
 
     @Override
     public ItemStack getBucketItemStack() {
-        return new ItemStack(BODItems.EEL_BUCKET.get());
+        return new  ItemStack(BODItems.EEL_BUCKET.get());
     }
 
     @Override
     public SoundEvent getPickupSound() {
-        return null;
+        return SoundEvents.BUCKET_FILL_FISH;
     }
 
     public InteractionResult mobInteract(Player p_149155_, InteractionHand p_149156_) {
@@ -116,7 +119,7 @@ public class EelEntity extends WaterAnimal implements IAnimatable, IAnimationTic
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 4.0D).add(Attributes.ATTACK_DAMAGE, 1.0D).add(Attributes.MOVEMENT_SPEED, 0.2F);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 4.0D).add(Attributes.ATTACK_DAMAGE, 1.0D).add(Attributes.MOVEMENT_SPEED, 0.225F);
     }
 
     @Nullable
@@ -137,12 +140,21 @@ public class EelEntity extends WaterAnimal implements IAnimatable, IAnimationTic
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (isInWater()) {
+        if (isInWater() && event.isMoving()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.eel.swim", true));
             return PlayState.CONTINUE;
         }
+        else if (isInWater() && !event.isMoving()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.eel.water_idle", true));
+            return PlayState.CONTINUE;
+        }
+        else if (!isInWater() && event.isMoving()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.eel.slither", true));
+            return PlayState.CONTINUE;
+        }
         else {
-            return PlayState.STOP;
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.eel.land_idle", true));
+            return PlayState.CONTINUE;
         }
     }
 
@@ -192,4 +204,22 @@ public class EelEntity extends WaterAnimal implements IAnimatable, IAnimationTic
         }
     }
 
+    static class EelPathNavigation extends WaterBoundPathNavigation {
+        EelPathNavigation(EelEntity p_149218_, Level p_149219_) {
+            super(p_149218_, p_149219_);
+        }
+
+        protected boolean canUpdatePath() {
+            return true;
+        }
+
+        protected PathFinder createPathFinder(int p_149222_) {
+            this.nodeEvaluator = new AmphibiousNodeEvaluator(false);
+            return new PathFinder(this.nodeEvaluator, p_149222_);
+        }
+
+        public boolean isStableDestination(BlockPos p_149224_) {
+            return !this.level.getBlockState(p_149224_.below()).isAir();
+        }
+    }
 }

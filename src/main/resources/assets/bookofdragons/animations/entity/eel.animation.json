@@ -1,7 +1,7 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
-		"swim": {
+		"animation.eel.swim": {
 			"loop": true,
 			"animation_length": 0.68,
 			"bones": {
@@ -114,7 +114,7 @@
 				}
 			}
 		},
-		"water_idle": {
+		"animation.eel.water_idle": {
 			"loop": true,
 			"animation_length": 0.84,
 			"bones": {
@@ -214,7 +214,7 @@
 				}
 			}
 		},
-		"slither": {
+		"animation.eel.slither": {
 			"loop": true,
 			"animation_length": 0.68,
 			"bones": {
@@ -333,7 +333,7 @@
 				}
 			}
 		},
-		"land_idle": {
+		"animation.eel.land_idle": {
 			"loop": true,
 			"animation_length": 0.92,
 			"bones": {

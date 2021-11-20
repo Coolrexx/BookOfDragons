@@ -18,5 +18,5 @@ public class BODItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, BookOfDragons.MOD_ID);
 
     public static final RegistryObject<Item> EEL = ITEMS.register("eel", () -> new Item(new Item.Properties().tab(BookOfDragons.GROUP).food(new FoodProperties.Builder().nutrition(1).saturationMod(0.1F).effect(() -> new MobEffectInstance(MobEffects.POISON, 40, 0), 0.5F).build())));
-    public static final RegistryObject<Item> EEL_BUCKET = ITEMS.register("eel_bucket", () -> new BODBucketItem(BODEntities.EEL, () -> Fluids.WATER, Items.BUCKET, false, new Item.Properties().tab(BookOfDragons.GROUP)));
+    public static final RegistryObject<Item> EEL_BUCKET = ITEMS.register("eel_bucket", () -> new BODBucketItem(BODEntities.EEL, () -> Fluids.WATER, Items.BUCKET, false, new Item.Properties().tab(BookOfDragons.GROUP).stacksTo(1)));
 }
