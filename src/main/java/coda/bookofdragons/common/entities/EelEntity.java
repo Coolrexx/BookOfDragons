@@ -1,6 +1,6 @@
 package coda.bookofdragons.common.entities;
 
-import coda.bookofdragons.common.entities.goal.EelLeapAtTargetGoal;
+import coda.bookofdragons.common.entities.util.goal.EelLeapAtTargetGoal;
 import coda.bookofdragons.init.BODItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -33,6 +33,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.pathfinder.AmphibiousNodeEvaluator;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -55,6 +56,7 @@ public class EelEntity extends WaterAnimal implements IAnimatable, IAnimationTic
         super(type, world);
         this.moveControl = new SmoothSwimmingMoveControl(this, 15, 10, 0.02F, 0.1F, true);
         this.lookControl = new SmoothSwimmingLookControl(this, 10);
+        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
     }
 
     protected void registerGoals() {

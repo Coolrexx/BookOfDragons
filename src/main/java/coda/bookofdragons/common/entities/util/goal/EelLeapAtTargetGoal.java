@@ -1,7 +1,6 @@
-package coda.bookofdragons.common.entities.goal;
+package coda.bookofdragons.common.entities.util.goal;
 
 import coda.bookofdragons.common.entities.EelEntity;
-import com.mojang.math.Vector3f;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.Vec3;
