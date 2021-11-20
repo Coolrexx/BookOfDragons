@@ -3,8 +3,6 @@
 
   "item.bookofdragons.eel": "Eel",
   "item.bookofdragons.eel_bucket": "Bucket of Eel",
-  "item.bookofdragons.eel_spawn_egg": "Eel Spawn Egg",
-
   "item.bookofdragons.raw_gronckle_iron": "Raw Gronckle Iron",
   "item.bookofdragons.gronckle_iron_ingot": "Gronckle Iron Ingot",
   "item.bookofdragons.gronckle_iron_nugget": "Gronckle Iron Nugget",
@@ -14,7 +12,11 @@
   "item.bookofdragons.gronckle_iron_shovel": "Gronckle Iron Shovel",
   "item.bookofdragons.gronckle_iron_hoe": "Gronckle Iron Hoe",
 
+  "item.bookofdragons.eel_spawn_egg": "Eel Spawn Egg",
+  "item.bookofdragons.terrible_terror_spawn_egg": "Terrible Terror Spawn Egg",
+
   "block.bookofdragons.gronckle_iron_block": "Block of Gronckle Iron",
 
-  "entity.bookofdragons.eel": "Eel"
+  "entity.bookofdragons.eel": "Eel",
+  "entity.bookofdragons.terrible_terror": "Terrible Terror"
 }

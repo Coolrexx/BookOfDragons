@@ -188,22 +188,22 @@ public class EelEntity extends WaterAnimal implements IAnimatable, IAnimationTic
         return tickCount;
     }
 
-static class EelPathNavigation extends WaterBoundPathNavigation {
-    EelPathNavigation(EelEntity p_149218_, Level p_149219_) {
-        super(p_149218_, p_149219_);
-    }
+    static class EelPathNavigation extends WaterBoundPathNavigation {
+        EelPathNavigation(EelEntity p_149218_, Level p_149219_) {
+            super(p_149218_, p_149219_);
+        }
 
-    protected boolean canUpdatePath() {
-        return true;
-    }
+        protected boolean canUpdatePath() {
+            return true;
+        }
 
-    protected PathFinder createPathFinder(int p_149222_) {
-        this.nodeEvaluator = new AmphibiousNodeEvaluator(false);
-        return new PathFinder(this.nodeEvaluator, p_149222_);
-    }
+        protected PathFinder createPathFinder(int p_149222_) {
+            this.nodeEvaluator = new AmphibiousNodeEvaluator(false);
+            return new PathFinder(this.nodeEvaluator, p_149222_);
+        }
 
-    public boolean isStableDestination(BlockPos p_149224_) {
-        return !this.level.getBlockState(p_149224_.below()).isAir();
+        public boolean isStableDestination(BlockPos p_149224_) {
+            return !this.level.getBlockState(p_149224_.below()).isAir();
+        }
     }
-}
 }
