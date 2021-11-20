@@ -5,5 +5,13 @@
   "item.bookofdragons.eel_bucket": "Bucket of Eel",
   "item.bookofdragons.eel_spawn_egg": "Eel Spawn Egg",
 
+  "item.bookofdragons.raw_gronckle_iron": "Raw Gronckle Iron",
+  "item.bookofdragons.gronckle_iron_ingot": "Gronckle Iron Ingot",
+  "item.bookofdragons.gronckle_iron_sword": "Gronckle Iron Sword",
+  "item.bookofdragons.gronckle_iron_pickaxe": "Gronckle Iron Pickaxe",
+  "item.bookofdragons.gronckle_iron_axe": "Gronckle Iron Axe",
+  "item.bookofdragons.gronckle_iron_shovel": "Gronckle Iron Shovel",
+  "item.bookofdragons.gronckle_iron_hoe": "Gronckle Iron Hoe",
+
   "entity.bookofdragons.eel": "Eel"
 }

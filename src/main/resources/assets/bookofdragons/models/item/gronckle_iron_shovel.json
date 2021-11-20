@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "bookofdragons:item/gronckle_iron_shovel"
+  }
+}
