@@ -36,7 +36,7 @@ public class TerribleTerrorEntity extends AbstractFlyingDragonEntity implements 
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 12.0D).add(Attributes.MOVEMENT_SPEED, 0.225F).add(Attributes.FLYING_SPEED, 0.2F);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 12.0D).add(Attributes.MOVEMENT_SPEED, 0.225F).add(Attributes.FLYING_SPEED, 0.14F);
     }
 
     @Override
@@ -62,16 +62,24 @@ public class TerribleTerrorEntity extends AbstractFlyingDragonEntity implements 
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 2, this::predicate));
+        data.addAnimationController(new AnimationController<>(this, "controller", 10, this::predicate));
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (isFlying()) {
+        if (isFlying() && event.isMoving()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("fly", true));
             return PlayState.CONTINUE;
         }
-        if (event.isMoving()) {
+        else if (isFlying() && !event.isMoving()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("fly_idle", true));
+            return PlayState.CONTINUE;
+        }
+        else if (!isFlying() && event.isMoving()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", true));
+            return PlayState.CONTINUE;
+        }
+        else if (!isFlying() && !event.isMoving()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("land_iZ@zdle", true));
             return PlayState.CONTINUE;
         }
         else {

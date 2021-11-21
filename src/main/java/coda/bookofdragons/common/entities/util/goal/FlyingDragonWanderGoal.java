@@ -10,6 +10,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
+import java.util.EnumSet;
 
 // Taken from Wolf, thanks Wolf :)
 public class FlyingDragonWanderGoal extends Goal {
@@ -20,6 +21,7 @@ public class FlyingDragonWanderGoal extends Goal {
 
     public FlyingDragonWanderGoal(AbstractFlyingDragonEntity dragon) {
         this.dragon = dragon;
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
     @Override
@@ -27,7 +29,7 @@ public class FlyingDragonWanderGoal extends Goal {
         if (dragon.isVehicle()) {
             return false;
         }
-        if (dragon.level.random.nextInt(5) == 0) {
+        if (dragon.level.random.nextInt(3) == 0) {
             boolean flying = dragon.isFlying();
             boolean grounded = !flying || dragon.tickCount <= 25;
             LivingEntity attackTarget = dragon.getTarget();
