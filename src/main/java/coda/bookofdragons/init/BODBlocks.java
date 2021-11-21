@@ -17,7 +17,8 @@ import java.util.function.Supplier;
 public class BODBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, BookOfDragons.MOD_ID);
 
-    public static final RegistryObject<Block> GRONCKLE_IRON_BLOCK = register("gronckle_iron_block", () -> new Block(BlockBehaviour.Properties.of(Material.HEAVY_METAL).strength(6.0F, 4.0F).sound(SoundType.METAL)));
+    public static final RegistryObject<Block> GRONCKLE_IRON_BLOCK = register("gronckle_iron_block", () -> new Block(BlockBehaviour.Properties.of(Material.HEAVY_METAL).requiresCorrectToolForDrops().strength(3.0F, 6.0F).sound(SoundType.METAL)));
+    public static final RegistryObject<Block> RAW_GRONCKLE_IRON_BLOCK = register("raw_gronckle_iron_block", () -> new Block(BlockBehaviour.Properties.of(Material.HEAVY_METAL).requiresCorrectToolForDrops().strength(3.0F, 6.0F).sound(SoundType.METAL)));
 
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> block) {
         return register(name, block, new Item.Properties().tab(BookOfDragons.GROUP));

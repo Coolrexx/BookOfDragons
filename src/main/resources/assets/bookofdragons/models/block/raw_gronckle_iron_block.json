@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "bookofdragons:block/raw_gronckle_iron_block"
+  }
+}

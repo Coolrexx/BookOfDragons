@@ -7,8 +7,7 @@ version="${file.jarVersion}" #mandatory
 displayName="Book of Dragons" #mandatory
 credits="Zae, Coolrex, Tazz" #optional
 authors="Coda" #optional
-description='''
-Sussy baka~'''
+description=''''''
 [[dependencies.bookofdragons]] #optional
     modId="forge" #mandatory
     mandatory=true #mandatory
