@@ -2,6 +2,7 @@ package coda.bookofdragons.common.entities;
 
 import coda.bookofdragons.common.entities.util.AbstractFlyingDragonEntity;
 import coda.bookofdragons.init.BODEntities;
+import coda.bookofdragons.init.BODItems;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.AgeableMob;
@@ -15,10 +16,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.HitResult;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.IAnimationTickable;
 import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -54,27 +55,17 @@ public class TerribleTerrorEntity extends AbstractFlyingDragonEntity implements 
     }
 
     @Override
+    public ItemStack getPickedResult(HitResult target) {
+        return new ItemStack(BODItems.TERRIBLE_TERROR_SPAWN_EGG.get());
+    }
+
+    @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController<>(this, "controller", 2, this::predicate));
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (isInWater() && event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.eel.swim", true));
-            return PlayState.CONTINUE;
-        }
-        else if (isInWater() && !event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.eel.water_idle", true));
-            return PlayState.CONTINUE;
-        }
-        else if (!isInWater() && event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.eel.slither", true));
-            return PlayState.CONTINUE;
-        }
-        else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.eel.land_idle", true));
-            return PlayState.CONTINUE;
-        }
+        return PlayState.STOP;
     }
 
     @Override
