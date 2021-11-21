@@ -136,7 +136,7 @@ public abstract class AbstractFlyingDragonEntity extends TamableAnimal implement
                 this.mob.setSpeed(f1);
                 double d4 = Mth.sqrt((float) (d0 * d0 + d2 * d2));
                 float f2 = (float) (-(Mth.atan2(d1, d4) * (double) (180F / (float) Math.PI)));
-                this.mob.xRotO = this.rotlerp(this.mob.getXRot(), f2, (float) this.maxPitchChange * 5);
+                this.mob.xRotO = this.rotlerp(this.mob.getXRot(), f2, (float) this.maxPitchChange);
                 this.mob.setYya(d1 > 0.0D ? f1 : -f1);
             } else {
                 this.mob.setYya(0.0F);
