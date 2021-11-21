@@ -104,7 +104,7 @@ public class FlyingDragonWanderGoal extends Goal {
         }
 
         if (!land) {
-            flyTime = dragon.level.random.nextInt(200) + 100;
+            flyTime = dragon.level.random.nextInt(1800) + 600;
             return getAirPosition();
         }
 
