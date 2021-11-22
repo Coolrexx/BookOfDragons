@@ -52,7 +52,7 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-         if (player.getItemInHand(hand).is(Items.STICK)) {
+        if (player.getItemInHand(hand).is(Items.STICK)) {
             player.startRiding(this);
             this.navigation.stop();
         }
@@ -66,25 +66,28 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
 
         if (this.canBeControlledByRider()) {
             LivingEntity passenger = (LivingEntity) this.getControllingPassenger();
-            this.yRot = passenger.yRot;
-            this.yRotO = this.yRot;
-            this.xRot = passenger.xRot * 0.5F;
-            this.setRot(this.yRot, this.xRot);
-            this.yBodyRot = this.yRot;
-            this.yHeadRot = this.yRot;
+            if (passenger != null) {
 
-            if (!flying && passenger.jumping) jumpFromGround();
+                this.yRot = passenger.yRot;
+                this.yRotO = this.yRot;
+                this.xRot = passenger.xRot * 0.5F;
+                this.setRot(this.yRot, this.xRot);
+                this.yBodyRot = this.yRot;
+                this.yHeadRot = this.yRot;
 
-            if (this.isControlledByLocalInstance()) {
-                travelVector = new Vec3(passenger.xxa * 0.25, ClientEvents.getFlightDelta(), passenger.zza * 0.25);
-                this.setSpeed(speed);
-                this.lerpSteps = 0;
-            } else if (passenger instanceof Player) {
-                this.calculateEntityAnimation(this, flying);
-                this.setDeltaMovement(Vec3.ZERO);
-                if (!level.isClientSide && !isOnGround())
-                    ((ServerPlayer) passenger).connection.aboveGroundVehicleTickCount = 0;
-                return;
+                if (!flying && passenger.jumping) jumpFromGround();
+
+                if (this.isControlledByLocalInstance()) {
+                    travelVector = new Vec3(passenger.xxa * 0.25, ClientEvents.getFlightDelta(), passenger.zza * 0.25);
+                    this.setSpeed(speed);
+                    this.lerpSteps = 0;
+                } else if (passenger instanceof Player) {
+                    this.calculateEntityAnimation(this, flying);
+                    this.setDeltaMovement(Vec3.ZERO);
+                    if (!level.isClientSide && !isOnGround())
+                        ((ServerPlayer) passenger).connection.aboveGroundVehicleTickCount = 0;
+                    return;
+                }
             }
         }
         if (flying) {

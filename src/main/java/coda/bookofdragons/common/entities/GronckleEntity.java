@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 public class GronckleEntity extends AbstractRideableDragonEntity implements FlyingAnimal, IAnimatable, IAnimationTickable {
     private final AnimationFactory factory = new AnimationFactory(this);
 
-    public GronckleEntity(EntityType<? extends AbstractRideableDragonEntity> type, Level world) {
+    public GronckleEntity(EntityType<? extends GronckleEntity> type, Level world) {
         super(type, world);
     }
 
