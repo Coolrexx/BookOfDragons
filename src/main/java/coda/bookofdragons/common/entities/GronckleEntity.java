@@ -1,6 +1,6 @@
 package coda.bookofdragons.common.entities;
 
-import coda.bookofdragons.common.entities.util.AbstractFlyingDragonEntity;
+import coda.bookofdragons.common.entities.util.AbstractRideableDragonEntity;
 import coda.bookofdragons.common.entities.util.goal.FlyingDragonWanderGoal;
 import coda.bookofdragons.init.BODEntities;
 import coda.bookofdragons.init.BODItems;
@@ -25,10 +25,10 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 
-public class GronckleEntity extends AbstractFlyingDragonEntity implements FlyingAnimal, IAnimatable, IAnimationTickable {
+public class GronckleEntity extends AbstractRideableDragonEntity implements FlyingAnimal, IAnimatable, IAnimationTickable {
     private final AnimationFactory factory = new AnimationFactory(this);
 
-    public GronckleEntity(EntityType<? extends AbstractFlyingDragonEntity> type, Level world) {
+    public GronckleEntity(EntityType<? extends AbstractRideableDragonEntity> type, Level world) {
         super(type, world);
     }
 

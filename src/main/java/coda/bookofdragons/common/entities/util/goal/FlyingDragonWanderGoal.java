@@ -82,11 +82,11 @@ public class FlyingDragonWanderGoal extends RandomStrollGoal {
     @Nullable
     private Vec3 findPos() {
         Vec3 vec3;
-        if (dragon.closerThan(dragon, 1)) {
+        if (dragon.closerThan(dragon, 22)) {
             Vec3 vec31 = Vec3.atCenterOf(dragon.blockPosition());
             vec3 = vec31.subtract(dragon.position()).normalize();
         } else {
-            vec3 = dragon.getViewVector(0.0F);
+            vec3 = dragon.getViewVector(1.5F);
         }
 
         Vec3 vec32 = HoverRandomPos.getPos(dragon, 8 * distance, 7 * distance, vec3.x * distance, vec3.z * distance, ((float)Math.PI / 2F), 3, 1);
