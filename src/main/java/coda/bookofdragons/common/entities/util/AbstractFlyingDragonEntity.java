@@ -23,7 +23,7 @@ import java.util.function.Predicate;
 public abstract class AbstractFlyingDragonEntity extends TamableAnimal implements FlyingAnimal {
     public static final Predicate<LivingEntity> NOT_HOLDING_EEL = (p_20436_) -> !p_20436_.getOffhandItem().is(BODItems.EEL.get()) || !p_20436_.getMainHandItem().is(BODItems.EEL.get());
 
-    protected AbstractFlyingDragonEntity(EntityType<? extends TamableAnimal> type, Level world) {
+    protected AbstractFlyingDragonEntity(EntityType<? extends AbstractFlyingDragonEntity> type, Level world) {
         super(type, world);
         this.moveControl = new FlyingMoveControl(this, 20, false);
     }

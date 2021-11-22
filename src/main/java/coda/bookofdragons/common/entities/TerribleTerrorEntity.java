@@ -9,7 +9,6 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.FlyingAnimal;
@@ -31,7 +30,7 @@ import javax.annotation.Nullable;
 public class TerribleTerrorEntity extends AbstractFlyingDragonEntity implements FlyingAnimal, IAnimatable, IAnimationTickable {
     private final AnimationFactory factory = new AnimationFactory(this);
 
-    public TerribleTerrorEntity(EntityType<? extends TamableAnimal> type, Level world) {
+    public TerribleTerrorEntity(EntityType<? extends AbstractFlyingDragonEntity> type, Level world) {
         super(type, world);
     }
 
