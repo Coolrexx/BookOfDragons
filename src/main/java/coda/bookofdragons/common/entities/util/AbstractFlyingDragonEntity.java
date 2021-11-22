@@ -1,6 +1,6 @@
 package coda.bookofdragons.common.entities.util;
 
-import coda.bookofdragons.common.entities.util.goal.FlyingDragonWanderGoal;
+import coda.bookofdragons.common.entities.EelEntity;
 import coda.bookofdragons.init.BODItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -8,9 +8,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
@@ -29,7 +29,7 @@ public abstract class AbstractFlyingDragonEntity extends TamableAnimal implement
 
     protected AbstractFlyingDragonEntity(EntityType<? extends TamableAnimal> type, Level world) {
         super(type, world);
-        this.moveControl = new FlyingDragonMovementController(this, 20);
+        this.moveControl = new FlyingMoveControl(this, 20, false);
     }
 
     @Override
@@ -39,9 +39,8 @@ public abstract class AbstractFlyingDragonEntity extends TamableAnimal implement
         this.goalSelector.addGoal(1, new TemptGoal(this, 1.25D, getIngredient(), false));
         this.goalSelector.addGoal(2, new FollowParentGoal(this, 1.25D));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 15, 1));
-        this.goalSelector.addGoal(4, new FlyingDragonWanderGoal(this));
         //TODO - fix the eel thing
-        this.goalSelector.addGoal(5, new AvoidEntityGoal<>(this, LivingEntity.class, 6.0F, 1.0D, 1.2D, NOT_HOLDING_EEL));
+        this.goalSelector.addGoal(5, new AvoidEntityGoal<>(this, EelEntity.class, 8.0F, 1.0D, 1.2D));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
     }
 
@@ -62,7 +61,7 @@ public abstract class AbstractFlyingDragonEntity extends TamableAnimal implement
         // limit so we don't do dozens of iterations per tick
         for (int i = 0; i <= limit && mutable.getY() > 0 && !this.level.getBlockState(mutable.move(Direction.DOWN)).getMaterial().blocksMotion(); i++);
 
-        return this.getY() - mutable.getY() - 1;
+        return this.getY() - mutable.getY() - 0.51;
     }
 
     @Override
@@ -86,7 +85,7 @@ public abstract class AbstractFlyingDragonEntity extends TamableAnimal implement
 
     @Override
     public void travel(Vec3 travelVector) {
-        if (!this.isAlive()) return;
+/*        if (!this.isAlive()) return;
 
         boolean flying = this.isFlying();
         float speed = (float) this.getAttributeValue(flying ? Attributes.FLYING_SPEED : Attributes.MOVEMENT_SPEED);
@@ -96,9 +95,9 @@ public abstract class AbstractFlyingDragonEntity extends TamableAnimal implement
             this.move(MoverType.SELF, getDeltaMovement());
             this.setDeltaMovement(getDeltaMovement().scale(0.91f));
             this.calculateEntityAnimation(this, true);
-        } else {
+        } else {*/
             super.travel(travelVector);
-        }
+        //}
     }
 
     private static class FlyingDragonMovementController extends MoveControl {

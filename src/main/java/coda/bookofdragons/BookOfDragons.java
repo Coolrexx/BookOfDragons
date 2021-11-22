@@ -1,6 +1,7 @@
 package coda.bookofdragons;
 
 import coda.bookofdragons.common.entities.EelEntity;
+import coda.bookofdragons.common.entities.GronckleEntity;
 import coda.bookofdragons.common.entities.TerribleTerrorEntity;
 import coda.bookofdragons.init.BODBlocks;
 import coda.bookofdragons.init.BODEntities;
@@ -47,5 +48,6 @@ public class BookOfDragons {
     private void registerAttributes(EntityAttributeCreationEvent event) {
         event.put(BODEntities.EEL.get(), EelEntity.createAttributes().build());
         event.put(BODEntities.TERRIBLE_TERROR.get(), TerribleTerrorEntity.createAttributes().build());
+        event.put(BODEntities.GRONCKLE.get(), GronckleEntity.createAttributes().build());
     }
 }

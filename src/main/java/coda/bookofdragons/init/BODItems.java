@@ -30,4 +30,5 @@ public class BODItems {
 
     public static final RegistryObject<Item> EEL_SPAWN_EGG = ITEMS.register("eel_spawn_egg", () -> new BODSpawnEggItem(BODEntities.EEL, 0x222123, 0xc8bc15, new Item.Properties().tab(BookOfDragons.GROUP)));
     public static final RegistryObject<Item> TERRIBLE_TERROR_SPAWN_EGG = ITEMS.register("terrible_terror_spawn_egg", () -> new BODSpawnEggItem(BODEntities.TERRIBLE_TERROR, 0x6f7930, 0x843917, new Item.Properties().tab(BookOfDragons.GROUP)));
+    public static final RegistryObject<Item> GRONCKLE_SPAWN_EGG = ITEMS.register("gronckle_spawn_egg", () -> new BODSpawnEggItem(BODEntities.GRONCKLE, 0x9e5b40, 0xb99575, new Item.Properties().tab(BookOfDragons.GROUP)));
 }

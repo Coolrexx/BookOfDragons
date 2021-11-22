@@ -6,10 +6,7 @@ import coda.bookofdragons.init.BODEntities;
 import coda.bookofdragons.init.BODItems;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.FlyingAnimal;
@@ -28,21 +25,21 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 
-public class TerribleTerrorEntity extends AbstractFlyingDragonEntity implements FlyingAnimal, IAnimatable, IAnimationTickable {
+public class GronckleEntity extends AbstractFlyingDragonEntity implements FlyingAnimal, IAnimatable, IAnimationTickable {
     private final AnimationFactory factory = new AnimationFactory(this);
 
-    public TerribleTerrorEntity(EntityType<? extends TamableAnimal> type, Level world) {
+    public GronckleEntity(EntityType<? extends TamableAnimal> type, Level world) {
         super(type, world);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 12.0D).add(Attributes.MOVEMENT_SPEED, 0.25F).add(Attributes.FLYING_SPEED, 0.8F);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 50.D).add(Attributes.MOVEMENT_SPEED, 0.25F).add(Attributes.FLYING_SPEED, 0.4F);
     }
 
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(4, new FlyingDragonWanderGoal(this, 50));
+        this.goalSelector.addGoal(4, new FlyingDragonWanderGoal(this, 150));
     }
 
     @Override
@@ -58,12 +55,17 @@ public class TerribleTerrorEntity extends AbstractFlyingDragonEntity implements 
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel world, AgeableMob ageableMob) {
-        return BODEntities.TERRIBLE_TERROR.get().create(world);
+        return BODEntities.GRONCKLE.get().create(world);
     }
 
     @Override
     public ItemStack getPickedResult(HitResult target) {
-        return new ItemStack(BODItems.TERRIBLE_TERROR_SPAWN_EGG.get());
+        return new ItemStack(BODItems.GRONCKLE_SPAWN_EGG.get());
+    }
+
+    @Override
+    protected float getStandingEyeHeight(Pose p_21131_, EntityDimensions p_21132_) {
+        return 1.2F;
     }
 
     @Override
