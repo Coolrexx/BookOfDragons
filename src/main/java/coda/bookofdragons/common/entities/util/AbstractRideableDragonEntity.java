@@ -4,15 +4,17 @@ import coda.bookofdragons.common.entities.EelEntity;
 import coda.bookofdragons.init.BODItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
+import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
@@ -20,10 +22,10 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.function.Predicate;
 
-public abstract class AbstractFlyingDragonEntity extends TamableAnimal implements FlyingAnimal {
+public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonEntity {
     public static final Predicate<LivingEntity> NOT_HOLDING_EEL = (p_20436_) -> !p_20436_.getOffhandItem().is(BODItems.EEL.get()) || !p_20436_.getMainHandItem().is(BODItems.EEL.get());
 
-    protected AbstractFlyingDragonEntity(EntityType<? extends TamableAnimal> type, Level world) {
+    protected AbstractRideableDragonEntity(EntityType<? extends TamableAnimal> type, Level world) {
         super(type, world);
         this.moveControl = new FlyingMoveControl(this, 20, false);
     }
@@ -77,5 +79,47 @@ public abstract class AbstractFlyingDragonEntity extends TamableAnimal implement
     @Override
     protected PathNavigation createNavigation(Level worldIn) {
         return new FlyingPathNavigation(this, worldIn);
+    }
+
+    private static class FlyingDragonMovementController extends MoveControl {
+        private final int maxPitchChange;
+
+        public FlyingDragonMovementController(AbstractRideableDragonEntity dragon, int maxPitchChange) {
+            super(dragon);
+            this.maxPitchChange = maxPitchChange;
+        }
+
+        public void tick() {
+            if (this.operation == Operation.MOVE_TO) {
+                this.operation = Operation.WAIT;
+                double d0 = this.wantedX - this.mob.getX();
+                double d1 = this.wantedY - this.mob.getY();
+                double d2 = this.wantedZ - this.mob.getZ();
+                double d3 = d0 * d0 + d1 * d1 + d2 * d2;
+                if (d3 < (double) 2.5000003E-7F) {
+                    this.mob.setYya(0.0F);
+                    this.mob.setZza(0.0F);
+                    return;
+                }
+
+                float f = (float) (Mth.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F;
+                this.mob.yRotO = this.rotlerp(this.mob.getYRot(), f, 90.0F);
+                float f1;
+                if (this.mob.isOnGround()) {
+                    f1 = (float) (this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED));
+                } else {
+                    f1 = (float) (this.speedModifier * this.mob.getAttributeValue(Attributes.FLYING_SPEED));
+                }
+
+                this.mob.setSpeed(f1);
+                double d4 = Mth.sqrt((float) (d0 * d0 + d2 * d2));
+                float f2 = (float) (-(Mth.atan2(d1, d4) * (double) (180F / (float) Math.PI)));
+                this.mob.xRotO = this.rotlerp(this.mob.getXRot(), f2, (float) this.maxPitchChange);
+                this.mob.setYya(d1 > 0.0D ? f1 : -f1);
+            } else {
+                this.mob.setYya(0.0F);
+                this.mob.setZza(0.0F);
+            }
+        }
     }
 }
