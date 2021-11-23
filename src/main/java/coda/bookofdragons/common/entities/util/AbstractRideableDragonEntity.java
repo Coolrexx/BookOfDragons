@@ -36,6 +36,7 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
     public AbstractRideableDragonEntity(EntityType<? extends AbstractRideableDragonEntity> type, Level world) {
         super(type, world);
         this.moveControl = new FlyingMoveControl(this, 20, false);
+        this.createInventory();
     }
 
     @Override
@@ -293,6 +294,10 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
                 player.openMenu(this);
                 return InteractionResult.sidedSuccess(this.level.isClientSide);
             }
+        }
+        else if (this.isSaddled() && !isBaby()) {
+            player.startRiding(this);
+            this.navigation.stop();
         }
 
         return super.mobInteract(player, hand);
