@@ -127,7 +127,7 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
     public void equipSaddle(@Nullable SoundSource p_21748_) {
         this.inventory.setItem(0, new ItemStack(Items.SADDLE));
         if (p_21748_ != null) {
-            this.level.playSound((Player)null, this, SoundEvents.HORSE_SADDLE, p_21748_, 0.5F, 1.0F);
+            this.level.playSound(null, this, SoundEvents.HORSE_SADDLE, p_21748_, 0.5F, 1.0F);
         }
     }
 
@@ -251,11 +251,20 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
         }
     }
 
+    public int getInventoryColumns() {
+        return 5;
+    }
+
+    public boolean hasInventoryChanged(Container p_149512_) {
+        return this.inventory != p_149512_;
+    }
+
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         if (!this.isBaby()) {
-            if (/*this.isTamed() && */player.isSecondaryUseActive()) {
+            if (/*this.isTamed() && */player.isSecondaryUseActive() && this.hasChest() && inventory != null) {
                 player.openMenu(this);
+                inventory = new SimpleContainer(3);
                 return InteractionResult.sidedSuccess(this.level.isClientSide);
             }
 
@@ -267,6 +276,7 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
         if (!itemstack.isEmpty()) {
             if (!this.hasChest() && this.isSaddled() && itemstack.is(Blocks.CHEST.asItem())) {
                 this.setChest(true);
+                this.inventory.setItem(0, new ItemStack(Items.CHEST));
                 this.playChestEquipsSound();
                 if (!player.getAbilities().instabuild) {
                     itemstack.shrink(1);
@@ -275,6 +285,9 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
                 this.createInventory();
                 return InteractionResult.sidedSuccess(this.level.isClientSide);
             }
+            if (!this.isSaddled() && itemstack.is(Items.SADDLE)) {
+                this.inventory.setItem(0, new ItemStack(Items.SADDLE));
+            }
 
             if (!this.isBaby() && !this.isSaddled() && itemstack.is(Items.SADDLE)) {
                 player.openMenu(this);
@@ -282,13 +295,7 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
             }
         }
 
-        if (this.isBaby()) {
-            return super.mobInteract(player, hand);
-        } else {
-            player.startRiding(this);
-            this.navigation.stop();
-            return InteractionResult.sidedSuccess(this.level.isClientSide);
-        }
+        return super.mobInteract(player, hand);
     }
 
     protected void playChestEquipsSound() {

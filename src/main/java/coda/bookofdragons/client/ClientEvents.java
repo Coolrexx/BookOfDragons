@@ -4,12 +4,15 @@ import coda.bookofdragons.BookOfDragons;
 import coda.bookofdragons.client.renderer.EelRenderer;
 import coda.bookofdragons.client.renderer.GronckleRenderer;
 import coda.bookofdragons.client.renderer.TerribleTerrorRenderer;
+import coda.bookofdragons.client.screen.DragonInventoryScreen;
 import coda.bookofdragons.common.items.BODSpawnEggItem;
+import coda.bookofdragons.init.BODContainers;
 import coda.bookofdragons.init.BODEntities;
 import coda.bookofdragons.init.BODKeyBindings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.color.item.ItemColors;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -31,6 +34,8 @@ public class ClientEvents {
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {
         BODKeyBindings.LIST.forEach(ClientRegistry::registerKeyBinding);
+
+        MenuScreens.register(BODContainers.DRAGON_INV.get(), DragonInventoryScreen::new);
     }
 
     @SubscribeEvent

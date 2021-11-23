@@ -4,6 +4,7 @@ import coda.bookofdragons.common.entities.EelEntity;
 import coda.bookofdragons.common.entities.GronckleEntity;
 import coda.bookofdragons.common.entities.TerribleTerrorEntity;
 import coda.bookofdragons.init.BODBlocks;
+import coda.bookofdragons.init.BODContainers;
 import coda.bookofdragons.init.BODEntities;
 import coda.bookofdragons.init.BODItems;
 import net.minecraft.world.item.CreativeModeTab;
@@ -34,6 +35,7 @@ public class BookOfDragons {
         BODItems.ITEMS.register(bus);
         BODEntities.ENTITIES.register(bus);
         BODBlocks.BLOCKS.register(bus);
+        BODContainers.CONTAINERS.register(bus);
 
         bus.addListener(this::commonSetup);
         bus.addListener(this::registerAttributes);
