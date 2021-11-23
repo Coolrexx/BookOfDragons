@@ -4,6 +4,7 @@ import coda.bookofdragons.common.entities.util.AbstractRideableDragonEntity;
 import coda.bookofdragons.init.BODContainers;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -12,13 +13,17 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 public class DragonInventoryMenu extends AbstractContainerMenu {
-   private final AbstractRideableDragonEntity dragon;
+   private static AbstractRideableDragonEntity dragon = null;
    private final Container dragonContainer;
 
-   public DragonInventoryMenu(int windowId, Inventory inventory, FriendlyByteBuf buf, int id) {
+   public static DragonInventoryMenu dragonMenu(int containerId, Inventory inventory) {
+      return new DragonInventoryMenu(containerId, inventory, dragon.getId());
+   }
+
+   public DragonInventoryMenu(int windowId, Inventory inventory, int id) {
       super(BODContainers.DRAGON_INV.get(), windowId);
       this.dragonContainer = inventory;
-      this.dragon = (AbstractRideableDragonEntity) inventory.player.level.getEntity(id);
+      dragon = (AbstractRideableDragonEntity) inventory.player.level.getEntity(id);
 
       inventory.startOpen(inventory.player);
       this.addSlot(new Slot(inventory, 0, 8, 18) {
@@ -64,7 +69,8 @@ public class DragonInventoryMenu extends AbstractContainerMenu {
    }
 
    public boolean stillValid(Player player) {
-      return this.dragon != null && !this.dragon.hasInventoryChanged(this.dragonContainer) && this.dragonContainer.stillValid(player) && this.dragon.isAlive() && this.dragon.distanceTo(player) < 8.0F;
+      return true;
+      //return dragon != null && !dragon.hasInventoryChanged(this.dragonContainer) && this.dragonContainer.stillValid(player) && dragon.isAlive() && dragon.distanceTo(player) < 8.0F;
    }
 
    private boolean hasChest(AbstractRideableDragonEntity p_150578_) {
@@ -97,7 +103,7 @@ public class DragonInventoryMenu extends AbstractContainerMenu {
                if (!this.moveItemStackTo(itemstack1, i, j, false)) {
                   return ItemStack.EMPTY;
                }
-            } else if (p_39666_ >= i && p_39666_ < j) {
+            } else if (p_39666_ < j) {
                if (!this.moveItemStackTo(itemstack1, j, k, false)) {
                   return ItemStack.EMPTY;
                }

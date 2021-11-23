@@ -155,6 +155,14 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
             this.setChest(false);
         }
 
+        if (this.isSaddled()) {
+            if (!this.level.isClientSide) {
+                this.spawnAtLocation(Items.SADDLE);
+            }
+
+            this.setSaddled(false);
+        }
+
     }
 
     public void addAdditionalSaveData(CompoundTag nbt) {
@@ -322,7 +330,7 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
         if (inventory == null) {
             return null;
         }
-        return new DragonInventoryMenu(p_createMenu_1_, p_createMenu_2_, null, getId());
+        return new DragonInventoryMenu(p_createMenu_1_, p_createMenu_2_, getId());
     }
 
     @Override

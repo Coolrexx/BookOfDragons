@@ -14,9 +14,5 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class BODContainers {
     public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, BookOfDragons.MOD_ID);
 
-    public static final RegistryObject<MenuType<DragonInventoryMenu>> DRAGON_INV = CONTAINERS.register("dragon_inv", () -> IForgeContainerType.create((windowId, inv, data) -> {
-        int id = data.readInt();
-        // TODO - fix the npe here
-        return new DragonInventoryMenu(windowId, inv, null, id);
-    }));
+    public static final RegistryObject<MenuType<DragonInventoryMenu>> DRAGON_INV = CONTAINERS.register("dragon_inv", () -> new MenuType<>(DragonInventoryMenu::dragonMenu));
 }
