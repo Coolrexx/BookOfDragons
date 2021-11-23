@@ -2,8 +2,11 @@ package coda.bookofdragons.common.entities.util;
 
 import coda.bookofdragons.client.ClientEvents;
 import coda.bookofdragons.common.entities.util.goal.FollowDriverGoal;
+import coda.bookofdragons.common.menu.DragonInventoryMenu;
+import io.netty.buffer.Unpooled;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -37,6 +40,7 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
         super(type, world);
         this.moveControl = new FlyingMoveControl(this, 20, false);
         this.createInventory();
+        this.maxUpStep = 1.0F;
     }
 
     @Override
@@ -289,11 +293,6 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
             if (!this.isSaddled() && itemstack.is(Items.SADDLE)) {
                 this.inventory.setItem(0, new ItemStack(Items.SADDLE));
             }
-
-            if (!this.isBaby() && !this.isSaddled() && itemstack.is(Items.SADDLE)) {
-                player.openMenu(this);
-                return InteractionResult.sidedSuccess(this.level.isClientSide);
-            }
         }
         else if (this.isSaddled() && !isBaby()) {
             player.startRiding(this);
@@ -313,7 +312,7 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
         if (inventory == null) {
             return null;
         }
-        return inventory.getContainerSize() < 54 ? ChestMenu.threeRows(p_createMenu_1_, p_createMenu_2_, inventory) : ChestMenu.sixRows(p_createMenu_1_, p_createMenu_2_, inventory);
+        return new DragonInventoryMenu(p_createMenu_1_, p_createMenu_2_, null, getId());
     }
 
     @Override
