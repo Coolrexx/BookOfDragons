@@ -12,13 +12,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 public class DragonInventoryMenu extends AbstractContainerMenu {
-   private final Container dragonContainer;
    private final AbstractRideableDragonEntity dragon;
+   private final Container dragonContainer;
 
-   public DragonInventoryMenu(int windowId, Inventory inventory, FriendlyByteBuf buf) {
+   public DragonInventoryMenu(int windowId, Inventory inventory, FriendlyByteBuf buf, int id) {
       super(BODContainers.DRAGON_INV.get(), windowId);
       this.dragonContainer = inventory;
-      this.dragon = getDragon();
+      this.dragon = (AbstractRideableDragonEntity) inventory.player.level.getEntity(id);
+
       inventory.startOpen(inventory.player);
       this.addSlot(new Slot(inventory, 0, 8, 18) {
          public boolean mayPlace(ItemStack stack) {
@@ -63,7 +64,7 @@ public class DragonInventoryMenu extends AbstractContainerMenu {
    }
 
    public boolean stillValid(Player player) {
-      return !this.dragon.hasInventoryChanged(this.dragonContainer) && this.dragonContainer.stillValid(player) && this.dragon.isAlive() && this.dragon.distanceTo(player) < 8.0F;
+      return this.dragon != null && !this.dragon.hasInventoryChanged(this.dragonContainer) && this.dragonContainer.stillValid(player) && this.dragon.isAlive() && this.dragon.distanceTo(player) < 8.0F;
    }
 
    private boolean hasChest(AbstractRideableDragonEntity p_150578_) {
