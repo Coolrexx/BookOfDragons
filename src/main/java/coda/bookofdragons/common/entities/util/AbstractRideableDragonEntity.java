@@ -49,7 +49,6 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
         return this.getControllingPassenger() instanceof LivingEntity;
     }
 
-
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (player.getItemInHand(hand).is(Items.STICK)) {
