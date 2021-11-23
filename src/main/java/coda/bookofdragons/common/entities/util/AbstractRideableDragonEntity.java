@@ -2,6 +2,9 @@ package coda.bookofdragons.common.entities.util;
 
 import coda.bookofdragons.client.ClientEvents;
 import coda.bookofdragons.common.entities.util.goal.FollowDriverGoal;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -11,6 +14,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
+import net.minecraft.world.entity.animal.horse.AbstractChestedHorse;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -19,6 +23,8 @@ import net.minecraft.world.phys.Vec3;
 import javax.annotation.Nullable;
 
 public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonEntity {
+    private static final EntityDataAccessor<Boolean> DATA_ID_CHEST = SynchedEntityData.defineId(AbstractChestedHorse.class, EntityDataSerializers.BOOLEAN);
+    public static final int INV_CHEST_COUNT = 15;
     public Entity previousDriver = null;
 
     public AbstractRideableDragonEntity(EntityType<? extends AbstractRideableDragonEntity> type, Level world) {

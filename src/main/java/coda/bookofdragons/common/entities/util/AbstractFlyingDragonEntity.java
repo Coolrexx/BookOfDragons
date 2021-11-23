@@ -26,8 +26,6 @@ import java.util.function.Predicate;
 
 public abstract class AbstractFlyingDragonEntity extends TamableAnimal implements FlyingAnimal {
     public static final Predicate<LivingEntity> NOT_HOLDING_EEL = (p_20436_) -> !p_20436_.getOffhandItem().is(BODItems.EEL.get()) || !p_20436_.getMainHandItem().is(BODItems.EEL.get());
-    private static final EntityDataAccessor<Boolean> DATA_ID_CHEST = SynchedEntityData.defineId(AbstractChestedHorse.class, EntityDataSerializers.BOOLEAN);
-    public static final int INV_CHEST_COUNT = 15;
 
     public AbstractFlyingDragonEntity(EntityType<? extends AbstractFlyingDragonEntity> type, Level world) {
         super(type, world);
