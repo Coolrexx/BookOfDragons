@@ -3,7 +3,7 @@
 	"minecraft:geometry": [
 		{
 			"description": {
-				"identifier": "geometry.terrible_terror",
+				"identifier": "geometry.tt",
 				"texture_width": 64,
 				"texture_height": 64,
 				"visible_bounds_width": 6,
@@ -34,11 +34,12 @@
 					"pivot": [0, 7, -9],
 					"cubes": [
 						{"origin": [-2.5, 6, -16], "size": [5, 3, 7], "uv": [22, 0]},
-						{"origin": [1.5, 9, -11], "size": [0, 3, 4], "uv": [20, 39]},
-						{"origin": [0, 9, -16], "size": [0, 2, 2], "uv": [20, 35], "mirror": true},
+						{"origin": [1.5, 9, -11], "size": [0, 3, 4], "uv": [36, 39]},
+						{"origin": [0, 9, -17], "size": [0, 2, 3], "uv": [20, 34]},
 						{"origin": [-1.5, 9, -11], "size": [0, 3, 4], "uv": [20, 39]},
 						{"origin": [-3.5, 7, -14], "size": [2, 3, 3], "pivot": [-2.5, 8.5, -12.5], "rotation": [0, 0, 17.5], "uv": [0, 0], "mirror": true},
-						{"origin": [1.5, 7, -14], "size": [2, 3, 3], "pivot": [2.5, 8.5, -12.5], "rotation": [0, 0, -17.5], "uv": [0, 0]}
+						{"origin": [1.5, 7, -14], "size": [2, 3, 3], "pivot": [2.5, 8.5, -12.5], "rotation": [0, 0, -17.5], "uv": [0, 0]},
+						{"origin": [-4.5, 6, -21], "size": [9, 0, 7], "uv": [23, 15]}
 					]
 				},
 				{
@@ -79,33 +80,33 @@
 				{
 					"name": "flegr",
 					"parent": "body",
-					"pivot": [2, 6, -5],
+					"pivot": [2, 6, -4],
 					"cubes": [
-						{"origin": [1, 0, -6], "size": [2, 6, 2], "uv": [46, 0]}
+						{"origin": [1, 0, -5], "size": [2, 6, 2], "uv": [46, 0]}
 					]
 				},
 				{
 					"name": "flegl",
 					"parent": "body",
-					"pivot": [-2, 6, -5],
+					"pivot": [-2, 6, -4],
 					"cubes": [
-						{"origin": [-3, 0, -6], "size": [2, 6, 2], "uv": [46, 0], "mirror": true}
+						{"origin": [-3, 0, -5], "size": [2, 6, 2], "uv": [46, 0], "mirror": true}
 					]
 				},
 				{
 					"name": "blegr",
 					"parent": "body",
-					"pivot": [2.5, 6, 0.75],
+					"pivot": [2.5, 6, 1.75],
 					"cubes": [
-						{"origin": [1.5, 0, -0.25], "size": [2, 6, 2], "uv": [46, 0]}
+						{"origin": [1.5, 0, 0.75], "size": [2, 6, 2], "uv": [46, 0]}
 					]
 				},
 				{
 					"name": "blegl",
 					"parent": "body",
-					"pivot": [-2.5, 6, 0.75],
+					"pivot": [-2.5, 6, 1.75],
 					"cubes": [
-						{"origin": [-3.5, 0, -0.25], "size": [2, 6, 2], "uv": [46, 0], "mirror": true}
+						{"origin": [-3.5, 0, 0.75], "size": [2, 6, 2], "uv": [46, 0], "mirror": true}
 					]
 				},
 				{
