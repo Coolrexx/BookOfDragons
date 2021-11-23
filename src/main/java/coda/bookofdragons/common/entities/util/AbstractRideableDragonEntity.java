@@ -265,7 +265,7 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
         }
 
         if (!itemstack.isEmpty()) {
-            if (!this.hasChest() && itemstack.is(Blocks.CHEST.asItem())) {
+            if (!this.hasChest() && this.isSaddled() && itemstack.is(Blocks.CHEST.asItem())) {
                 this.setChest(true);
                 this.playChestEquipsSound();
                 if (!player.getAbilities().instabuild) {
