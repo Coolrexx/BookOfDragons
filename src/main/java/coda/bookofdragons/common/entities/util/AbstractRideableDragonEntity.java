@@ -302,6 +302,16 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
         return super.mobInteract(player, hand);
     }
 
+    public static Vec3 getYawVec(float yaw, double xOffset, double zOffset) {
+        return new Vec3(xOffset, 0, zOffset).yRot(-yaw * ((float) Math.PI / 180f));
+    }
+
+    @Override
+    public void positionRider(Entity passenger) {
+        Vec3 pos = getYawVec(yBodyRot, 0.0F, -0.35F).add(getX(), getY() + 1.25F, getZ());
+        passenger.setPos(pos.x, pos.y, pos.z);
+    }
+
     protected void playChestEquipsSound() {
         this.playSound(SoundEvents.DONKEY_CHEST, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
     }
