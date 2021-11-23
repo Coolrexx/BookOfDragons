@@ -17,7 +17,7 @@ public class TerribleTerrorModel extends AnimatedTickingGeoModel<TerribleTerrorE
 
     @Override
     public ResourceLocation getTextureLocation(TerribleTerrorEntity object) {
-        return new ResourceLocation(BookOfDragons.MOD_ID, "textures/entity/terrible_terror.png");
+        return new ResourceLocation(BookOfDragons.MOD_ID, "textures/entity/terrible_terror/terrible_terror.png");
     }
 
     @Override
