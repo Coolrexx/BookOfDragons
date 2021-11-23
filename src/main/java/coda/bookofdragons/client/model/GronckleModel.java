@@ -15,7 +15,7 @@ public class GronckleModel extends AnimatedTickingGeoModel<GronckleEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(GronckleEntity object) {
-        return new ResourceLocation(BookOfDragons.MOD_ID, "textures/entity/gronckle.png");
+        return new ResourceLocation(BookOfDragons.MOD_ID, "textures/entity/gronckle/gronckle.png");
     }
 
     @Override
