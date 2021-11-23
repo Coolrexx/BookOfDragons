@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonEntity {
     public Entity previousDriver = null;
 
-    protected AbstractRideableDragonEntity(EntityType<? extends AbstractRideableDragonEntity> type, Level world) {
+    public AbstractRideableDragonEntity(EntityType<? extends AbstractRideableDragonEntity> type, Level world) {
         super(type, world);
         this.moveControl = new FlyingMoveControl(this, 20, false);
     }

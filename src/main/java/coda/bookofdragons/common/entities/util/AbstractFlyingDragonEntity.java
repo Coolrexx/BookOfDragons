@@ -4,6 +4,9 @@ import coda.bookofdragons.common.entities.EelEntity;
 import coda.bookofdragons.init.BODItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -13,6 +16,7 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.FlyingAnimal;
+import net.minecraft.world.entity.animal.horse.AbstractChestedHorse;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
@@ -22,8 +26,10 @@ import java.util.function.Predicate;
 
 public abstract class AbstractFlyingDragonEntity extends TamableAnimal implements FlyingAnimal {
     public static final Predicate<LivingEntity> NOT_HOLDING_EEL = (p_20436_) -> !p_20436_.getOffhandItem().is(BODItems.EEL.get()) || !p_20436_.getMainHandItem().is(BODItems.EEL.get());
+    private static final EntityDataAccessor<Boolean> DATA_ID_CHEST = SynchedEntityData.defineId(AbstractChestedHorse.class, EntityDataSerializers.BOOLEAN);
+    public static final int INV_CHEST_COUNT = 15;
 
-    protected AbstractFlyingDragonEntity(EntityType<? extends AbstractFlyingDragonEntity> type, Level world) {
+    public AbstractFlyingDragonEntity(EntityType<? extends AbstractFlyingDragonEntity> type, Level world) {
         super(type, world);
         this.moveControl = new FlyingMoveControl(this, 20, false);
     }
