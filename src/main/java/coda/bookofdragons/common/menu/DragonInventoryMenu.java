@@ -9,6 +9,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.SaddleItem;
 
 public class DragonInventoryMenu extends AbstractContainerMenu {
    private static AbstractRideableDragonEntity dragon = null;
@@ -101,6 +102,7 @@ public class DragonInventoryMenu extends AbstractContainerMenu {
             if (!this.moveItemStackTo(itemstack1, 0, 1, false)) {
                return ItemStack.EMPTY;
             }
+            dragon.setSaddled(getSlot(0).getItem().is(Items.SADDLE));
          }
          else if (i <= 2 || !this.moveItemStackTo(itemstack1, 2, i, false)) {
             int j = i + 27;

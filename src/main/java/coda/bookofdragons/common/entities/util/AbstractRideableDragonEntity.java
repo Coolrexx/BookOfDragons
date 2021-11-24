@@ -273,7 +273,7 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
 
     protected void updateContainerEquipment() {
         if (!this.level.isClientSide) {
-            this.setSaddled(!this.inventory.getItem(0).isEmpty());
+            this.setSaddled(this.inventory.getItem(0).is(Items.SADDLE));
         }
     }
 
@@ -326,9 +326,10 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
             }
             if (!this.isSaddled() && itemstack.is(Items.SADDLE)) {
                 this.inventory.setItem(0, new ItemStack(Items.SADDLE));
+                this.setSaddled(true);
             }
         }
-        else if (this.isSaddled() && !isBaby()) {
+        else if (this.isSaddled() && !isBaby() && itemstack.isEmpty()) {
             player.startRiding(this);
             this.navigation.stop();
         }
