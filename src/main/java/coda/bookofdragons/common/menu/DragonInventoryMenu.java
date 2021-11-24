@@ -2,7 +2,6 @@ package coda.bookofdragons.common.menu;
 
 import coda.bookofdragons.common.entities.util.AbstractRideableDragonEntity;
 import coda.bookofdragons.init.BODContainers;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -17,31 +16,35 @@ public class DragonInventoryMenu extends AbstractContainerMenu {
    private final Container dragonContainer;
 
    public static DragonInventoryMenu dragonMenu(int containerId, Inventory inventory) {
-      return new DragonInventoryMenu(containerId, inventory, dragon.getId());
+      return new DragonInventoryMenu(containerId, inventory, new SimpleContainer(), dragon.getId());
    }
 
-   public DragonInventoryMenu(int windowId, Inventory inventory, int id) {
+   public DragonInventoryMenu(int windowId, Inventory inventory, Container container, int id) {
       super(BODContainers.DRAGON_INV.get(), windowId);
-      this.dragonContainer = inventory;
+      this.dragonContainer = container;
       dragon = (AbstractRideableDragonEntity) inventory.player.level.getEntity(id);
 
-      inventory.startOpen(inventory.player);
-      this.addSlot(new Slot(inventory, 0, 8, 18) {
-         public boolean mayPlace(ItemStack stack) {
-            return stack.is(Items.SADDLE) && !this.hasItem() && dragon.isSaddleable();
+      container.startOpen(inventory.player);
+
+      // Dragon Inventory
+      this.addSlot(new Slot(container, 0, 8, 18) {
+         public boolean mayPlace(ItemStack p_39677_) {
+            return p_39677_.is(Items.SADDLE) && !this.hasItem() && dragon.isSaddleable();
          }
 
          public boolean isActive() {
             return dragon.isSaddleable();
          }
       });
-      this.addSlot(new Slot(inventory, 1, 8, 36) {
-         public boolean mayPlace(ItemStack stack) {
+      this.addSlot(new Slot(container, 1, 8, 36) {
+         public boolean mayPlace(ItemStack p_39690_) {
             return false;
+            //return dragon.isArmor(p_39690_);
          }
 
          public boolean isActive() {
             return false;
+            //return dragon.canWearArmor();
          }
 
          public int getMaxStackSize() {
@@ -51,20 +54,23 @@ public class DragonInventoryMenu extends AbstractContainerMenu {
       if (this.hasChest(dragon)) {
          for(int k = 0; k < 3; ++k) {
             for(int l = 0; l < dragon.getInventoryColumns(); ++l) {
-               this.addSlot(new Slot(inventory, 2 + l + k * dragon.getInventoryColumns(), 80 + l * 18, 18 + k * 18));
+               this.addSlot(new Slot(container, 2 + l + k * dragon.getInventoryColumns(), 80 + l * 18, 18 + k * 18));
             }
          }
       }
 
+      // Player Inventory
       for(int i1 = 0; i1 < 3; ++i1) {
          for(int k1 = 0; k1 < 9; ++k1) {
             this.addSlot(new Slot(inventory, k1 + i1 * 9 + 9, 8 + k1 * 18, 102 + i1 * 18 + -18));
          }
       }
 
+      // Player Hotbar
       for(int j1 = 0; j1 < 9; ++j1) {
          this.addSlot(new Slot(inventory, j1, 8 + j1 * 18, 142));
       }
+
 
    }
 

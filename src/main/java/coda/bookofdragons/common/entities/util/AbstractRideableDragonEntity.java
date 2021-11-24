@@ -3,10 +3,9 @@ package coda.bookofdragons.common.entities.util;
 import coda.bookofdragons.client.ClientEvents;
 import coda.bookofdragons.common.entities.util.goal.FollowDriverGoal;
 import coda.bookofdragons.common.menu.DragonInventoryMenu;
-import io.netty.buffer.Unpooled;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -21,12 +20,14 @@ import net.minecraft.world.entity.animal.horse.AbstractChestedHorse;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
 
@@ -245,11 +246,11 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
         }
     }
 
-    private net.minecraftforge.common.util.LazyOptional<?> itemHandler = null;
+    private LazyOptional<?> itemHandler = null;
 
     @Override
-    public <T> net.minecraftforge.common.util.LazyOptional<T> getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @Nullable net.minecraft.core.Direction facing) {
-        if (this.isAlive() && capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && itemHandler != null)
+    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
+        if (this.isAlive() && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && itemHandler != null)
             return itemHandler.cast();
         return super.getCapability(capability, facing);
     }
@@ -330,7 +331,7 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
         if (inventory == null) {
             return null;
         }
-        return new DragonInventoryMenu(p_createMenu_1_, p_createMenu_2_, getId());
+        return new DragonInventoryMenu(p_createMenu_1_, p_createMenu_2_, this.inventory, getId());
     }
 
     @Override
