@@ -12,7 +12,7 @@ import software.bernie.geckolib3.renderers.geo.IGeoRenderer;
 
 public class GronckleSaddleLayer extends GeoLayerRenderer<GronckleEntity> {
     private static final ResourceLocation SADDLE = new ResourceLocation(BookOfDragons.MOD_ID, "textures/entity/gronckle/saddle.png");
-    private static final ResourceLocation CHEST = new ResourceLocation(BookOfDragons.MOD_ID, "textures/entity/gronckle/saddle.png");
+    private static final ResourceLocation CHEST = new ResourceLocation(BookOfDragons.MOD_ID, "textures/entity/gronckle/chest.png");
 
     public GronckleSaddleLayer(IGeoRenderer<GronckleEntity> entityRendererIn) {
         super(entityRendererIn);

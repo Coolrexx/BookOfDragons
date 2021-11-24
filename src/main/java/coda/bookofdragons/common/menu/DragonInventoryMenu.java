@@ -3,7 +3,6 @@ package coda.bookofdragons.common.menu;
 import coda.bookofdragons.common.entities.util.AbstractRideableDragonEntity;
 import coda.bookofdragons.init.BODContainers;
 import net.minecraft.world.Container;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -16,7 +15,7 @@ public class DragonInventoryMenu extends AbstractContainerMenu {
    private final Container dragonContainer;
 
    public static DragonInventoryMenu dragonMenu(int containerId, Inventory inventory) {
-      return new DragonInventoryMenu(containerId, inventory, new SimpleContainer(), dragon.getId());
+      return new DragonInventoryMenu(containerId, inventory, dragon.inventory, dragon.getId());
    }
 
    public DragonInventoryMenu(int windowId, Inventory inventory, Container container, int id) {
@@ -52,9 +51,9 @@ public class DragonInventoryMenu extends AbstractContainerMenu {
          }
       });
       if (this.hasChest(dragon)) {
-         for(int k = 0; k < 3; ++k) {
+         for(int k = 0; k < 5; ++k) {
             for(int l = 0; l < dragon.getInventoryColumns(); ++l) {
-               this.addSlot(new Slot(container, 2 + l + k * dragon.getInventoryColumns(), 80 + l * 18, 18 + k * 18));
+               this.addSlot(new Slot(container, 3 + l + k * dragon.getInventoryColumns(), 80 + l * 18, 18 + k * 18));
             }
          }
       }
@@ -70,8 +69,6 @@ public class DragonInventoryMenu extends AbstractContainerMenu {
       for(int j1 = 0; j1 < 9; ++j1) {
          this.addSlot(new Slot(inventory, j1, 8 + j1 * 18, 142));
       }
-
-
    }
 
    public boolean stillValid(Player player) {
@@ -86,7 +83,7 @@ public class DragonInventoryMenu extends AbstractContainerMenu {
    public ItemStack quickMoveStack(Player p_39665_, int p_39666_) {
       ItemStack itemstack = ItemStack.EMPTY;
       Slot slot = this.slots.get(p_39666_);
-      if (slot != null && slot.hasItem()) {
+      if (slot.hasItem()) {
          ItemStack itemstack1 = slot.getItem();
          itemstack = itemstack1.copy();
          int i = this.dragonContainer.getContainerSize();
@@ -94,26 +91,31 @@ public class DragonInventoryMenu extends AbstractContainerMenu {
             if (!this.moveItemStackTo(itemstack1, i, this.slots.size(), true)) {
                return ItemStack.EMPTY;
             }
-         } else if (this.getSlot(1).mayPlace(itemstack1) && !this.getSlot(1).hasItem()) {
+         }
+         else if (this.getSlot(1).mayPlace(itemstack1) && !this.getSlot(1).hasItem()) {
             if (!this.moveItemStackTo(itemstack1, 1, 2, false)) {
                return ItemStack.EMPTY;
             }
-         } else if (this.getSlot(0).mayPlace(itemstack1)) {
+         }
+         else if (this.getSlot(0).mayPlace(itemstack1)) {
             if (!this.moveItemStackTo(itemstack1, 0, 1, false)) {
                return ItemStack.EMPTY;
             }
-         } else if (i <= 2 || !this.moveItemStackTo(itemstack1, 2, i, false)) {
+         }
+         else if (i <= 2 || !this.moveItemStackTo(itemstack1, 2, i, false)) {
             int j = i + 27;
             int k = j + 9;
             if (p_39666_ >= j && p_39666_ < k) {
                if (!this.moveItemStackTo(itemstack1, i, j, false)) {
                   return ItemStack.EMPTY;
                }
-            } else if (p_39666_ >= i && p_39666_ < j) {
+            }
+            else if (p_39666_ < j) {
                if (!this.moveItemStackTo(itemstack1, j, k, false)) {
                   return ItemStack.EMPTY;
                }
-            } else if (!this.moveItemStackTo(itemstack1, j, j, false)) {
+            }
+            else if (!this.moveItemStackTo(itemstack1, j, j, false)) {
                return ItemStack.EMPTY;
             }
 

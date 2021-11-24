@@ -35,13 +35,13 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
     private static final EntityDataAccessor<Boolean> CHESTED = SynchedEntityData.defineId(AbstractChestedHorse.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> SADDLED = SynchedEntityData.defineId(AbstractChestedHorse.class, EntityDataSerializers.BOOLEAN);
     public Entity previousDriver = null;
-    protected SimpleContainer inventory;
+    public SimpleContainer inventory;
 
     public AbstractRideableDragonEntity(EntityType<? extends AbstractRideableDragonEntity> type, Level world) {
         super(type, world);
         this.moveControl = new FlyingMoveControl(this, 20, false);
-        this.createInventory();
         this.maxUpStep = 1.0F;
+        this.createInventory();
     }
 
     @Override
@@ -243,6 +243,7 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
     protected void updateContainerEquipment() {
         if (!this.level.isClientSide) {
             this.setSaddled(!this.inventory.getItem(0).isEmpty());
+            this.setChest(!this.inventory.getItem(1).isEmpty());
         }
     }
 
@@ -272,7 +273,7 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         if (!this.isBaby()) {
-            if (/*this.isTamed() && */player.isSecondaryUseActive() && this.hasChest() && inventory != null) {
+            if (/*this.isTamed() && */player.isSecondaryUseActive() && inventory != null) {
                 player.openMenu(this);
                 inventory = new SimpleContainer(3);
                 return InteractionResult.sidedSuccess(this.level.isClientSide);
@@ -286,13 +287,12 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
         if (!itemstack.isEmpty()) {
             if (!this.hasChest() && this.isSaddled() && itemstack.is(Blocks.CHEST.asItem())) {
                 this.setChest(true);
-                this.inventory.setItem(0, new ItemStack(Items.CHEST));
+                this.inventory.setItem(1, new ItemStack(Items.CHEST));
                 this.playChestEquipsSound();
                 if (!player.getAbilities().instabuild) {
                     itemstack.shrink(1);
                 }
 
-                this.createInventory();
                 return InteractionResult.sidedSuccess(this.level.isClientSide);
             }
             if (!this.isSaddled() && itemstack.is(Items.SADDLE)) {
