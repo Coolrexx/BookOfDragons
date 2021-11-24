@@ -83,13 +83,13 @@ public class DragonInventoryMenu extends AbstractContainerMenu {
       return p_150578_ != null && p_150578_.hasChest();
    }
 
-   public ItemStack quickMoveStack(Player player, int p_39666_) {
+   public ItemStack quickMoveStack(Player p_39665_, int p_39666_) {
       ItemStack itemstack = ItemStack.EMPTY;
       Slot slot = this.slots.get(p_39666_);
       if (slot.hasItem()) {
          ItemStack itemstack1 = slot.getItem();
          itemstack = itemstack1.copy();
-         int i = this.dragonContainer.getContainerSize();
+         int i = 18;
          if (p_39666_ < i) {
             if (!this.moveItemStackTo(itemstack1, i, this.slots.size(), true)) {
                return ItemStack.EMPTY;
@@ -109,7 +109,7 @@ public class DragonInventoryMenu extends AbstractContainerMenu {
                if (!this.moveItemStackTo(itemstack1, i, j, false)) {
                   return ItemStack.EMPTY;
                }
-            } else if (p_39666_ < j) {
+            } else if (p_39666_ >= i && p_39666_ < j) {
                if (!this.moveItemStackTo(itemstack1, j, k, false)) {
                   return ItemStack.EMPTY;
                }
