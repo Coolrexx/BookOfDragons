@@ -51,7 +51,7 @@ public class DragonInventoryMenu extends AbstractContainerMenu {
          }
       });
       if (this.hasChest(dragon)) {
-         for(int k = 0; k < 5; ++k) {
+         for(int k = 0; k < 3; ++k) {
             for(int l = 0; l < dragon.getInventoryColumns(); ++l) {
                this.addSlot(new Slot(container, 3 + l + k * dragon.getInventoryColumns(), 80 + l * 18, 18 + k * 18));
             }

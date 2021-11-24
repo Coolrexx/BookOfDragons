@@ -32,8 +32,8 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import javax.annotation.Nullable;
 
 public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonEntity implements Saddleable, ContainerListener, MenuProvider {
-    private static final EntityDataAccessor<Boolean> CHESTED = SynchedEntityData.defineId(AbstractChestedHorse.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> SADDLED = SynchedEntityData.defineId(AbstractChestedHorse.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> CHESTED = SynchedEntityData.defineId(AbstractRideableDragonEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> SADDLED = SynchedEntityData.defineId(AbstractRideableDragonEntity.class, EntityDataSerializers.BOOLEAN);
     public Entity previousDriver = null;
     public SimpleContainer inventory;
 
@@ -168,7 +168,8 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
 
     public void addAdditionalSaveData(CompoundTag nbt) {
         super.addAdditionalSaveData(nbt);
-        nbt.putBoolean("ChestedHorse", this.hasChest());
+
+        nbt.putBoolean("ChestedDrgaon", this.hasChest());
         if (this.hasChest()) {
             ListTag listtag = new ListTag();
 
@@ -192,6 +193,8 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
 
     public void readAdditionalSaveData(CompoundTag nbt) {
         super.readAdditionalSaveData(nbt);
+        this.createInventory();
+
         this.setChest(nbt.getBoolean("ChestedHorse"));
         this.createInventory();
         if (this.hasChest()) {
@@ -216,6 +219,34 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
         this.updateContainerEquipment();
     }
 
+    public SlotAccess getSlot(int p_149479_) {
+        return p_149479_ == 499 ? new SlotAccess() {
+            public ItemStack get() {
+                return AbstractRideableDragonEntity.this.hasChest() ? new ItemStack(Items.CHEST) : ItemStack.EMPTY;
+            }
+
+            public boolean set(ItemStack p_149485_) {
+                if (p_149485_.isEmpty()) {
+                    if (AbstractRideableDragonEntity.this.hasChest()) {
+                        AbstractRideableDragonEntity.this.setChest(false);
+                        AbstractRideableDragonEntity.this.createInventory();
+                    }
+
+                    return true;
+                } else if (p_149485_.is(Items.CHEST)) {
+                    if (!AbstractRideableDragonEntity.this.hasChest()) {
+                        AbstractRideableDragonEntity.this.setChest(true);
+                        AbstractRideableDragonEntity.this.createInventory();
+                    }
+
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } : super.getSlot(p_149479_);
+    }
+
     protected void createInventory() {
         SimpleContainer simplecontainer = this.inventory;
         this.inventory = new SimpleContainer(this.getInventorySize());
@@ -237,13 +268,12 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
     }
 
     protected int getInventorySize() {
-        return this.hasChest() ? 18 : 3;
+        return this.hasChest() ? 17 : 2;
     }
 
     protected void updateContainerEquipment() {
         if (!this.level.isClientSide) {
             this.setSaddled(!this.inventory.getItem(0).isEmpty());
-            this.setChest(!this.inventory.getItem(1).isEmpty());
         }
     }
 
@@ -260,7 +290,7 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
     public void invalidateCaps() {
         super.invalidateCaps();
         if (itemHandler != null) {
-            net.minecraftforge.common.util.LazyOptional<?> oldHandler = itemHandler;
+            LazyOptional<?> oldHandler = itemHandler;
             itemHandler = null;
             oldHandler.invalidate();
         }
@@ -287,7 +317,6 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
         if (!itemstack.isEmpty()) {
             if (!this.hasChest() && this.isSaddled() && itemstack.is(Blocks.CHEST.asItem())) {
                 this.setChest(true);
-                this.inventory.setItem(1, new ItemStack(Items.CHEST));
                 this.playChestEquipsSound();
                 if (!player.getAbilities().instabuild) {
                     itemstack.shrink(1);
