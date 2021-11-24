@@ -86,10 +86,10 @@ public class DragonInventoryMenu extends AbstractContainerMenu {
    public ItemStack quickMoveStack(Player p_39665_, int p_39666_) {
       ItemStack itemstack = ItemStack.EMPTY;
       Slot slot = this.slots.get(p_39666_);
-      if (slot.hasItem()) {
+      if (slot != null && slot.hasItem()) {
          ItemStack itemstack1 = slot.getItem();
          itemstack = itemstack1.copy();
-         int i = 18;
+         int i = this.dragonContainer.getContainerSize();
          if (p_39666_ < i) {
             if (!this.moveItemStackTo(itemstack1, i, this.slots.size(), true)) {
                return ItemStack.EMPTY;

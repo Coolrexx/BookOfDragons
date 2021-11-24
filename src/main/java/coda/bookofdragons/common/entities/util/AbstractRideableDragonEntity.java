@@ -269,10 +269,6 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
         return 5;
     }
 
-    public boolean hasInventoryChanged(Container p_149512_) {
-        return this.inventory != p_149512_;
-    }
-
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         if (!this.isBaby()) {
