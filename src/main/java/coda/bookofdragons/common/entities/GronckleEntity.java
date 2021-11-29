@@ -9,6 +9,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -27,6 +28,7 @@ import javax.annotation.Nullable;
 
 public class GronckleEntity extends AbstractRideableDragonEntity implements FlyingAnimal, IAnimatable, IAnimationTickable {
     private final AnimationFactory factory = new AnimationFactory(this);
+    private Goal flyGoal;
 
     public GronckleEntity(EntityType<? extends GronckleEntity> type, Level world) {
         super(type, world);
@@ -39,7 +41,18 @@ public class GronckleEntity extends AbstractRideableDragonEntity implements Flyi
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(4, new FlyingDragonWanderGoal(this, 150));
+        this.goalSelector.addGoal(4, flyGoal = new FlyingDragonWanderGoal(this, 150));
+    }
+
+    @Override
+    public void setAge(int p_146763_) {
+        super.setAge(p_146763_);
+        if (!isBaby()) {
+            this.goalSelector.addGoal(4, flyGoal);
+        }
+        else if (isBaby()) {
+            this.goalSelector.removeGoal(flyGoal);
+        }
     }
 
     @Override

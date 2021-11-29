@@ -4,9 +4,6 @@ import coda.bookofdragons.common.entities.EelEntity;
 import coda.bookofdragons.init.BODItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,7 +13,6 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.FlyingAnimal;
-import net.minecraft.world.entity.animal.horse.AbstractChestedHorse;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
@@ -61,7 +57,7 @@ public abstract class AbstractFlyingDragonEntity extends TamableAnimal implement
         // limit so we don't do dozens of iterations per tick
         for (int i = 0; i <= limit && mutable.getY() > 0 && !this.level.getBlockState(mutable.move(Direction.DOWN)).getMaterial().blocksMotion(); i++);
 
-        return this.getY() - mutable.getY() - 0.51;
+        return this.getY() - mutable.getY() - 0.11;
     }
 
     @Override

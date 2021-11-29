@@ -12,11 +12,11 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
-import net.minecraft.world.entity.animal.horse.AbstractChestedHorse;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -89,6 +89,8 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
                 this.setRot(this.yRot, this.xRot);
                 this.yBodyRot = this.yRot;
                 this.yHeadRot = this.yRot;
+
+                yRot = Mth.rotateIfNecessary(yHeadRot, yRot, isFlying() ? 5 : 7);
 
                 if (!flying && passenger.jumping) jumpFromGround();
 
