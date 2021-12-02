@@ -33,8 +33,16 @@
 					]
 				},
 				{
-					"name": "head",
+					"name": "headroot",
 					"parent": "neck",
+					"pivot": [0, 35, -23],
+					"cubes": [
+						{"origin": [0, 36, -22], "size": [0, 0, 0], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "head",
+					"parent": "headroot",
 					"pivot": [0, 35, -23],
 					"cubes": [
 						{"origin": [-5.5, 34, -38], "size": [11, 4, 15], "uv": [42, 41]},
