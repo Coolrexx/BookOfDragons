@@ -25,15 +25,15 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 
-public class GronckleEntity extends AbstractRideableDragonEntity implements FlyingAnimal, IAnimatable, IAnimationTickable {
+public class DeadlyNadderEntity extends AbstractRideableDragonEntity implements FlyingAnimal, IAnimatable, IAnimationTickable {
     private final AnimationFactory factory = new AnimationFactory(this);
 
-    public GronckleEntity(EntityType<? extends GronckleEntity> type, Level world) {
+    public DeadlyNadderEntity(EntityType<? extends DeadlyNadderEntity> type, Level world) {
         super(type, world);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 50.0D).add(Attributes.MOVEMENT_SPEED, 0.25F).add(Attributes.FLYING_SPEED, 0.4F);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 40.0D).add(Attributes.MOVEMENT_SPEED, 0.285F).add(Attributes.FLYING_SPEED, 0.5F);
     }
 
     @Override
@@ -55,17 +55,17 @@ public class GronckleEntity extends AbstractRideableDragonEntity implements Flyi
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel world, AgeableMob ageableMob) {
-        return BODEntities.GRONCKLE.get().create(world);
+        return BODEntities.DEADLY_NADDER.get().create(world);
     }
 
     @Override
     public ItemStack getPickedResult(HitResult target) {
-        return new ItemStack(BODItems.GRONCKLE_SPAWN_EGG.get());
+        return new ItemStack(BODItems.DEADLY_NADDER_SPAWN_EGG.get());
     }
 
     @Override
     protected float getStandingEyeHeight(Pose p_21131_, EntityDimensions p_21132_) {
-        return 1.2F;
+        return 1.5F;
     }
 
     @Override

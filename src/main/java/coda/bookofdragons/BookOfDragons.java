@@ -1,5 +1,6 @@
 package coda.bookofdragons;
 
+import coda.bookofdragons.common.entities.DeadlyNadderEntity;
 import coda.bookofdragons.common.entities.EelEntity;
 import coda.bookofdragons.common.entities.GronckleEntity;
 import coda.bookofdragons.common.entities.TerribleTerrorEntity;
@@ -12,7 +13,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -37,19 +37,15 @@ public class BookOfDragons {
         BODBlocks.BLOCKS.register(bus);
         BODContainers.CONTAINERS.register(bus);
 
-        bus.addListener(this::commonSetup);
         bus.addListener(this::registerAttributes);
 
         GeckoLib.initialize();
-    }
-
-    private void commonSetup(FMLCommonSetupEvent event) {
-
     }
 
     private void registerAttributes(EntityAttributeCreationEvent event) {
         event.put(BODEntities.EEL.get(), EelEntity.createAttributes().build());
         event.put(BODEntities.TERRIBLE_TERROR.get(), TerribleTerrorEntity.createAttributes().build());
         event.put(BODEntities.GRONCKLE.get(), GronckleEntity.createAttributes().build());
+        event.put(BODEntities.DEADLY_NADDER.get(), DeadlyNadderEntity.createAttributes().build());
     }
 }

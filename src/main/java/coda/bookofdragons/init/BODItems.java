@@ -9,9 +9,9 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 public class BODItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, BookOfDragons.MOD_ID);
@@ -31,4 +31,5 @@ public class BODItems {
     public static final RegistryObject<Item> EEL_SPAWN_EGG = ITEMS.register("eel_spawn_egg", () -> new BODSpawnEggItem(BODEntities.EEL, 0x222123, 0xc8bc15, new Item.Properties().tab(BookOfDragons.GROUP)));
     public static final RegistryObject<Item> TERRIBLE_TERROR_SPAWN_EGG = ITEMS.register("terrible_terror_spawn_egg", () -> new BODSpawnEggItem(BODEntities.TERRIBLE_TERROR, 0x6f7930, 0x843917, new Item.Properties().tab(BookOfDragons.GROUP)));
     public static final RegistryObject<Item> GRONCKLE_SPAWN_EGG = ITEMS.register("gronckle_spawn_egg", () -> new BODSpawnEggItem(BODEntities.GRONCKLE, 0x9e5b40, 0xb99575, new Item.Properties().tab(BookOfDragons.GROUP)));
+    public static final RegistryObject<Item> DEADLY_NADDER_SPAWN_EGG = ITEMS.register("deadly_nadder_spawn_egg", () -> new BODSpawnEggItem(BODEntities.DEADLY_NADDER, 0x429ab2, 0xe3a923, new Item.Properties().tab(BookOfDragons.GROUP)));
 }

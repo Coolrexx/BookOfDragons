@@ -15,11 +15,13 @@
   "item.bookofdragons.eel_spawn_egg": "Eel Spawn Egg",
   "item.bookofdragons.terrible_terror_spawn_egg": "Terrible Terror Spawn Egg",
   "item.bookofdragons.gronckle_spawn_egg": "Gronckle Spawn Egg",
+  "item.bookofdragons.deadly_nadder_spawn_egg": "Deadly Nadder Spawn Egg",
 
   "block.bookofdragons.gronckle_iron_block": "Block of Gronckle Iron",
   "block.bookofdragons.raw_gronckle_iron_block": "Block of Raw Gronckle Iron",
 
   "entity.bookofdragons.eel": "Eel",
   "entity.bookofdragons.terrible_terror": "Terrible Terror",
-  "entity.bookofdragons.gronckle": "Gronckle"
+  "entity.bookofdragons.gronckle": "Gronckle",
+  "entity.bookofdragons.deadly_nadder": "Deadly Nadder"
 }
