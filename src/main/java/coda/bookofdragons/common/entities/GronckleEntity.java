@@ -14,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.IAnimationTickable;
 import software.bernie.geckolib3.core.PlayState;
@@ -66,6 +67,12 @@ public class GronckleEntity extends AbstractRideableDragonEntity implements Flyi
     @Override
     protected float getStandingEyeHeight(Pose p_21131_, EntityDimensions p_21132_) {
         return 1.2F;
+    }
+
+    @Override
+    public void positionRider(Entity passenger) {
+        Vec3 pos = getYawVec(yBodyRot, 0.0F, -0.35F).add(getX(), getY() + 1.25F, getZ());
+        passenger.setPos(pos.x, pos.y, pos.z);
     }
 
     @Override
