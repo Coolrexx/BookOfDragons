@@ -1,12 +1,13 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "bookofdragons",
   "version": "${version}",
 
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "Book of Dragons",
+  "description": "Drag on deez nuts",
   "authors": [
-    "Me!"
+    "Coda, Zae, Tazz, Coolrex",
+    "Not Arathain"
   ],
   "contact": {
     "homepage": "https://fabricmc.net/",
@@ -14,16 +15,19 @@
   },
 
   "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
+  "icon": "assets/bookofdragons/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleMod"
+      "net.arathain.bookofdragons.BookOfDragons"
+    ],
+    "client": [
+      "net.arathain.bookofdragons.BookOfDragonsClient"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "bookofdragons.mixins.json"
   ],
 
   "depends": {
