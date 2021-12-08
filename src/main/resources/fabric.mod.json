@@ -29,6 +29,7 @@
   "mixins": [
     "bookofdragons.mixins.json"
   ],
+  "accessWidener": "bookofdragons.accesswidener",
 
   "depends": {
     "fabricloader": ">=0.11.3",
@@ -38,5 +39,8 @@
   },
   "suggests": {
     "another-mod": "*"
+  },
+  "breaks": {
+    "optifabric": "*"
   }
 }

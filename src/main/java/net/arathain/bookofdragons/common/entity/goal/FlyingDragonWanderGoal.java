@@ -25,7 +25,7 @@ public class FlyingDragonWanderGoal extends WanderAroundFarGoal {
         this.setControls(EnumSet.of(Control.MOVE));
     }
 
-    public boolean canUse() {
+    public boolean canStart() {
         if (this.dragon.hasPassengers()) {
             return false;
         } else {
@@ -52,7 +52,7 @@ public class FlyingDragonWanderGoal extends WanderAroundFarGoal {
         }
     }
 
-    public boolean canContinueToUse() {
+    public boolean shouldContinue() {
         boolean flag = !this.dragon.getNavigation().isIdle() && !this.dragon.hasPassengers();
         BlockPos pos = getBlockUnder(dragon);
 
