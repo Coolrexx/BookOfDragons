@@ -8,6 +8,7 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.screen.HorseScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 
@@ -23,7 +24,8 @@ public class DragonScreenHandler extends ScreenHandler {
         );
     }
 
-    public static DragonScreenHandler dragonMenu(int containerId, PlayerInventory inventory) {
+    public static DragonScreenHandler dragonMenu(int containerId, PlayerInventory inventory, AbstractRideableDragonEntity actualDragon) {
+        dragon = actualDragon;
         return new DragonScreenHandler(containerId, inventory, dragon.inventory, dragon.getId());
     }
 

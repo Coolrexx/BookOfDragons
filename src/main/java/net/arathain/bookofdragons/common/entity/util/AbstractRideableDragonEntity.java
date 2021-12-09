@@ -128,7 +128,7 @@ public class AbstractRideableDragonEntity extends AbstractFlyingDragonEntity imp
                 }
             }
         if (flying) {
-            //this.moveRelative(speed, travelVector);
+            this.applyMovementInput(travelVector, speed);
             this.move(MovementType.SELF, getVelocity());
             this.setVelocity(getVelocity().multiply(0.91f));
             this.updateLimbs(this, false);
@@ -307,6 +307,7 @@ public class AbstractRideableDragonEntity extends AbstractFlyingDragonEntity imp
         ItemStack itemstack = player.getStackInHand(hand);
         if (!this.isBaby()) {
             if (this.isTamed() && player.shouldCancelInteraction()) {
+                System.out.println("gui");
                 this.openInventory(player);
                 return ActionResult.success(this.world.isClient());
             }
@@ -316,6 +317,10 @@ public class AbstractRideableDragonEntity extends AbstractFlyingDragonEntity imp
         }
 
         if (!itemstack.isEmpty()) {
+            if (isBreedingItem(itemstack)) {
+                this.setTamed(true);
+                return ActionResult.success(this.world.isClient());
+            }
             if (!this.hasChest() && this.isSaddled() && itemstack.isOf(Blocks.CHEST.asItem())) {
                 this.setChest(true);
                 this.playAddChestSound();
@@ -363,7 +368,9 @@ public class AbstractRideableDragonEntity extends AbstractFlyingDragonEntity imp
     }
 
     public void openInventory(PlayerEntity player) {
-        if (!this.world.isClient() && (!this.hasPassengers() || this.hasPassenger(player)) && this.isTamed()) {
+        System.out.println("debug1");
+        if (!this.world.isClient() && !(this.hasPassengers() || this.hasPassenger(player)) && this.isTamed()) {
+            System.out.println("debug2");
             player.openHandledScreen(new DragonScreenHandlerFactory());
         }
     }
@@ -385,8 +392,7 @@ public class AbstractRideableDragonEntity extends AbstractFlyingDragonEntity imp
 
         @Override
         public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-            var dragonInv = this.dragon().inventory;
-            return new DragonScreenHandler(syncId, inv, dragonInv, this.dragon().getId());
+            return DragonScreenHandler.dragonMenu(syncId, inv, this.dragon());
         }
     }
 }
