@@ -12,6 +12,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.passive.HorseBaseEntity;
 import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -103,10 +104,8 @@ public class AbstractRideableDragonEntity extends AbstractFlyingDragonEntity imp
             super.travel(travelVector);
             return;
         }
-            System.out.println("check1????");
             LivingEntity passenger = (LivingEntity) this.getControllingPassenger();
             if (passenger != null) {
-                System.out.println("check2????");
                 this.headYaw = passenger.headYaw;
                 this.serverHeadYaw = this.headYaw;
                 this.serverYaw = this.headYaw;
@@ -116,11 +115,10 @@ public class AbstractRideableDragonEntity extends AbstractFlyingDragonEntity imp
                 this.setRotation(this.getYaw(), this.getPitch());
                 this.bodyYaw = this.headYaw;
 
-                if (!flying && passenger.jumping) this.jump();
+                //if (!flying && passenger.jumping) this.jump();
 
                 if (this.getControllingPassenger() != null) {
                     travelVector = new Vec3d(passenger.sidewaysSpeed * 0.5, BookOfDragonsClient.getFlightDelta(), passenger.forwardSpeed * 0.5);
-                    System.out.println("should work????");
                     this.setMovementSpeed(speed);
                     this.stepBobbingAmount = 0;
                 } else if (passenger instanceof PlayerEntity) {
