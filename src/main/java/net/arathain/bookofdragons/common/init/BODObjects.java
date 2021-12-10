@@ -38,7 +38,7 @@ public class BODObjects {
     public static final Item EEL_SPAWN_EGG = createItem("eel_spawn_egg", new BODSpawnEggItem(BODEntities.EEL, 0x222123, 0xc8bc15, new Item.Settings().group(BookOfDragons.GROUP)));
     public static final Item TERRIBLE_TERROR_SPAWN_EGG = createItem("terrible_terror_spawn_egg", new BODSpawnEggItem(BODEntities.TERRIBLE_TERROR, 0x6f7930, 0x843917, new Item.Settings().group(BookOfDragons.GROUP)));
     public static final Item GRONCKLE_SPAWN_EGG = createItem("gronckle_spawn_egg", new BODSpawnEggItem(BODEntities.GRONCKLE, 0x9e5b40, 0xb99575, new Item.Settings().group(BookOfDragons.GROUP)));
-   // public static final Item DEADLY_NADDER_SPAWN_EGG = createItem("deadly_nadder_spawn_egg", new BODSpawnEggItem(BODEntities.DEADLY_NADDER, 0x429ab2, 0xe3a923, new Item.Settings().group(BookOfDragons.GROUP)));
+    public static final Item DEADLY_NADDER_SPAWN_EGG = createItem("deadly_nadder_spawn_egg", new BODSpawnEggItem(BODEntities.DEADLY_NADDER, 0x429ab2, 0xe3a923, new Item.Settings().group(BookOfDragons.GROUP)));
 
 
 

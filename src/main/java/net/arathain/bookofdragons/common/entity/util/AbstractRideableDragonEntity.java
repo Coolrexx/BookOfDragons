@@ -147,6 +147,9 @@ public class AbstractRideableDragonEntity extends AbstractFlyingDragonEntity imp
             super.travel(travelVector);
         }
     }
+    public void skipTravel(Vec3d travelVector) {
+        super.travel(travelVector);
+    }
 
     @Override
     public boolean canBeSaddled() {
@@ -381,6 +384,7 @@ public class AbstractRideableDragonEntity extends AbstractFlyingDragonEntity imp
     public void updatePassengerPosition(Entity passenger) {
         Vec3d pos = getYawVec(bodyYaw, 0.0F, -0.35F).add(getX(), getY() + 1.25F, getZ());
         passenger.setPos(pos.x, pos.y, pos.z);
+        super.updatePassengerPosition(passenger);
     }
 
     protected void playAddChestSound() {

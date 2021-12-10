@@ -1,5 +1,6 @@
 package net.arathain.bookofdragons;
 
+import net.arathain.bookofdragons.client.render.DeadlyNadderRenderer;
 import net.arathain.bookofdragons.client.render.EelRenderer;
 import net.arathain.bookofdragons.client.render.GronckleRenderer;
 import net.arathain.bookofdragons.client.render.TerribleTerrorRenderer;
@@ -21,6 +22,7 @@ public class BookOfDragonsClient implements ClientModInitializer {
         EntityRendererRegistry.INSTANCE.register(BODEntities.EEL, EelRenderer::new);
         EntityRendererRegistry.INSTANCE.register(BODEntities.TERRIBLE_TERROR, TerribleTerrorRenderer::new);
         EntityRendererRegistry.INSTANCE.register(BODEntities.GRONCKLE, GronckleRenderer::new);
+        EntityRendererRegistry.INSTANCE.register(BODEntities.DEADLY_NADDER, DeadlyNadderRenderer::new);
         ScreenRegistry.register(BookOfDragons.DRAGON_SCREEN_HANDLER_TYPE, DragonInventoryScreen::new);
         DRAGON_DESCEND = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "key.bookofdragons.descend", // The translation key of the keybinding's name
@@ -32,5 +34,8 @@ public class BookOfDragonsClient implements ClientModInitializer {
 
     public static double getFlightDelta() {
         return MinecraftClient.getInstance().options.keyJump.isPressed() ? 0.25 : DRAGON_DESCEND.isPressed() ? -0.5 : 0;
+    }
+    public static double getYawDelta() {
+        return MinecraftClient.getInstance().options.keyRight.isPressed() ? 1 : MinecraftClient.getInstance().options.keyLeft.isPressed() ? -1 : 0;
     }
 }
