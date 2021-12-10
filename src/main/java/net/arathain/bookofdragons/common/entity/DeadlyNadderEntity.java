@@ -121,7 +121,7 @@ public class DeadlyNadderEntity extends AbstractRideableDragonEntity implements 
             if (!flying && MinecraftClient.getInstance().options.keyJump.isPressed()) this.jump();
 
             if (this.getControllingPassenger() != null) {
-                travelVector = new Vec3d(0, BookOfDragonsClient.getFlightDelta() * 2,  2.6 + passenger.forwardSpeed * 2.5);
+                travelVector = new Vec3d(0, BookOfDragonsClient.getFlightDelta() * 4, 3 + passenger.forwardSpeed * 3.5);
                 this.setMovementSpeed(speed);
                 this.stepBobbingAmount = 0;
             } else if (passenger instanceof PlayerEntity) {
@@ -135,9 +135,8 @@ public class DeadlyNadderEntity extends AbstractRideableDragonEntity implements 
             this.move(MovementType.SELF, getVelocity());
             this.setVelocity(getVelocity().multiply(0.91f));
             this.updateLimbs(this, false);
-        }
-        else {
-            super.skipTravel(travelVector);
+        } else {
+            super.travel(travelVector);
         }
     }
     public void updatePassengerPosition(Entity passenger) {

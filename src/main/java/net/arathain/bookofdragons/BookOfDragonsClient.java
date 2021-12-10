@@ -33,7 +33,7 @@ public class BookOfDragonsClient implements ClientModInitializer {
     }
 
     public static double getFlightDelta() {
-        return MinecraftClient.getInstance().options.keyJump.isPressed() ? 0.25 : DRAGON_DESCEND.isPressed() ? -0.5 : 0;
+        return MinecraftClient.getInstance().options.keyJump.isPressed() ? 0.4 : DRAGON_DESCEND.isPressed() ? -0.5 : 0;
     }
     public static double getYawDelta() {
         return MinecraftClient.getInstance().options.keyRight.isPressed() ? 1 : MinecraftClient.getInstance().options.keyLeft.isPressed() ? -1 : 0;
