@@ -2,6 +2,7 @@ package net.arathain.bookofdragons.common.menu;
 
 import net.arathain.bookofdragons.BookOfDragons;
 import net.arathain.bookofdragons.common.entity.util.AbstractRideableDragonEntity;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.SimpleInventory;
@@ -11,6 +12,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.HorseScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.server.network.ServerPlayerEntity;
 
 public class DragonScreenHandler extends ScreenHandler {
     private static AbstractRideableDragonEntity dragon = null;
@@ -19,40 +21,43 @@ public class DragonScreenHandler extends ScreenHandler {
 
     public DragonScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
         this(syncId, playerInventory,
-                playerInventory.player.getWorld().getEntityById(buf.readVarInt()) instanceof AbstractRideableDragonEntity deez ? deez.inventory : null,
-                buf.readByte()
+                playerInventory.player.getWorld().getEntityById(buf.readVarInt()) instanceof AbstractRideableDragonEntity deez ? deez : null
         );
+    }
+    public DragonScreenHandler(int syncId, PlayerInventory playerInventory, AbstractRideableDragonEntity dragon) {
+        this(syncId, playerInventory, new SimpleInventory(dragon.getInventorySize()), dragon);
     }
 
     public static DragonScreenHandler dragonMenu(int containerId, PlayerInventory inventory, AbstractRideableDragonEntity actualDragon) {
         dragon = actualDragon;
-        return new DragonScreenHandler(containerId, inventory, dragon.inventory, dragon.getId());
+        return new DragonScreenHandler(containerId, inventory, dragon.inventory, dragon);
     }
 
-    public DragonScreenHandler(int windowId, PlayerInventory inventory, SimpleInventory container, int id) {
-        super(BookOfDragons.DRAGON_SCREEN_HANDLER_TYPE, windowId);
-        this.dragonContainer = container;
-        dragon = (AbstractRideableDragonEntity) inventory.player.world.getEntityById(id);
+    public DragonScreenHandler(int syncId, PlayerInventory playerInventory, SimpleInventory inventory, AbstractRideableDragonEntity entity) {
+        super(BookOfDragons.DRAGON_SCREEN_HANDLER_TYPE, syncId);
+        this.dragonContainer = dragon.inventory;
+        dragon = entity;
+        //checkSize(inventory, entity.getInventorySize());
 
-        container.onOpen(inventory.player);
+        dragonContainer.onOpen(playerInventory.player);
 
         // Dragon Inventory
-        this.addSlot(new Slot(container, 0, 8, 18) {
-            public boolean mayPlace(ItemStack stack) {
+        this.addSlot(new Slot(inventory, 0, 8, 18) {
+            public boolean canInsert(ItemStack stack) {
                 return stack.isOf(Items.SADDLE) && !this.hasStack() && dragon.canBeSaddled();
             }
 
-            public boolean isActive() {
+            public boolean isEnabled() {
                 return dragon.canBeSaddled();
             }
         });
-        this.addSlot(new Slot(container, 1, 8, 36) {
-            public boolean mayPlace(ItemStack p_39690_) {
+        this.addSlot(new Slot(inventory, 1, 8, 36) {
+            public boolean canInsert(ItemStack p_39690_) {
                 return false;
                 //return dragon.isArmor(p_39690_);
             }
 
-            public boolean isActive() {
+            public boolean isEnabled() {
                 return false;
                 //return dragon.canWearArmor();
             }
@@ -64,7 +69,7 @@ public class DragonScreenHandler extends ScreenHandler {
         if (this.hasChest(dragon)) {
             for(int k = 0; k < 3; ++k) {
                 for(int l = 0; l < dragon.getInventoryColumns(); ++l) {
-                    this.addSlot(new Slot(container, 3 + l + k * dragon.getInventoryColumns(), 80 + l * 18, 18 + k * 18));
+                    this.addSlot(new Slot(inventory, 3 + l + k * dragon.getInventoryColumns(), 80 + l * 18, 18 + k * 18));
                 }
             }
         }
@@ -72,13 +77,13 @@ public class DragonScreenHandler extends ScreenHandler {
         // Player Inventory
         for(int i1 = 0; i1 < 3; ++i1) {
             for(int k1 = 0; k1 < 9; ++k1) {
-                this.addSlot(new Slot(inventory, k1 + i1 * 9 + 9, 8 + k1 * 18, 102 + i1 * 18 + -18));
+                this.addSlot(new Slot(playerInventory, k1 + i1 * 9 + 9, 8 + k1 * 18, 102 + i1 * 18 + -18));
             }
         }
 
         // Player Hotbar
         for(int j1 = 0; j1 < 9; ++j1) {
-            this.addSlot(new Slot(inventory, j1, 8 + j1 * 18, 142));
+            this.addSlot(new Slot(playerInventory, j1, 8 + j1 * 18, 142));
         }
     }
 
@@ -86,57 +91,42 @@ public class DragonScreenHandler extends ScreenHandler {
         return p_150578_ != null && p_150578_.hasChest();
     }
 
-    public ItemStack transferSlot(PlayerEntity player, int p_39666_) {
-        ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = this.slots.get(p_39666_);
+    public ItemStack transferSlot(PlayerEntity player, int index) {
+        ItemStack itemStack = ItemStack.EMPTY;
+        Slot slot = this.slots.get(index);
         if (slot.hasStack()) {
-            ItemStack itemstack1 = slot.getStack();
-            itemstack = itemstack1.copy();
+            ItemStack itemStack2 = slot.getStack();
+            itemStack = itemStack2.copy();
             int i = this.dragonContainer.size();
-            if (p_39666_ < i) {
-                if (!this.insertItem(itemstack1, i, this.slots.size(), true)) {
+            if (index < i) {
+                if (!this.insertItem(itemStack2, i, this.slots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
-            }
-            else if (this.getSlot(1).canInsert(itemstack1) && !this.getSlot(1).hasStack()) {
-                if (!this.insertItem(itemstack1, 1, 2, false)) {
+            } else if (this.getSlot(1).canInsert(itemStack2) && !this.getSlot(1).hasStack()) {
+                if (!this.insertItem(itemStack2, 1, 2, false)) {
                     return ItemStack.EMPTY;
                 }
-            }
-            else if (this.getSlot(0).canInsert(itemstack1)) {
-                if (!this.insertItem(itemstack1, 0, 1, false)) {
+            } else if (this.getSlot(0).canInsert(itemStack2)) {
+                if (!this.insertItem(itemStack2, 0, 1, false)) {
                     return ItemStack.EMPTY;
                 }
-                dragon.setSaddled(getSlot(0).getStack().isOf(Items.SADDLE));
-            }
-            else if (i <= 2 || !this.insertItem(itemstack1, 2, i, false)) {
-                int j = i + 27;
-                int k = j + 9;
-                if (p_39666_ >= j && p_39666_ < k) {
-                    if (!this.insertItem(itemstack1, i, j, false)) {
-                        return ItemStack.EMPTY;
-                    }
-                }
-                else if (p_39666_ < j) {
-                    if (!this.insertItem(itemstack1, j, k, false)) {
-                        return ItemStack.EMPTY;
-                    }
-                }
-                else if (!this.insertItem(itemstack1, j, j, false)) {
+            } else if (i <= 2 || !this.insertItem(itemStack2, 2, i, false)) {
+                int k;
+                int j = i;
+                int l = k = j + 27;
+                int m = l + 9;
+                if (index >= l && index < m ? !this.insertItem(itemStack2, j, k, false) : (index >= j && index < k ? !this.insertItem(itemStack2, l, m, false) : !this.insertItem(itemStack2, l, k, false))) {
                     return ItemStack.EMPTY;
                 }
-
                 return ItemStack.EMPTY;
             }
-
-            if (itemstack1.isEmpty()) {
+            if (itemStack2.isEmpty()) {
                 slot.setStack(ItemStack.EMPTY);
             } else {
                 slot.markDirty();
             }
         }
-
-        return itemstack;
+        return itemStack;
     }
 
 

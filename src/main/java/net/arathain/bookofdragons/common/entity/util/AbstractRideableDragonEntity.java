@@ -3,18 +3,23 @@ package net.arathain.bookofdragons.common.entity.util;
 import net.arathain.bookofdragons.BookOfDragonsClient;
 import net.arathain.bookofdragons.common.entity.goal.FollowDriverGoal;
 import net.arathain.bookofdragons.common.menu.DragonScreenHandler;
-import net.arathain.bookofdragons.mixin.LivingEntityAccessor;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.Blocks;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.control.FlightMoveControl;
+import net.minecraft.entity.ai.goal.AttackWithOwnerGoal;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.ai.goal.RevengeGoal;
+import net.minecraft.entity.ai.goal.TrackOwnerAttackerGoal;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.passive.DonkeyEntity;
 import net.minecraft.entity.passive.HorseBaseEntity;
-import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.entity.passive.PassiveEntity;
+import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -37,6 +42,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
 
@@ -63,7 +69,11 @@ public class AbstractRideableDragonEntity extends AbstractFlyingDragonEntity imp
     @Override
     protected void initGoals() {
         super.initGoals();
+        this.goalSelector.add(5, new MeleeAttackGoal(this, 1.0, true));
         this.goalSelector.add(3, new FollowDriverGoal(this));
+        this.targetSelector.add(1, new TrackOwnerAttackerGoal(this));
+        this.targetSelector.add(2, new AttackWithOwnerGoal(this));
+        this.targetSelector.add(3, new RevengeGoal(this, new Class[0]).setGroupRevenge(new Class[0]));
     }
 
     @Override
@@ -111,11 +121,11 @@ public class AbstractRideableDragonEntity extends AbstractFlyingDragonEntity imp
                 this.serverYaw = this.headYaw;
                 this.serverPitch = passenger.getPitch() * 0.5F;
                 this.setPitch((float) this.serverPitch);
-                this.setYaw((float) this.headYaw);
+                this.setYaw(this.headYaw);
                 this.setRotation(this.getYaw(), this.getPitch());
                 this.bodyYaw = this.headYaw;
 
-                //if (!flying && passenger.jumping) this.jump();
+                if (!flying && MinecraftClient.getInstance().options.keyJump.isPressed()) this.jump();
 
                 if (this.getControllingPassenger() != null) {
                     travelVector = new Vec3d(passenger.sidewaysSpeed * 0.5, BookOfDragonsClient.getFlightDelta(), passenger.forwardSpeed * 0.5);
@@ -289,7 +299,7 @@ public class AbstractRideableDragonEntity extends AbstractFlyingDragonEntity imp
     }
 
     public int getInventorySize() {
-        return this.hasChest() ? 17 : 2;
+        return this.hasChest() ? 18 : 2;
     }
 
     protected void updateContainerEquipment() {
@@ -307,7 +317,6 @@ public class AbstractRideableDragonEntity extends AbstractFlyingDragonEntity imp
         ItemStack itemstack = player.getStackInHand(hand);
         if (!this.isBaby()) {
             if (this.isTamed() && player.shouldCancelInteraction()) {
-                System.out.println("gui");
                 this.openInventory(player);
                 return ActionResult.success(this.world.isClient());
             }
@@ -317,27 +326,47 @@ public class AbstractRideableDragonEntity extends AbstractFlyingDragonEntity imp
         }
 
         if (!itemstack.isEmpty()) {
-            if (isBreedingItem(itemstack)) {
-                this.setTamed(true);
-                return ActionResult.success(this.world.isClient());
+            if (isBreedingItem(itemstack) && !this.isTamed()) {
+                if (random.nextInt(10) == 6) {
+                    if (!player.getAbilities().creativeMode) {
+                        itemstack.decrement(1);
+                    }
+                    this.setTamed(true);
+                    this.setOwner(player);
+                    this.setTarget(null);
+                    this.lovePlayer(player);
+                    this.emitGameEvent(GameEvent.MOB_INTERACT, this.getCameraBlockPos());
+                    return ActionResult.success(this.world.isClient());
+                } else {
+                    if (!player.getAbilities().creativeMode) {
+                        itemstack.decrement(1);
+                    }
+                    return ActionResult.success(this.world.isClient());
+                }
             }
-            if (!this.hasChest() && this.isSaddled() && itemstack.isOf(Blocks.CHEST.asItem())) {
+            if (!this.hasChest() && this.isSaddled() && itemstack.isOf(Blocks.CHEST.asItem()) && this.isTamed()) {
                 this.setChest(true);
                 this.playAddChestSound();
                 if (!player.getAbilities().creativeMode) {
                     itemstack.decrement(1);
                 }
-
+                this.createInventory();
                 return ActionResult.success(this.world.isClient());
             }
-            if (!this.isSaddled() && itemstack.isOf(Items.SADDLE)) {
+            if (!this.isSaddled() && itemstack.isOf(Items.SADDLE) && this.isTamed()) {
                 this.inventory.setStack(0, new ItemStack(Items.SADDLE));
                 this.setSaddled(true);
+                if (!player.getAbilities().creativeMode) {
+                    itemstack.decrement(1);
+                }
+                return ActionResult.SUCCESS;
             }
         }
-        else if (this.isSaddled() && !isBaby() && itemstack.isEmpty()) {
+        else if (this.isSaddled() && !isBaby() && itemstack.isEmpty() && this.isTamed()) {
             player.startRiding(this);
             this.navigation.stop();
+        } else if (!this.isTamed() && player != this.getOwner()) {
+            this.setTarget(player);
         }
 
         return super.interactMob(player, hand);
@@ -368,9 +397,7 @@ public class AbstractRideableDragonEntity extends AbstractFlyingDragonEntity imp
     }
 
     public void openInventory(PlayerEntity player) {
-        System.out.println("debug1");
         if (!this.world.isClient() && !(this.hasPassengers() || this.hasPassenger(player)) && this.isTamed()) {
-            System.out.println("debug2");
             player.openHandledScreen(new DragonScreenHandlerFactory());
         }
     }

@@ -8,6 +8,7 @@ import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.Flutterer;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.data.DataTracker;
@@ -37,7 +38,7 @@ public class GronckleEntity extends AbstractRideableDragonEntity implements Flut
     }
 
     public static DefaultAttributeContainer.Builder createAttributes() {
-        return MobEntity.createLivingAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 50.0D).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.25F).add(EntityAttributes.GENERIC_FLYING_SPEED, 0.4F).add(EntityAttributes.GENERIC_FOLLOW_RANGE, 32);
+        return MobEntity.createLivingAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 50.0D).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.25F).add(EntityAttributes.GENERIC_ARMOR, 10.0F).add(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, 30.0F).add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 5.0F).add(EntityAttributes.GENERIC_FLYING_SPEED, 0.4F).add(EntityAttributes.GENERIC_FOLLOW_RANGE, 32);
     }
 
     @Override
