@@ -2,6 +2,7 @@ package net.arathain.bookofdragons;
 
 import net.arathain.bookofdragons.common.init.BODEntities;
 import net.arathain.bookofdragons.common.init.BODObjects;
+import net.arathain.bookofdragons.common.init.BODSpawns;
 import net.arathain.bookofdragons.common.menu.DragonScreenHandler;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
@@ -23,7 +24,9 @@ public class BookOfDragons implements ModInitializer {
 	public void onInitialize() {
 		BODObjects.init();
 		BODEntities.init();
+		BODSpawns.init();
 		GeckoLib.initialize();
+
 
 	}
 }
