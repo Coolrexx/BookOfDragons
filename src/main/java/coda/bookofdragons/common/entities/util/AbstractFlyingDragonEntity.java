@@ -35,6 +35,8 @@ public abstract class AbstractFlyingDragonEntity extends TamableAnimal implement
         this.goalSelector.addGoal(1, new TemptGoal(this, 1.25D, getIngredient(), false));
         this.goalSelector.addGoal(2, new FollowParentGoal(this, 1.25D));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 15, 1));
+        this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
+
         //TODO - fix the eel thing
         this.goalSelector.addGoal(5, new AvoidEntityGoal<>(this, EelEntity.class, 8.0F, 1.0D, 1.2D));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));

@@ -1,21 +1,36 @@
 package coda.bookofdragons.common.entities;
 
 import coda.bookofdragons.common.entities.util.AbstractFlyingDragonEntity;
+import coda.bookofdragons.common.entities.util.AbstractRideableDragonEntity;
 import coda.bookofdragons.common.entities.util.goal.FlyingDragonWanderGoal;
+import coda.bookofdragons.common.entities.util.goal.TerrorIntimidateGoal;
 import coda.bookofdragons.init.BODEntities;
 import coda.bookofdragons.init.BODItems;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
+import net.minecraft.world.entity.ai.util.HoverRandomPos;
 import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.IAnimationTickable;
 import software.bernie.geckolib3.core.PlayState;
@@ -26,9 +41,11 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
+import java.util.EnumSet;
 
 public class TerribleTerrorEntity extends AbstractFlyingDragonEntity implements FlyingAnimal, IAnimatable, IAnimationTickable {
     private final AnimationFactory factory = new AnimationFactory(this);
+    private static final EntityDataAccessor<Boolean> SNAPPING = SynchedEntityData.defineId(AbstractRideableDragonEntity.class, EntityDataSerializers.BOOLEAN);
 
     public TerribleTerrorEntity(EntityType<? extends AbstractFlyingDragonEntity> type, Level world) {
         super(type, world);
@@ -39,9 +56,16 @@ public class TerribleTerrorEntity extends AbstractFlyingDragonEntity implements 
     }
 
     @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(SNAPPING, false);
+    }
+
+    @Override
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(4, new FlyingDragonWanderGoal(this, 50));
+        this.goalSelector.addGoal(4, new TerrorIntimidateGoal(this));
     }
 
     @Override
@@ -71,20 +95,24 @@ public class TerribleTerrorEntity extends AbstractFlyingDragonEntity implements 
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (isFlying() && event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("fly", true));
+        if(getSnapping()){
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.terrible_terror.bite", true));
             return PlayState.CONTINUE;
         }
-        else if (isFlying() && !event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("fly_idle", true));
+        if (event.isMoving() && !this.isOnGround()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.terrible_terror.fly", true));
             return PlayState.CONTINUE;
         }
-        else if (!isFlying() && event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", true));
+        else if (!this.isOnGround() && !event.isMoving()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.terrible_terror.fly_idle", true));
             return PlayState.CONTINUE;
         }
-        else if (!isFlying() && !event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("land_idle", true));
+        else if (!this.isFlying() && event.isMoving()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.terrible_terror.walk", true));
+            return PlayState.CONTINUE;
+        }
+        else if (!this.isFlying() && !event.isMoving()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.terrible_terror.idle", true));
             return PlayState.CONTINUE;
         }
         else {
@@ -100,5 +128,13 @@ public class TerribleTerrorEntity extends AbstractFlyingDragonEntity implements 
     @Override
     public int tickTimer() {
         return tickCount;
+    }
+
+    public void setSnapping(boolean snapping){
+        this.entityData.set(SNAPPING, snapping);
+    }
+
+    public boolean getSnapping(){
+        return this.entityData.get(SNAPPING);
     }
 }
