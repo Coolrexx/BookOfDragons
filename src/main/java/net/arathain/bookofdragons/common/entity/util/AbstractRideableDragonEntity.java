@@ -1,5 +1,6 @@
 package net.arathain.bookofdragons.common.entity.util;
 
+import net.arathain.bookofdragons.BODComponents;
 import net.arathain.bookofdragons.BookOfDragonsClient;
 import net.arathain.bookofdragons.common.entity.goal.FollowDriverGoal;
 import net.arathain.bookofdragons.common.menu.DragonScreenHandler;
@@ -120,6 +121,9 @@ public class AbstractRideableDragonEntity extends AbstractFlyingDragonEntity imp
                 this.serverHeadYaw = this.headYaw;
                 this.serverYaw = this.headYaw;
                 this.serverPitch = passenger.getPitch() * 0.5F;
+                boolean isPlayerUpwardsMoving = BODComponents.DRAGON_RIDER_COMPONENT.get(passenger).isPressingUp();
+                boolean isPlayerDownwardsMoving = BODComponents.DRAGON_RIDER_COMPONENT.get(passenger).isPressingDown();
+                double getFlightDelta = isPlayerUpwardsMoving ? 0.4 : isPlayerDownwardsMoving ? -0.5 : 0;
                 this.setPitch((float) this.serverPitch);
                 this.setYaw(this.headYaw);
                 this.setRotation(this.getYaw(), this.getPitch());
@@ -128,7 +132,7 @@ public class AbstractRideableDragonEntity extends AbstractFlyingDragonEntity imp
                 if (!flying && MinecraftClient.getInstance().options.keyJump.isPressed()) this.jump();
 
                 if (this.getControllingPassenger() != null) {
-                    travelVector = new Vec3d(passenger.sidewaysSpeed * 0.5, BookOfDragonsClient.getFlightDelta(), passenger.forwardSpeed * 0.5);
+                    travelVector = new Vec3d(passenger.sidewaysSpeed * 0.5, getFlightDelta, passenger.forwardSpeed * 0.5);
                     this.setMovementSpeed(speed);
                     this.stepBobbingAmount = 0;
                 } else if (passenger instanceof PlayerEntity) {

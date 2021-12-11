@@ -4,8 +4,10 @@ import net.arathain.bookofdragons.common.init.BODEntities;
 import net.arathain.bookofdragons.common.init.BODObjects;
 import net.arathain.bookofdragons.common.init.BODSpawns;
 import net.arathain.bookofdragons.common.menu.DragonScreenHandler;
+import net.arathain.bookofdragons.common.network.packet.UpdatePressingUpDownPacket;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.entity.mob.RavagerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
@@ -28,6 +30,7 @@ public class BookOfDragons implements ModInitializer {
 		BODEntities.init();
 		BODSpawns.init();
 		GeckoLib.initialize();
+		ServerPlayNetworking.registerGlobalReceiver(UpdatePressingUpDownPacket.ID, UpdatePressingUpDownPacket::handle);
 
 
 	}

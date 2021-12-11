@@ -4,6 +4,7 @@ import net.arathain.bookofdragons.BookOfDragons;
 import net.arathain.bookofdragons.common.entity.DeadlyNadderEntity;
 import net.minecraft.entity.passive.HorseBaseEntity;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
@@ -29,13 +30,11 @@ public class DeadlyNadderModel extends AnimatedGeoModel<DeadlyNadderEntity> {
     @Override
     public void setLivingAnimations(DeadlyNadderEntity entity, Integer uniqueID, AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
-        EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
-        IBone head = this.getAnimationProcessor().getBone("head");
         IBone body = this.getAnimationProcessor().getBone("body");
 
         //head.setRotationX(extraData.headPitch * ((float) Math.PI / 180F));
         //head.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 180F));
-
+        body.setRotationX((float) MathHelper.lerp(body.getRotationX(), (-entity.getPitch() * 0.006), 0.6f));
         if (entity.isBaby()) {
             body.setScaleX(0.4f);
             body.setScaleY(0.4f);

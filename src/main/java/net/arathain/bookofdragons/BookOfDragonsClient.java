@@ -1,18 +1,25 @@
 package net.arathain.bookofdragons;
 
+import io.netty.buffer.Unpooled;
 import net.arathain.bookofdragons.client.render.DeadlyNadderRenderer;
 import net.arathain.bookofdragons.client.render.EelRenderer;
 import net.arathain.bookofdragons.client.render.GronckleRenderer;
 import net.arathain.bookofdragons.client.render.TerribleTerrorRenderer;
 import net.arathain.bookofdragons.client.screen.DragonInventoryScreen;
 import net.arathain.bookofdragons.common.init.BODEntities;
+import net.arathain.bookofdragons.common.network.packet.UpdatePressingUpDownPacket;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
+import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.PacketByteBuf;
 import org.lwjgl.glfw.GLFW;
 
 public class BookOfDragonsClient implements ClientModInitializer {
@@ -27,15 +34,16 @@ public class BookOfDragonsClient implements ClientModInitializer {
         DRAGON_DESCEND = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "key.bookofdragons.descend", // The translation key of the keybinding's name
                 InputUtil.Type.KEYSYM, // The type of the keybinding, KEYSYM for keyboard, MOUSE for mouse.
-                GLFW.GLFW_KEY_Z, // The keycode of the key
+                GLFW.GLFW_KEY_G, // The keycode of the key
                 "category.bookofdragons.keybind"
         ));
+        ClientTickEvents.END_WORLD_TICK.register(world -> {
+            PlayerEntity player = MinecraftClient.getInstance().player;
+            if (player != null) {
+                UpdatePressingUpDownPacket.send(MinecraftClient.getInstance().options.keyJump.isPressed(), DRAGON_DESCEND.isPressed());
+
+            }
+        });
     }
 
-    public static double getFlightDelta() {
-        return MinecraftClient.getInstance().options.keyJump.isPressed() ? 0.4 : DRAGON_DESCEND.isPressed() ? -0.5 : 0;
-    }
-    public static double getYawDelta() {
-        return MinecraftClient.getInstance().options.keyRight.isPressed() ? 1 : MinecraftClient.getInstance().options.keyLeft.isPressed() ? -1 : 0;
-    }
 }

@@ -1,5 +1,6 @@
 package net.arathain.bookofdragons.common.entity;
 
+import net.arathain.bookofdragons.BODComponents;
 import net.arathain.bookofdragons.BookOfDragonsClient;
 import net.arathain.bookofdragons.common.entity.goal.FlyingDragonWanderGoal;
 import net.arathain.bookofdragons.common.entity.util.AbstractRideableDragonEntity;
@@ -7,16 +8,22 @@ import net.arathain.bookofdragons.common.init.BODEntities;
 import net.arathain.bookofdragons.common.init.BODObjects;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.render.entity.DolphinEntityRenderer;
 import net.minecraft.client.render.entity.model.BlazeEntityModel;
+import net.minecraft.client.render.entity.model.DolphinEntityModel;
 import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.PhantomEntity;
+import net.minecraft.entity.passive.DolphinEntity;
+import net.minecraft.entity.passive.HorseBaseEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.tag.ItemTags;
 import net.minecraft.util.math.MathHelper;
@@ -87,10 +94,10 @@ public class DeadlyNadderEntity extends AbstractRideableDragonEntity implements 
         } else if (isInAir() && !event.isMoving()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("fly_idle", true));
             return PlayState.CONTINUE;
-        } else if (!isInAir() && event.isMoving()) {
+        } else if (isOnGround() && event.isMoving()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", true));
             return PlayState.CONTINUE;
-        } else if (!isInAir() && !event.isMoving()) {
+        } else if (isOnGround() && !event.isMoving()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("land_idle", true));
             return PlayState.CONTINUE;
         } else {
@@ -111,17 +118,20 @@ public class DeadlyNadderEntity extends AbstractRideableDragonEntity implements 
         if (passenger != null) {
             this.headYaw = passenger.getHeadYaw() * 0.5f;
             this.serverHeadYaw = this.headYaw;
-            this.serverYaw = this.serverYaw + BookOfDragonsClient.getYawDelta() * 2f;
-            this.serverPitch = passenger.getPitch();
+            this.serverYaw = this.serverYaw - passenger.sidewaysSpeed * 2f;
+            boolean isPlayerUpwardsMoving = BODComponents.DRAGON_RIDER_COMPONENT.get(passenger).isPressingUp();
+            boolean isPlayerDownwardsMoving = BODComponents.DRAGON_RIDER_COMPONENT.get(passenger).isPressingDown();
+            double getFlightDelta = isPlayerUpwardsMoving ? 0.4 : isPlayerDownwardsMoving ? -0.5 : 0;
+            this.serverPitch = MathHelper.clamp(this.serverPitch - getFlightDelta * 10, -70, 70);
             this.setPitch((float) this.serverPitch);
             this.setYaw((float) this.serverYaw);
             this.setRotation(this.getYaw(), this.getPitch());
             this.bodyYaw = (float) this.serverYaw;
 
-            if (!flying && MinecraftClient.getInstance().options.keyJump.isPressed()) this.jump();
+            if (!flying && isPlayerUpwardsMoving) this.jump();
 
             if (this.getControllingPassenger() != null) {
-                travelVector = new Vec3d(0, BookOfDragonsClient.getFlightDelta() * 4, 3 + passenger.forwardSpeed * 3.5);
+                travelVector = new Vec3d(0, -this.getPitch() * 0.05, 3.2 + passenger.forwardSpeed * 3.5);
                 this.setMovementSpeed(speed);
                 this.stepBobbingAmount = 0;
             } else if (passenger instanceof PlayerEntity) {

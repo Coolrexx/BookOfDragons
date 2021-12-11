@@ -22,6 +22,9 @@
     "main": [
       "net.arathain.bookofdragons.BookOfDragons"
     ],
+    "cardinal-components-entity": [
+      "net.arathain.bookofdragons.BODComponents"
+    ],
     "client": [
       "net.arathain.bookofdragons.BookOfDragonsClient"
     ]
@@ -42,5 +45,10 @@
   },
   "breaks": {
     "optifabric": "*"
+  },
+  "custom": {
+    "cardinal-components": [
+      "bookofdragons:dragon_rider"
+    ]
   }
 }
