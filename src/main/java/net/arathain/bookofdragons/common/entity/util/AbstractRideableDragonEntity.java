@@ -127,7 +127,7 @@ public class AbstractRideableDragonEntity extends AbstractFlyingDragonEntity imp
                 this.setRotation(this.getYaw(), this.getPitch());
                 this.bodyYaw = this.headYaw;
 
-                if (!flying && MinecraftClient.getInstance().options.keyJump.isPressed()) this.jump();
+                if (!flying && isPlayerUpwardsMoving) this.jump();
 
                 if (this.getControllingPassenger() != null) {
                     travelVector = new Vec3d(passenger.sidewaysSpeed * 0.5, getFlightDelta, passenger.forwardSpeed * 0.5);
