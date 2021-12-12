@@ -1,13 +1,18 @@
 package net.arathain.bookofdragons.common.entity;
 
 import net.arathain.bookofdragons.common.entity.goal.FlyingDragonWanderGoal;
+import net.arathain.bookofdragons.common.entity.goal.TerrorIntimidateGoal;
 import net.arathain.bookofdragons.common.entity.util.AbstractFlyingDragonEntity;
+import net.arathain.bookofdragons.common.entity.util.AbstractRideableDragonEntity;
 import net.arathain.bookofdragons.common.init.BODEntities;
 import net.arathain.bookofdragons.common.init.BODObjects;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.Flutterer;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.item.ItemStack;
@@ -25,6 +30,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class TerribleTerrorEntity extends AbstractFlyingDragonEntity implements Flutterer, IAnimatable {
+    private static final TrackedData<Boolean> SNAPPING = DataTracker.registerData(AbstractRideableDragonEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private final AnimationFactory factory = new AnimationFactory(this);
 
     public TerribleTerrorEntity(EntityType<? extends AbstractFlyingDragonEntity> type, World world) {
@@ -39,6 +45,7 @@ public class TerribleTerrorEntity extends AbstractFlyingDragonEntity implements 
     protected void initGoals() {
         super.initGoals();
         this.goalSelector.add(4, new FlyingDragonWanderGoal(this, 50));
+        this.goalSelector.add(4, new TerrorIntimidateGoal(this));
     }
 
     @Override
@@ -49,6 +56,20 @@ public class TerribleTerrorEntity extends AbstractFlyingDragonEntity implements 
     @Override
     public boolean isBreedingItem(ItemStack stack) {
         return stack.isIn(ItemTags.FISHES);
+    }
+
+    @Override
+    protected void initDataTracker() {
+        super.initDataTracker();
+        this.dataTracker.startTracking(SNAPPING, false);
+    }
+
+    public void setSnapping(boolean snapping){
+        this.dataTracker.set(SNAPPING, snapping);
+    }
+
+    public boolean getSnapping(){
+        return this.dataTracker.get(SNAPPING);
     }
 
 
@@ -65,20 +86,24 @@ public class TerribleTerrorEntity extends AbstractFlyingDragonEntity implements 
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (isInAir() && event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("fly", true));
+        if(getSnapping()){
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.terrible_terror.bite", true));
             return PlayState.CONTINUE;
         }
-        else if (isInAir() && !event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("fly_idle", true));
+        if (event.isMoving() && !this.isOnGround()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.terrible_terror.fly", true));
             return PlayState.CONTINUE;
         }
-        else if (!isInAir() && event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", true));
+        else if (!this.isOnGround() && !event.isMoving()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.terrible_terror.fly_idle", true));
             return PlayState.CONTINUE;
         }
-        else if (!isInAir() && !event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("land_idle", true));
+        else if (!this.isInAir() && event.isMoving()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.terrible_terror.walk", true));
+            return PlayState.CONTINUE;
+        }
+        else if (!this.isInAir() && !event.isMoving()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.terrible_terror.idle", true));
             return PlayState.CONTINUE;
         }
         else {

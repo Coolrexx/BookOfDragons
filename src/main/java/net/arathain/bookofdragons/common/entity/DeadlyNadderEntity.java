@@ -7,6 +7,8 @@ import net.arathain.bookofdragons.common.entity.util.AbstractRideableDragonEntit
 import net.arathain.bookofdragons.common.init.BODEntities;
 import net.arathain.bookofdragons.common.init.BODObjects;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.PowderSnowBlock;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.entity.DolphinEntityRenderer;
@@ -88,16 +90,16 @@ public class DeadlyNadderEntity extends AbstractRideableDragonEntity implements 
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (isInAir() && event.isMoving()) {
+        if (!isOnGround() && event.isMoving()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("fly", true));
             return PlayState.CONTINUE;
-        } else if (isInAir() && !event.isMoving()) {
+        } else if (!isOnGround() && !event.isMoving()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("fly_idle", true));
             return PlayState.CONTINUE;
-        } else if (isOnGround() && event.isMoving()) {
+        } else if (!isInAir() && event.isMoving()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", true));
             return PlayState.CONTINUE;
-        } else if (isOnGround() && !event.isMoving()) {
+        } else if (!isInAir() && !event.isMoving()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("land_idle", true));
             return PlayState.CONTINUE;
         } else {
@@ -131,7 +133,7 @@ public class DeadlyNadderEntity extends AbstractRideableDragonEntity implements 
             if (!flying && isPlayerUpwardsMoving) this.jump();
 
             if (this.getControllingPassenger() != null) {
-                travelVector = new Vec3d(0, -this.getPitch() * 0.05, 3.2 + passenger.forwardSpeed * 3.5);
+                travelVector = new Vec3d(0, -this.getPitch() * 0.05, 3.4335 + passenger.forwardSpeed * 3.5);
                 this.setMovementSpeed(speed);
                 this.stepBobbingAmount = 0;
             } else if (passenger instanceof PlayerEntity) {

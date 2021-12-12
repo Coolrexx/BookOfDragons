@@ -17,7 +17,8 @@ public class ServerPlayNetworkHandlerMixin {
 
     @Inject(method = "onClientCommand", at = @At("RETURN"))
     private void onClientCommand(ClientCommandC2SPacket packet, CallbackInfo ci) {
-        if (packet.getMode() == ClientCommandC2SPacket.Mode.OPEN_INVENTORY && this.player.getVehicle() instanceof AbstractRideableDragonEntity dragon) {
+        if (packet.getMode() == ClientCommandC2SPacket.Mode.OPEN_INVENTORY && this.player.getVehicle() instanceof AbstractRideableDragonEntity dragon && !this.player.world.isClient()) {
+            System.out.println("invOpened");
             dragon.openInventory(player);
         }
     }

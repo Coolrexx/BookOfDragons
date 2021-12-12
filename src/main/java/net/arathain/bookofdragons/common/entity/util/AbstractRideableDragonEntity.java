@@ -7,6 +7,7 @@ import net.arathain.bookofdragons.common.menu.DragonScreenHandler;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.entity.model.HorseEntityModel;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.control.FlightMoveControl;
 import net.minecraft.entity.ai.goal.AttackWithOwnerGoal;
@@ -17,10 +18,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.passive.DonkeyEntity;
-import net.minecraft.entity.passive.HorseBaseEntity;
-import net.minecraft.entity.passive.PassiveEntity;
-import net.minecraft.entity.passive.WolfEntity;
+import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -149,6 +147,7 @@ public class AbstractRideableDragonEntity extends AbstractFlyingDragonEntity imp
         }
         else {
             super.travel(travelVector);
+            this.updateLeash();
         }
     }
     public void skipTravel(Vec3d travelVector) {
@@ -405,7 +404,7 @@ public class AbstractRideableDragonEntity extends AbstractFlyingDragonEntity imp
     }
 
     public void openInventory(PlayerEntity player) {
-        if (!this.world.isClient() && !(this.hasPassengers() || this.hasPassenger(player)) && this.isTamed()) {
+        if (!this.world.isClient() && !this.hasPassengers() || this.hasPassenger(player) && this.isTamed()) {;
             player.openHandledScreen(new DragonScreenHandlerFactory());
         }
     }
