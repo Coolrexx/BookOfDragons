@@ -32,9 +32,13 @@ public class TerribleTerrorModel extends AnimatedTickingGeoModel<TerribleTerrorE
         EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
         IBone neck = this.getAnimationProcessor().getBone("neck");
         IBone body = this.getAnimationProcessor().getBone("body");
+        IBone root = this.getAnimationProcessor().getBone("root");
 
         neck.setRotationX(extraData.headPitch * ((float) Math.PI / 180F));
         neck.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 180F));
+        if(!entity.isOnGround() && !entity.getSnapping()) {
+            //root.setRotationX(extraData.headPitch * ((float) Math.PI / 180F) / 1.05f);
+        }
 
         if (entity.isBaby()) {
             body.setScaleX(0.7f);
