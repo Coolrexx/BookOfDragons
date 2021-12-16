@@ -42,21 +42,27 @@ public class TerrorIntimidateGoal extends Goal {
         else {
             List<? extends AbstractFlyingDragonEntity> list = this.entity.level.getNearbyEntities(AbstractFlyingDragonEntity.class, SNAP_AT_TARGETTING, this.entity, this.entity.getBoundingBox().inflate(32.0D));
                 if(!(list.get(0) instanceof TerribleTerrorEntity)) {
+                    if(this.entity.distanceToSqr(list.get(0)) > 20D && !this.entity.getSnapping()){
+                        this.entity.getNavigation().moveTo(list.get(0), 1f);
+                    }
+                    else {
                         this.entity.getLookControl().setLookAt(list.get(0));
-                        this.entity.getNavigation().moveTo(list.get(0), 1.2f);
+                        //this.entity.getNavigation().moveTo(list.get(0), 1.2f);
                         this.entity.setSnapping(false);
                         if (this.timer < 10) {
+                            this.entity.getNavigation().stop();
+                            this.timer++;
                             if (this.timer == 4) {
                                 Vec3 lookVec = this.entity.getViewVector(1.0f);
                                 this.entity.setDeltaMovement(lookVec.x() * -0.3f, 0.2f, lookVec.z() * -0.3f);
                             }
-                            this.timer++;
                             this.entity.setSnapping(true);
                         } else {
                             this.entity.setSnapping(false);
                             this.canSnap = false;
                             this.stop();
                         }
+                    }
                 }
             else{
                 this.entity.setSnapping(false);

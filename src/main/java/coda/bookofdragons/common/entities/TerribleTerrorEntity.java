@@ -74,6 +74,7 @@ public class TerribleTerrorEntity extends AbstractFlyingDragonEntity implements 
     @Override
     public void tick() {
         super.tick();
+        System.out.println(this.getSnapping());
         Vec3 lookVec = this.getViewVector(1.0f);
         if(this.getSnapping()){
             if(this.snapTimer < 20){
