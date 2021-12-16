@@ -37,7 +37,7 @@ public class TerribleTerrorModel extends AnimatedTickingGeoModel<TerribleTerrorE
         neck.setRotationX(extraData.headPitch * ((float) Math.PI / 180F));
         neck.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 180F));
         if(!entity.isOnGround() && !entity.getSnapping()) {
-            root.setRotationX(extraData.headPitch * ((float) Math.PI / 180F) / 1.05f);
+            //root.setRotationX(extraData.headPitch * ((float) Math.PI / 180F) / 1.05f);
         }
 
         if (entity.isBaby()) {

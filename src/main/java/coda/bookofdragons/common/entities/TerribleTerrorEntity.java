@@ -8,6 +8,8 @@ import coda.bookofdragons.init.BODEntities;
 import coda.bookofdragons.init.BODItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -46,6 +48,7 @@ import java.util.EnumSet;
 public class TerribleTerrorEntity extends AbstractFlyingDragonEntity implements FlyingAnimal, IAnimatable, IAnimationTickable {
     private final AnimationFactory factory = new AnimationFactory(this);
     private static final EntityDataAccessor<Boolean> SNAPPING = SynchedEntityData.defineId(AbstractRideableDragonEntity.class, EntityDataSerializers.BOOLEAN);
+    private int snapTimer;
 
     public TerribleTerrorEntity(EntityType<? extends AbstractFlyingDragonEntity> type, Level world) {
         super(type, world);
@@ -66,6 +69,25 @@ public class TerribleTerrorEntity extends AbstractFlyingDragonEntity implements 
         super.registerGoals();
         this.goalSelector.addGoal(4, new FlyingDragonWanderGoal(this, 50));
         this.goalSelector.addGoal(4, new TerrorIntimidateGoal(this));
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        Vec3 lookVec = this.getViewVector(1.0f);
+        if(this.getSnapping()){
+            if(this.snapTimer < 20){
+                this.snapTimer++;
+            }
+            if(this.snapTimer > 8 && this.snapTimer < 12){
+                for(int i = 0; i < 4; i++) {
+                    this.level.addParticle(ParticleTypes.FLAME, this.getX() + lookVec.x() * 0.9, this.getY() + 0.35f, this.getZ() +  lookVec.z() * 0.9, lookVec.x()/4 , lookVec.y() / 2, lookVec.z()/4);
+                }
+            }
+        }
+        else{
+           this.snapTimer = 0;
+        }
     }
 
     @Override
@@ -92,13 +114,10 @@ public class TerribleTerrorEntity extends AbstractFlyingDragonEntity implements 
     @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController<>(this, "controller", 5, this::predicate));
+        data.addAnimationController(new AnimationController<>(this, "controllerSnap", 5, this::predicateSnap));
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if(getSnapping()){
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.terrible_terror.bite", true));
-            return PlayState.CONTINUE;
-        }
         if (event.isMoving() && !this.isOnGround()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.terrible_terror.fly", true));
             return PlayState.CONTINUE;
@@ -119,6 +138,17 @@ public class TerribleTerrorEntity extends AbstractFlyingDragonEntity implements 
             return PlayState.STOP;
         }
     }
+
+    private <E extends IAnimatable> PlayState predicateSnap(AnimationEvent<E> event) {
+        if(getSnapping()){
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.terrible_terror.threaten", true));
+            return PlayState.CONTINUE;
+        }
+        else {
+            return PlayState.STOP;
+        }
+    }
+
 
     @Override
     public AnimationFactory getFactory() {

@@ -22,7 +22,8 @@ public class TerrorIntimidateGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        return true;
+        List<? extends AbstractFlyingDragonEntity> list = this.entity.level.getNearbyEntities(AbstractFlyingDragonEntity.class, SNAP_AT_TARGETTING, this.entity, this.entity.getBoundingBox().inflate(32.0D));
+        return !list.isEmpty();
     }
 
     @Override
@@ -34,37 +35,29 @@ public class TerrorIntimidateGoal extends Goal {
     @Override
     public void tick() {
         super.tick();
-        if(this.coolDown < 20){
+        if(this.coolDown < 60){
             this.coolDown++;
             this.entity.setSnapping(false);
         }
         else {
-            List<? extends AbstractFlyingDragonEntity> list = this.entity.level.getNearbyEntities(AbstractFlyingDragonEntity.class, SNAP_AT_TARGETTING, this.entity, this.entity.getBoundingBox().inflate(8.0D));
-            if (!list.isEmpty()) {
+            List<? extends AbstractFlyingDragonEntity> list = this.entity.level.getNearbyEntities(AbstractFlyingDragonEntity.class, SNAP_AT_TARGETTING, this.entity, this.entity.getBoundingBox().inflate(32.0D));
                 if(!(list.get(0) instanceof TerribleTerrorEntity)) {
-                    this.entity.getLookControl().setLookAt(list.get(0));
-                    if (this.entity.distanceToSqr(list.get(0)) > 10.0d) {
+                        this.entity.getLookControl().setLookAt(list.get(0));
                         this.entity.getNavigation().moveTo(list.get(0), 1.2f);
                         this.entity.setSnapping(false);
-                    } else {
-                        if(this.entity.isOnGround() && !this.entity.isFlying()) {
-                            this.entity.getNavigation().stop();
-                            if (this.timer < 10) {
-                                if (this.timer == 4) {
-                                    Vec3 lookVec = this.entity.getViewVector(1.0f);
-                                    this.entity.setDeltaMovement(lookVec.x() * -0.3f, 0.2f, lookVec.z() * -0.3f);
-                                }
-                                this.timer++;
-                                this.entity.setSnapping(true);
-                            } else {
-                                this.entity.setSnapping(false);
-                                this.canSnap = false;
-                                this.stop();
+                        if (this.timer < 10) {
+                            if (this.timer == 4) {
+                                Vec3 lookVec = this.entity.getViewVector(1.0f);
+                                this.entity.setDeltaMovement(lookVec.x() * -0.3f, 0.2f, lookVec.z() * -0.3f);
                             }
+                            this.timer++;
+                            this.entity.setSnapping(true);
+                        } else {
+                            this.entity.setSnapping(false);
+                            this.canSnap = false;
+                            this.stop();
                         }
-                    }
                 }
-            }
             else{
                 this.entity.setSnapping(false);
                 this.timer = 0;
