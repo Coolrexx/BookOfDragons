@@ -50,7 +50,8 @@ public abstract class AbstractGlidingDragonEntity extends AbstractRideableDragon
             if (!flying && isPlayerUpwardsMoving) this.jump();
 
             if (this.getControllingPassenger() != null) {
-                travelVector = new Vec3d(Math.sin(roll), -this.getPitch() * 0.5 + Math.cos(roll), 3.4335 + passenger.forwardSpeed * 3.5);
+                Vec3d gravityVector = new Vec3d(0, 9.8, 0);
+                travelVector = new Vec3d(Math.sin(roll), -this.getPitch() * 0.5 + Math.cos(roll) * 9.8 - gravityVector.y, 3.4335 + passenger.forwardSpeed * 3.5);
                 this.setMovementSpeed(speed);
                 this.stepBobbingAmount = 0;
             } else if (passenger instanceof PlayerEntity) {

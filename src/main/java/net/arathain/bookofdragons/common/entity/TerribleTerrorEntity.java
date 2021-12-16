@@ -16,9 +16,11 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.tag.ItemTags;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -32,6 +34,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 public class TerribleTerrorEntity extends AbstractFlyingDragonEntity implements Flutterer, IAnimatable {
     private static final TrackedData<Boolean> SNAPPING = DataTracker.registerData(AbstractRideableDragonEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private final AnimationFactory factory = new AnimationFactory(this);
+    private int snapTimer;
 
     public TerribleTerrorEntity(EntityType<? extends AbstractFlyingDragonEntity> type, World world) {
         super(type, world);
@@ -64,6 +67,25 @@ public class TerribleTerrorEntity extends AbstractFlyingDragonEntity implements 
         this.dataTracker.startTracking(SNAPPING, false);
     }
 
+    @Override
+    public void tick() {
+        super.tick();
+        Vec3d lookVec = this.getRotationVec(1.0f);
+        if(this.getSnapping()){
+            if(this.snapTimer < 20){
+                this.snapTimer++;
+            }
+            if(this.snapTimer > 8 && this.snapTimer < 12){
+                for(int i = 0; i < 4; i++) {
+                    this.world.addParticle(ParticleTypes.FLAME, this.getX() + lookVec.x * 0.9, this.getY() + 0.35f, this.getZ() +  lookVec.z * 0.9, lookVec.x/4 , lookVec.y / 2, lookVec.z/4);
+                }
+            }
+        }
+        else{
+            this.snapTimer = 0;
+        }
+    }
+
     public void setSnapping(boolean snapping){
         this.dataTracker.set(SNAPPING, snapping);
     }
@@ -83,13 +105,10 @@ public class TerribleTerrorEntity extends AbstractFlyingDragonEntity implements 
     @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController<>(this, "controller", 5, this::predicate));
+        data.addAnimationController(new AnimationController<>(this, "controllerSnap", 5, this::predicateSnap));
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if(getSnapping()){
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.terrible_terror.bite", true));
-            return PlayState.CONTINUE;
-        }
         if (event.isMoving() && !this.isOnGround()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.terrible_terror.fly", true));
             return PlayState.CONTINUE;
@@ -104,6 +123,16 @@ public class TerribleTerrorEntity extends AbstractFlyingDragonEntity implements 
         }
         else if (!this.isInAir() && !event.isMoving()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.terrible_terror.idle", true));
+            return PlayState.CONTINUE;
+        }
+        else {
+            return PlayState.STOP;
+        }
+    }
+
+    private <E extends IAnimatable> PlayState predicateSnap(AnimationEvent<E> event) {
+        if(getSnapping()){
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.terrible_terror.threaten", true));
             return PlayState.CONTINUE;
         }
         else {

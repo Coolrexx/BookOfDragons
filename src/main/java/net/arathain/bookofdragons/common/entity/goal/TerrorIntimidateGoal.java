@@ -23,7 +23,8 @@ public class TerrorIntimidateGoal extends Goal {
 
     @Override
     public boolean canStart() {
-        return true;
+        List<? extends AbstractFlyingDragonEntity> list = this.entity.world.getEntitiesByClass(AbstractFlyingDragonEntity.class, this.entity.getBoundingBox().expand(32.0D), EntityPredicates.EXCEPT_CREATIVE_OR_SPECTATOR);
+        return !list.isEmpty();
     }
 
     @Override
@@ -35,34 +36,31 @@ public class TerrorIntimidateGoal extends Goal {
     @Override
     public void tick() {
         super.tick();
-        if(this.coolDown < 20){
+        if(this.coolDown < 60){
             this.coolDown++;
             this.entity.setSnapping(false);
         }
         else {
-            List<? extends AbstractFlyingDragonEntity> list = this.entity.world.getEntitiesByClass(AbstractFlyingDragonEntity.class, this.entity.getBoundingBox().expand(8.0D), EntityPredicates.EXCEPT_CREATIVE_OR_SPECTATOR);
-            if (!list.isEmpty()) {
-                if(!(list.get(0) instanceof TerribleTerrorEntity) && SNAP_AT_TARGETTING.test(this.entity, list.get(0))) {
+            List<? extends AbstractFlyingDragonEntity> list = this.entity.world.getEntitiesByClass(AbstractFlyingDragonEntity.class, this.entity.getBoundingBox().expand(32.0D), EntityPredicates.EXCEPT_CREATIVE_OR_SPECTATOR);
+            if(!(list.get(0) instanceof TerribleTerrorEntity)) {
+                if(this.entity.squaredDistanceTo(list.get(0)) > 20D && !this.entity.getSnapping()){
+                    this.entity.getNavigation().startMovingTo(list.get(0), 1f);
+                }
+                else {
                     this.entity.getLookControl().lookAt(list.get(0));
-                    if (this.entity.squaredDistanceTo(list.get(0)) > 10.0d) {
-                        this.entity.getNavigation().startMovingTo(list.get(0), 1.2f);
-                        this.entity.setSnapping(false);
-                    } else {
-                        if(this.entity.isOnGround() && !this.entity.isInAir()) {
-                            this.entity.getNavigation().stop();
-                            if (this.timer < 10) {
-                                if (this.timer == 4) {
-                                    Vec3d lookVec = this.entity.getRotationVec(1.0f);
-                                    this.entity.setVelocity(lookVec.x * -0.3f, 0.2f, lookVec.z * -0.3f);
-                                }
-                                this.timer++;
-                                this.entity.setSnapping(true);
-                            } else {
-                                this.entity.setSnapping(false);
-                                this.canSnap = false;
-                                this.stop();
-                            }
+                    this.entity.setSnapping(false);
+                    if (this.timer < 10) {
+                        this.entity.getNavigation().stop();
+                        this.timer++;
+                        if (this.timer == 4) {
+                            Vec3d lookVec = this.entity.getRotationVec(1.0f);
+                            this.entity.setVelocity(lookVec.x * -0.3f, 0.2f, lookVec.z * -0.3f);
                         }
+                        this.entity.setSnapping(true);
+                    } else {
+                        this.entity.setSnapping(false);
+                        this.canSnap = false;
+                        this.stop();
                     }
                 }
             }
