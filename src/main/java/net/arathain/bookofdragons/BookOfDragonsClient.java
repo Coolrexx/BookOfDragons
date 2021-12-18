@@ -1,10 +1,7 @@
 package net.arathain.bookofdragons;
 
 import io.netty.buffer.Unpooled;
-import net.arathain.bookofdragons.client.render.DeadlyNadderRenderer;
-import net.arathain.bookofdragons.client.render.EelRenderer;
-import net.arathain.bookofdragons.client.render.GronckleRenderer;
-import net.arathain.bookofdragons.client.render.TerribleTerrorRenderer;
+import net.arathain.bookofdragons.client.render.*;
 import net.arathain.bookofdragons.client.screen.DragonInventoryScreen;
 import net.arathain.bookofdragons.common.init.BODEntities;
 import net.arathain.bookofdragons.common.network.packet.UpdatePressingUpDownPacket;
@@ -27,6 +24,7 @@ public class BookOfDragonsClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         EntityRendererRegistry.INSTANCE.register(BODEntities.EEL, EelRenderer::new);
+        EntityRendererRegistry.INSTANCE.register(BODEntities.NIGHT_FURY, NightFuryRenderer::new);
         EntityRendererRegistry.INSTANCE.register(BODEntities.TERRIBLE_TERROR, TerribleTerrorRenderer::new);
         EntityRendererRegistry.INSTANCE.register(BODEntities.GRONCKLE, GronckleRenderer::new);
         EntityRendererRegistry.INSTANCE.register(BODEntities.DEADLY_NADDER, DeadlyNadderRenderer::new);

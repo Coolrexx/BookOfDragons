@@ -2,10 +2,7 @@ package net.arathain.bookofdragons.common.init;
 
 
 import net.arathain.bookofdragons.BookOfDragons;
-import net.arathain.bookofdragons.common.entity.DeadlyNadderEntity;
-import net.arathain.bookofdragons.common.entity.EelEntity;
-import net.arathain.bookofdragons.common.entity.GronckleEntity;
-import net.arathain.bookofdragons.common.entity.TerribleTerrorEntity;
+import net.arathain.bookofdragons.common.entity.*;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.entity.*;
@@ -23,7 +20,7 @@ public class BODEntities {
     public static final EntityType<TerribleTerrorEntity> TERRIBLE_TERROR = createEntity("terrible_terror", TerribleTerrorEntity.createAttributes(), FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, TerribleTerrorEntity::new).dimensions(EntityDimensions.fixed(1.0F, 0.75F)).build());
     public static final EntityType<GronckleEntity> GRONCKLE = createEntity("gronckle", GronckleEntity.createAttributes(), FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, GronckleEntity::new).dimensions(EntityDimensions.fixed(2.0F, 2.0F)).build());
     public static final EntityType<DeadlyNadderEntity> DEADLY_NADDER = createEntity("deadly_nadder", DeadlyNadderEntity.createAttributes(), FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, DeadlyNadderEntity::new).dimensions(EntityDimensions.fixed(2.0F, 2.3F)).build());
-
+    public static final EntityType<NightFuryEntity> NIGHT_FURY = createEntity("night_fury", NightFuryEntity.createAttributes(), FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, NightFuryEntity::new).dimensions(EntityDimensions.fixed(1.8F, 1.6F)).build());
 
     private static <T extends Entity> EntityType<T> createEntity(String name, EntityType<T> type) {
         ENTITY_TYPES.put(type, new Identifier(BookOfDragons.MOD_ID, name));
