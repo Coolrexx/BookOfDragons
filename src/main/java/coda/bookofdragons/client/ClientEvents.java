@@ -6,7 +6,6 @@ import coda.bookofdragons.client.renderer.EelRenderer;
 import coda.bookofdragons.client.renderer.GronckleRenderer;
 import coda.bookofdragons.client.renderer.TerribleTerrorRenderer;
 import coda.bookofdragons.client.screen.DragonInventoryScreen;
-import coda.bookofdragons.common.items.BODSpawnEggItem;
 import coda.bookofdragons.init.BODContainers;
 import coda.bookofdragons.init.BODEntities;
 import coda.bookofdragons.init.BODKeyBindings;
@@ -38,13 +37,6 @@ public class ClientEvents {
         BODKeyBindings.LIST.forEach(ClientRegistry::registerKeyBinding);
 
         MenuScreens.register(BODContainers.DRAGON_INV.get(), DragonInventoryScreen::new);
-    }
-
-    @SubscribeEvent
-    public static void itemColors(ColorHandlerEvent.Item event) {
-        ItemColors handler = event.getItemColors();
-        ItemColor eggColor = (stack, tintIndex) -> ((BODSpawnEggItem) stack.getItem()).getColor(tintIndex);
-        for (BODSpawnEggItem e : BODSpawnEggItem.UNADDED_EGGS) handler.register(eggColor, e);
     }
 
     public static Minecraft getClient() {

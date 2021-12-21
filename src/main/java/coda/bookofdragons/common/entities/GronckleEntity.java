@@ -23,8 +23,6 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-import javax.annotation.Nullable;
-
 public class GronckleEntity extends AbstractRideableDragonEntity implements FlyingAnimal, IAnimatable, IAnimationTickable {
     private final AnimationFactory factory = new AnimationFactory(this);
 
@@ -52,7 +50,6 @@ public class GronckleEntity extends AbstractRideableDragonEntity implements Flyi
         return stack.is(ItemTags.FISHES);
     }
 
-    @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel world, AgeableMob ageableMob) {
         return BODEntities.GRONCKLE.get().create(world);
@@ -75,19 +72,19 @@ public class GronckleEntity extends AbstractRideableDragonEntity implements Flyi
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (isFlying() && event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("fly", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gronckle.fly", true));
             return PlayState.CONTINUE;
         }
         else if (isFlying() && !event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("fly_idle", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gronckle.fly_idle", true));
             return PlayState.CONTINUE;
         }
         else if (!isFlying() && event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gronckle.walk", true));
             return PlayState.CONTINUE;
         }
         else if (!isFlying() && !event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("land_idle", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gronckle.land_idle", true));
             return PlayState.CONTINUE;
         }
         else {
