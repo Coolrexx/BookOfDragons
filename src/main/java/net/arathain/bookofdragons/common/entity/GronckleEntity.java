@@ -58,6 +58,14 @@ public class GronckleEntity extends AbstractRideableDragonEntity implements Flut
         return stack.isIn(ItemTags.FISHES);
     }
 
+    @Override
+    protected void mobTick() {
+        if (this.getPositionTarget() != null && !(this.getOwner() != null && this.getOwner().isFallFlying()) && (this.isTouchingWater() || this.isOnGround())) {
+            this.setFlying(false);
+        }
+        super.mobTick();
+    }
+
     @Nullable
     @Override
     public PassiveEntity createChild(ServerWorld world, PassiveEntity entity) {

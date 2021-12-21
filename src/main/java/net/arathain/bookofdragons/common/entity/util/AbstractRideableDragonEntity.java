@@ -1,13 +1,11 @@
 package net.arathain.bookofdragons.common.entity.util;
 
 import net.arathain.bookofdragons.BODComponents;
-import net.arathain.bookofdragons.BookOfDragonsClient;
+import net.arathain.bookofdragons.common.entity.DeadlyNadderEntity;
 import net.arathain.bookofdragons.common.entity.goal.FollowDriverGoal;
 import net.arathain.bookofdragons.common.menu.DragonScreenHandler;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.entity.model.HorseEntityModel;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.control.FlightMoveControl;
 import net.minecraft.entity.ai.goal.AttackWithOwnerGoal;
@@ -18,7 +16,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.passive.*;
+import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -48,6 +46,7 @@ import org.jetbrains.annotations.Nullable;
 public class AbstractRideableDragonEntity extends AbstractFlyingDragonEntity implements Saddleable, InventoryChangedListener {
     private static final TrackedData<Boolean> CHESTED = DataTracker.registerData(AbstractRideableDragonEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Boolean> SADDLED = DataTracker.registerData(AbstractRideableDragonEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final TrackedData<Boolean> FLYING = DataTracker.registerData(AbstractRideableDragonEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     public Entity previousDriver = null;
     public SimpleInventory inventory;
 
@@ -63,6 +62,7 @@ public class AbstractRideableDragonEntity extends AbstractFlyingDragonEntity imp
         super.initDataTracker();
         this.dataTracker.startTracking(SADDLED, false);
         this.dataTracker.startTracking(CHESTED, false);
+        this.dataTracker.startTracking(FLYING, false);
     }
 
     @Override
@@ -102,6 +102,16 @@ public class AbstractRideableDragonEntity extends AbstractFlyingDragonEntity imp
     @Override
     public boolean canBeControlledByRider() {
         return this.getControllingPassenger() instanceof LivingEntity;
+    }
+
+    @Override
+    public void tickMovement() {
+        super.tickMovement();
+
+        if (this.getTarget() != null && this.getTarget().getY() > this.getY() && !this.isFlying()) {
+            this.addVelocity(0, 0.5, 0);
+            this.setFlying(true);
+        }
     }
 
     @Override
@@ -152,6 +162,14 @@ public class AbstractRideableDragonEntity extends AbstractFlyingDragonEntity imp
     }
     public void skipTravel(Vec3d travelVector) {
         super.travel(travelVector);
+    }
+
+    public boolean isFlying() {
+        return (Boolean) this.dataTracker.get(FLYING);
+    }
+
+    public void setFlying(boolean flyin) {
+        this.dataTracker.set(FLYING, flyin);
     }
 
     @Override
@@ -255,6 +273,17 @@ public class AbstractRideableDragonEntity extends AbstractFlyingDragonEntity imp
         }
 
         this.updateContainerEquipment();
+    }
+
+    @Override
+    protected void mobTick() {
+        if (this.getTarget() == null && !(this.getOwner() != null && this.getOwner().isFallFlying()) && (this.isTouchingWater() || this.isOnGround())) {
+            this.setFlying(false);
+        }
+        if (!isOnGround() && !this.hasPassengers()) {
+            this.setFlying(true);
+        }
+        super.mobTick();
     }
 
     public StackReference getStackReference(int mappedIndex) {
