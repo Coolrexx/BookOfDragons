@@ -44,6 +44,6 @@ public class ClientEvents {
     }
 
     public static double getFlightDelta() {
-        return getClient().options.keyJump.isDown() ? 0.25 : BODKeyBindings.DRAGON_DESCEND.isDown() ? -0.5 : 0;
+        return getClient().options.keyJump.isDown() ? 0.4 : BODKeyBindings.DRAGON_DESCEND.isDown() ? -0.5 : 0;
     }
 }
