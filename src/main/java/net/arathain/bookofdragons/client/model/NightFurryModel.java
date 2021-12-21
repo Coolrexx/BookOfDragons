@@ -36,7 +36,6 @@ public class NightFurryModel extends AnimatedGeoModel<NightFuryEntity> {
         //head.setRotationX(extraData.headPitch * ((float) Math.PI / 180F));
         //head.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 180F));
         body.setRotationX((float) MathHelper.lerp(0.6f, -entity.getPitch() * ((float) Math.PI / 90F), body.getRotationX()));
-        body.setRotationZ((float) MathHelper.lerp(0.6f, -entity.getZRoll() * ((float) Math.PI / 90F), body.getRotationZ()));
         this.getAnimationProcessor().getBone("eyelids").setHidden(true);
         if (entity.isBaby()) {
             body.setScaleX(0.4f);

@@ -1,10 +1,15 @@
 package net.arathain.bookofdragons.common.entity.util;
 
 import net.arathain.bookofdragons.BODComponents;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.passive.HorseBaseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -14,14 +19,6 @@ public abstract class AbstractGlidingDragonEntity extends AbstractRideableDragon
     public AbstractGlidingDragonEntity(EntityType<? extends AbstractRideableDragonEntity> type, World world) {
         super(type, world);
     }
-    private float roll;
-
-   public float getZRoll() {
-        return roll;
-   }
-   public void setRoll(float roll1) {
-       roll = roll1;
-   }
 
     @Override
     public void travel(Vec3d travelVector) {
@@ -41,25 +38,19 @@ public abstract class AbstractGlidingDragonEntity extends AbstractRideableDragon
             boolean isPlayerDownwardsMoving = BODComponents.DRAGON_RIDER_COMPONENT.get(passenger).isPressingDown();
             this.serverPitch = passenger.getPitch();
             this.setPitch((float) this.serverPitch);
-            this.setYaw((float) this.serverYaw);
+            this.setYaw((float) this.serverYaw + passenger.sidewaysSpeed);
             this.setRotation(this.getYaw(), this.getPitch());
-            this.setRoll(this.getZRoll() - passenger.sidewaysSpeed * 2);
             this.bodyYaw = (float) this.serverYaw;
 
             if (!flying && isPlayerUpwardsMoving) this.jump();
 
             if (this.getControllingPassenger() != null) {
-                Vec3d rotation = passenger.getRotationVector();
                 Vec3d velocity = this.getVelocity();
-                Vec3d gravityVector = new Vec3d(0, 10, 0);
-                //travelVector = new Vec3d(Math.sin(roll) * 10, -this.getPitch() * 0.5 + Math.cos(roll) * 9.8 - gravityVector.y, 10 + passenger.forwardSpeed * Math.cos(getPitch()) * 10);
-                travelVector = velocity.add(rotation.x * speed + (rotation.x * 1.5D - velocity.x) * speed,
-                        rotation.y * speed + (rotation.y * 1.5D - velocity.y) * speed,
-                        rotation.z * speed + (rotation.z * 1.5D - velocity.z) * speed);
+                Vec3d gravityVector = new Vec3d(0, 98, 0);
+                travelVector = velocity.add(passenger.sidewaysSpeed, (-this.getPitch() * 1.5) + Math.cos(roll) * 98 - gravityVector.y, 100 + (passenger.forwardSpeed * Math.cos(getPitch()) * 1000 * 1000));
                 this.setMovementSpeed(speed);
                 this.stepBobbingAmount = 0;
-                if (passenger.forwardSpeed == 0 && passenger.sidewaysSpeed == 0 && !isPlayerUpwardsMoving && !isPlayerDownwardsMoving) {
-                    this.setRoll(0);
+                if (passenger.forwardSpeed < 0 && passenger.sidewaysSpeed == 0 && !isPlayerUpwardsMoving && !isPlayerDownwardsMoving) {
                     this.setPitch(passenger.getPitch());
                     this.setYaw(passenger.getHeadYaw());
                     this.setRotation(this.getYaw(), this.getPitch());

@@ -19,7 +19,7 @@ public class DeadlyNadderModel extends AnimatedGeoModel<DeadlyNadderEntity> {
 
     @Override
     public Identifier getTextureLocation(DeadlyNadderEntity object) {
-        return new Identifier(BookOfDragons.MOD_ID, "textures/entity/deadly_nadder/deadly_nadder.png");
+        return new Identifier(BookOfDragons.MOD_ID, "textures/entity/deadly_nadder/deadly_nadder_" + object.getNadderType().toString().toLowerCase() + ".png");
     }
 
     @Override

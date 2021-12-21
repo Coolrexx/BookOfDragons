@@ -389,6 +389,9 @@ public class AbstractRideableDragonEntity extends AbstractFlyingDragonEntity imp
         passenger.setPos(pos.x, pos.y, pos.z);
         super.updatePassengerPosition(passenger);
     }
+    public void skipUpdatePassengerPosition(Entity passenger) {
+        super.updatePassengerPosition(passenger);
+    }
 
     protected void playAddChestSound() {
         this.playSound(SoundEvents.ENTITY_DONKEY_CHEST, 1.0f, (this.random.nextFloat() - this.random.nextFloat()) * 0.2f + 1.0f);

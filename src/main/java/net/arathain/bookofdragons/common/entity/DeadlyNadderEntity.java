@@ -1,31 +1,22 @@
 package net.arathain.bookofdragons.common.entity;
 
 import net.arathain.bookofdragons.BODComponents;
-import net.arathain.bookofdragons.BookOfDragonsClient;
 import net.arathain.bookofdragons.common.entity.goal.FlyingDragonWanderGoal;
 import net.arathain.bookofdragons.common.entity.util.AbstractRideableDragonEntity;
 import net.arathain.bookofdragons.common.init.BODEntities;
 import net.arathain.bookofdragons.common.init.BODObjects;
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.PowderSnowBlock;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.render.entity.DolphinEntityRenderer;
-import net.minecraft.client.render.entity.model.BlazeEntityModel;
-import net.minecraft.client.render.entity.model.DolphinEntityModel;
 import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.mob.PhantomEntity;
-import net.minecraft.entity.passive.DolphinEntity;
-import net.minecraft.entity.passive.HorseBaseEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.tag.ItemTags;
 import net.minecraft.util.math.MathHelper;
@@ -41,6 +32,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class DeadlyNadderEntity extends AbstractRideableDragonEntity implements  IAnimatable{
+    public static final TrackedData<String> TYPE = DataTracker.registerData(DeadlyNadderEntity.class, TrackedDataHandlerRegistry.STRING);
     private final AnimationFactory factory = new AnimationFactory(this);
 
     public DeadlyNadderEntity(EntityType<? extends DeadlyNadderEntity> type, World world) {
@@ -49,6 +41,48 @@ public class DeadlyNadderEntity extends AbstractRideableDragonEntity implements 
 
     public static DefaultAttributeContainer.Builder createAttributes() {
         return MobEntity.createLivingAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 40.0D).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.285F).add(EntityAttributes.GENERIC_ARMOR, 5.0F).add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 7.0F).add(EntityAttributes.GENERIC_FLYING_SPEED, 0.8F).add(EntityAttributes.GENERIC_FOLLOW_RANGE, 32);
+    }
+
+    @Override
+    protected void initDataTracker() {
+        super.initDataTracker();
+        if (this.random.nextInt(10) == 0) {
+            this.dataTracker.startTracking(TYPE, NadderType.IMPERIAL.toString());
+        } else {
+            if (this.random.nextInt(3) == 0) {
+                this.dataTracker.startTracking(TYPE, NadderType.LAPIS.toString());
+            } else {
+                if (this.random.nextBoolean()) {
+                    this.dataTracker.startTracking(TYPE, NadderType.GOLDEN.toString());
+                } else {
+                    this.dataTracker.startTracking(TYPE, NadderType.TEAL.toString());
+                }
+            }
+        }
+    }
+
+    @Override
+    public void readCustomDataFromNbt(NbtCompound tag) {
+        super.readCustomDataFromNbt(tag);
+
+        if (tag.contains("Type")) {
+            this.setNadderType(NadderType.valueOf(tag.getString("Type")));
+        }
+    }
+
+    @Override
+    public void writeCustomDataToNbt(NbtCompound tag) {
+        super.writeCustomDataToNbt(tag);
+
+        tag.putString("Type", this.getNadderType().toString());
+    }
+
+    public NadderType getNadderType() {
+        return NadderType.valueOf(this.dataTracker.get(TYPE));
+    }
+
+    public void setNadderType(NadderType type) {
+        this.dataTracker.set(TYPE, type.toString());
     }
 
     @Override
@@ -165,5 +199,12 @@ public class DeadlyNadderEntity extends AbstractRideableDragonEntity implements 
     @Override
     public AnimationFactory getFactory() {
         return factory;
+    }
+
+    public enum NadderType {
+        GOLDEN,
+        TEAL,
+        LAPIS,
+        IMPERIAL
     }
 }
