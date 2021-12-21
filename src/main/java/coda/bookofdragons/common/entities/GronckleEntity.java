@@ -84,7 +84,7 @@ public class GronckleEntity extends AbstractRideableDragonEntity implements Flyi
             return PlayState.CONTINUE;
         }
         else if (!isFlying() && !event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gronckle.land_idle", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gronckle.idle", true));
             return PlayState.CONTINUE;
         }
         else {
