@@ -165,7 +165,7 @@ public class EelEntity extends WaterAnimal implements IAnimatable, IAnimationTic
             return PlayState.CONTINUE;
         }
         else if (isInWater() && !event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.eel.water_idle", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.eel.swim_idle", true));
             return PlayState.CONTINUE;
         }
         else if (!isInWater() && event.isMoving()) {

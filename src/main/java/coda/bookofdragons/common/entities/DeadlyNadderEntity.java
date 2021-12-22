@@ -159,16 +159,16 @@ public class DeadlyNadderEntity extends AbstractRideableDragonEntity implements 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         AnimationBuilder animationBuilder = new AnimationBuilder();
         if (this.isAggressive()) {
-            animationBuilder.addAnimation("bite");
+            animationBuilder.addAnimation("animation.deadly_nadder.bite");
         }
         if (isFlying() || !isOnGround() && event.isMoving()) {
-            animationBuilder.addAnimation("fly", true);
+            animationBuilder.addAnimation("animation.deadly_nadder.fly", true);
         } else if (isFlying() || !isOnGround() && !event.isMoving()) {
-            animationBuilder.addAnimation("fly_idle", true);
+            animationBuilder.addAnimation("animation.deadly_nadder.fly_idle", true);
         } else if (this.isOnGround() && event.isMoving()) {
-            animationBuilder.addAnimation("walk", true);
+            animationBuilder.addAnimation("animation.deadly_nadder.walk", true);
         } else if (this.isOnGround()  && !event.isMoving()) {
-            animationBuilder.addAnimation("land_idle", true);
+            animationBuilder.addAnimation("animation.deadly_nadder.idle", true);
         }
         if (!animationBuilder.getRawAnimationList().isEmpty()) {
             event.getController().setAnimation(animationBuilder);
