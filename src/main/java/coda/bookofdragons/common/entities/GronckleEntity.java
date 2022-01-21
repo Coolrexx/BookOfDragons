@@ -42,6 +42,11 @@ public class GronckleEntity extends AbstractRideableDragonEntity implements Flyi
     }
 
     @Override
+    public void setFireType(int type) {
+        this.entityData.define(FIRE_TYPE, 1);
+    }
+
+    @Override
     public Ingredient getIngredient() {
         return Ingredient.of(ItemTags.FISHES);
     }

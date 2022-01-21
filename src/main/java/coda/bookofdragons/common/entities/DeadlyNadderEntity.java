@@ -59,7 +59,7 @@ public class DeadlyNadderEntity extends AbstractRideableDragonEntity implements 
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createLivingAttributes().add(Attributes.MAX_HEALTH, 40.0D).add(Attributes.MOVEMENT_SPEED, 0.285F).add(Attributes.ARMOR, 5.0F).add(Attributes.ATTACK_DAMAGE, 7.0F).add(Attributes.ATTACK_KNOCKBACK, 7.0F).add(Attributes.FLYING_SPEED, 0.8F).add(Attributes.FOLLOW_RANGE, 32);
+        return Mob.createLivingAttributes().add(Attributes.MAX_HEALTH, 40.0D).add(Attributes.MOVEMENT_SPEED, 0.285F).add(Attributes.ARMOR, 5.0F).add(Attributes.ATTACK_DAMAGE, 7.0F).add(Attributes.ATTACK_KNOCKBACK, 7.0F).add(Attributes.FLYING_SPEED, 0.8F);
     }
 
     @Override
@@ -282,7 +282,7 @@ public class DeadlyNadderEntity extends AbstractRideableDragonEntity implements 
         }
 
         public boolean canUse() {
-            return !DeadlyNadderEntity.this.isInWater() && DeadlyNadderEntity.this.() && DeadlyNadderEntity.this.getTarget() != null && DeadlyNadderEntity.this.canAttack(DeadlyNadderEntity.this.getTarget(), TargetingConditions.DEFAULT);
+            return !DeadlyNadderEntity.this.isInWater() && DeadlyNadderEntity.this.getTarget() != null && DeadlyNadderEntity.this.canAttack(DeadlyNadderEntity.this.getTarget(), TargetingConditions.DEFAULT);
         }
 
         public void start() {

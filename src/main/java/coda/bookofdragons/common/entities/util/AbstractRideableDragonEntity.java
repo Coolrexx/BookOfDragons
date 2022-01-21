@@ -34,6 +34,7 @@ import javax.annotation.Nullable;
 public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonEntity implements Saddleable, ContainerListener, MenuProvider {
     private static final EntityDataAccessor<Boolean> CHESTED = SynchedEntityData.defineId(AbstractRideableDragonEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> SADDLED = SynchedEntityData.defineId(AbstractRideableDragonEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> FLYING = SynchedEntityData.defineId(AbstractRideableDragonEntity.class, EntityDataSerializers.BOOLEAN);
     public Entity previousDriver = null;
     public SimpleContainer inventory;
 
@@ -54,7 +55,8 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(CHESTED, false);
-        this.entityData.define(SADDLED  , false);
+        this.entityData.define(SADDLED, false);
+        this.entityData.define(FLYING, false);
     }
 
     protected void removePassenger(Entity passenger) {
@@ -116,6 +118,14 @@ public abstract class AbstractRideableDragonEntity extends AbstractFlyingDragonE
         else {
             super.travel(travelVector);
         }
+    }
+
+    public boolean isFlying() {
+        return this.entityData.get(FLYING);
+    }
+
+    public void setFlying(boolean flying) {
+        this.entityData.define(FLYING, flying);
     }
 
     public boolean hasChest() {
