@@ -1,7 +1,7 @@
 package coda.bookofdragons.common.entities;
 
 import coda.bookofdragons.common.entities.util.goal.EelLeapAtTargetGoal;
-import coda.bookofdragons.init.BODItems;
+import coda.bookofdragons.registry.BODItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;

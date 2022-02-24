@@ -1,8 +1,7 @@
 package coda.bookofdragons.common.items;
 
-import coda.bookofdragons.init.BODItems;
+import coda.bookofdragons.registry.BODItems;
 import net.minecraft.util.LazyLoadedValue;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
 

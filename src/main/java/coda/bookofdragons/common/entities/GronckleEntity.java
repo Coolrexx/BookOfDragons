@@ -2,8 +2,8 @@ package coda.bookofdragons.common.entities;
 
 import coda.bookofdragons.common.entities.util.AbstractRideableDragonEntity;
 import coda.bookofdragons.common.entities.util.goal.FlyingDragonWanderGoal;
-import coda.bookofdragons.init.BODEntities;
-import coda.bookofdragons.init.BODItems;
+import coda.bookofdragons.registry.BODEntities;
+import coda.bookofdragons.registry.BODItems;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.*;

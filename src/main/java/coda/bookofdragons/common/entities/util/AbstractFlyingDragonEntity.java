@@ -1,7 +1,7 @@
 package coda.bookofdragons.common.entities.util;
 
 import coda.bookofdragons.common.entities.EelEntity;
-import coda.bookofdragons.init.BODItems;
+import coda.bookofdragons.registry.BODItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.syncher.EntityDataAccessor;

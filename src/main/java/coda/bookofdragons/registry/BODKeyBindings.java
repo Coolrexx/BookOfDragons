@@ -1,4 +1,4 @@
-package coda.bookofdragons.init;
+package coda.bookofdragons.registry;
 
 import net.minecraft.client.KeyMapping;
 

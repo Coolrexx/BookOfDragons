@@ -1,4 +1,4 @@
-package coda.bookofdragons.init;
+package coda.bookofdragons.registry;
 
 import coda.bookofdragons.BookOfDragons;
 import net.minecraft.world.item.BlockItem;

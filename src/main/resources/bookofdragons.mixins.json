@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "coda.bookofdragons.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "bookofdragons.refmap.json",
+  "mixins": [
+    "OverworldBiomeBuilderMixin"
+  ],
+  "client": [
+  ],
+  "minVersion": "0.8"
+}
