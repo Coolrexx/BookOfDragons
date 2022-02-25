@@ -4,7 +4,10 @@ import coda.bookofdragons.common.entities.DeadlyNadderEntity;
 import coda.bookofdragons.common.entities.EelEntity;
 import coda.bookofdragons.common.entities.GronckleEntity;
 import coda.bookofdragons.common.entities.TerribleTerrorEntity;
-import coda.bookofdragons.registry.*;
+import coda.bookofdragons.registry.BODBiomes;
+import coda.bookofdragons.registry.BODBlocks;
+import coda.bookofdragons.registry.BODEntities;
+import coda.bookofdragons.registry.BODItems;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -32,7 +35,6 @@ public class BookOfDragons {
         BODItems.ITEMS.register(bus);
         BODEntities.ENTITIES.register(bus);
         BODBlocks.BLOCKS.register(bus);
-        BODContainers.CONTAINERS.register(bus);
         BODBiomes.BIOMES.register(bus);
 
         bus.addListener(this::registerAttributes);

@@ -12,7 +12,6 @@ import software.bernie.geckolib3.renderers.geo.IGeoRenderer;
 
 public class GronckleSaddleLayer extends GeoLayerRenderer<GronckleEntity> {
     private static final ResourceLocation SADDLE = new ResourceLocation(BookOfDragons.MOD_ID, "textures/entity/gronckle/saddle.png");
-    private static final ResourceLocation CHEST = new ResourceLocation(BookOfDragons.MOD_ID, "textures/entity/gronckle/chest.png");
 
     public GronckleSaddleLayer(IGeoRenderer<GronckleEntity> entityRendererIn) {
         super(entityRendererIn);
@@ -21,10 +20,6 @@ public class GronckleSaddleLayer extends GeoLayerRenderer<GronckleEntity> {
     @Override
     public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, GronckleEntity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         RenderType saddle = RenderType.entityCutoutNoCull(SADDLE);
-        RenderType chest = RenderType.entityCutoutNoCull(CHEST);
-        if (entity.hasChest()) {
-            this.getRenderer().render(this.getEntityModel().getModel(this.getEntityModel().getModelLocation(entity)), entity, partialTicks, chest, matrixStackIn, bufferIn, bufferIn.getBuffer(chest), packedLightIn, OverlayTexture.NO_OVERLAY, 1.0f, 1.0f, 1.0f, 1.0f);
-        }
         if (entity.isSaddled()) {
             this.getRenderer().render(this.getEntityModel().getModel(this.getEntityModel().getModelLocation(entity)), entity, partialTicks, saddle, matrixStackIn, bufferIn, bufferIn.getBuffer(saddle), packedLightIn, OverlayTexture.NO_OVERLAY, 1.0f, 1.0f, 1.0f, 1.0f);
         }

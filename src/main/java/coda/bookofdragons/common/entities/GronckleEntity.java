@@ -1,6 +1,6 @@
 package coda.bookofdragons.common.entities;
 
-import coda.bookofdragons.common.entities.util.AbstractRideableDragonEntity;
+import coda.bookofdragons.common.entities.util.FlyingRideableDragonEntity;
 import coda.bookofdragons.common.entities.util.goal.FlyingDragonWanderGoal;
 import coda.bookofdragons.registry.BODEntities;
 import coda.bookofdragons.registry.BODItems;
@@ -9,7 +9,6 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
@@ -24,7 +23,7 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class GronckleEntity extends AbstractRideableDragonEntity implements FlyingAnimal, IAnimatable, IAnimationTickable {
+public class GronckleEntity extends FlyingRideableDragonEntity implements IAnimatable, IAnimationTickable {
     private final AnimationFactory factory = new AnimationFactory(this);
 
     public GronckleEntity(EntityType<? extends GronckleEntity> type, Level world) {
@@ -39,11 +38,6 @@ public class GronckleEntity extends AbstractRideableDragonEntity implements Flyi
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(4, new FlyingDragonWanderGoal(this, 150));
-    }
-
-    @Override
-    public void setFireType(int type) {
-        this.entityData.define(FIRE_TYPE, 1);
     }
 
     @Override
@@ -84,23 +78,23 @@ public class GronckleEntity extends AbstractRideableDragonEntity implements Flyi
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (isFlying() && event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gronckle.fly", true));
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gronckle.fly", true));
             return PlayState.CONTINUE;
         }
         else if (isFlying() && !event.isMoving()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gronckle.fly_idle", true));
             return PlayState.CONTINUE;
         }
-        else if (!isFlying() && event.isMoving()) {
+        else if (isOnGround() && event.isMoving()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gronckle.walk", true));
             return PlayState.CONTINUE;
         }
-        else if (!isFlying() && !event.isMoving()) {
+        else if (isOnGround() && !event.isMoving()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gronckle.idle", true));
             return PlayState.CONTINUE;
         }
         else {
-            return PlayState.STOP;
+            return PlayState.CONTINUE;
         }
     }
 

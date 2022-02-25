@@ -1,17 +1,17 @@
 package coda.bookofdragons.common.entities.util.goal;
 
-import coda.bookofdragons.common.entities.util.AbstractRideableDragonEntity;
+import coda.bookofdragons.common.entities.util.FlyingRideableDragonEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.goal.Goal;
 
 import java.util.EnumSet;
 
 public class FollowDriverGoal extends Goal {
-    private final AbstractRideableDragonEntity user;
+    private final FlyingRideableDragonEntity user;
     private int time;
     private int timeToRecalcPath;
 
-    public FollowDriverGoal(AbstractRideableDragonEntity user) {
+    public FollowDriverGoal(FlyingRideableDragonEntity user) {
         this.user = user;
 
         this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK, Flag.JUMP));

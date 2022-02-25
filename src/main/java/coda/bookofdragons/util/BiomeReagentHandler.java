@@ -23,7 +23,6 @@ public class BiomeReagentHandler {
             FIREWORM_HIVES = registerResourceKey("fireworm_hives");
 
         consumer.accept(Pair.of(Climate.parameters(Climate.Parameter.span(0.8F, 1.0F), FULL_RANGE, FULL_RANGE, FULL_RANGE, CAVE_BIOME_RANGE, Climate.Parameter.span(-1.0F, 0.0F), 0.0F), FIREWORM_HIVES));
-
     }
 
     @NotNull

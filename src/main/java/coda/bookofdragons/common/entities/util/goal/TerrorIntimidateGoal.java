@@ -1,8 +1,7 @@
 package coda.bookofdragons.common.entities.util.goal;
 
 import coda.bookofdragons.common.entities.TerribleTerrorEntity;
-import coda.bookofdragons.common.entities.util.AbstractFlyingDragonEntity;
-import net.minecraft.world.entity.LivingEntity;
+import coda.bookofdragons.common.entities.util.FlyingRideableDragonEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.phys.Vec3;
@@ -22,7 +21,7 @@ public class TerrorIntimidateGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        List<? extends AbstractFlyingDragonEntity> list = this.entity.level.getNearbyEntities(AbstractFlyingDragonEntity.class, SNAP_AT_TARGETTING, this.entity, this.entity.getBoundingBox().inflate(32.0D));
+        List<? extends FlyingRideableDragonEntity> list = this.entity.level.getNearbyEntities(FlyingRideableDragonEntity.class, SNAP_AT_TARGETTING, this.entity, this.entity.getBoundingBox().inflate(32.0D));
         return !list.isEmpty();
     }
 
@@ -40,7 +39,7 @@ public class TerrorIntimidateGoal extends Goal {
             this.entity.setSnapping(false);
         }
         else {
-            List<? extends AbstractFlyingDragonEntity> list = this.entity.level.getNearbyEntities(AbstractFlyingDragonEntity.class, SNAP_AT_TARGETTING, this.entity, this.entity.getBoundingBox().inflate(32.0D));
+            List<? extends FlyingRideableDragonEntity> list = this.entity.level.getNearbyEntities(FlyingRideableDragonEntity.class, SNAP_AT_TARGETTING, this.entity, this.entity.getBoundingBox().inflate(32.0D));
                 if(!(list.get(0) instanceof TerribleTerrorEntity)) {
                     if(this.entity.distanceToSqr(list.get(0)) > 20D && !this.entity.getSnapping()){
                         this.entity.getNavigation().moveTo(list.get(0), 1f);

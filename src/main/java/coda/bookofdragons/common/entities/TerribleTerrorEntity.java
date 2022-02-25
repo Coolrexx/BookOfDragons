@@ -1,7 +1,6 @@
 package coda.bookofdragons.common.entities;
 
-import coda.bookofdragons.common.entities.util.AbstractFlyingDragonEntity;
-import coda.bookofdragons.common.entities.util.AbstractRideableDragonEntity;
+import coda.bookofdragons.common.entities.util.FlyingRideableDragonEntity;
 import coda.bookofdragons.common.entities.util.goal.FlyingDragonWanderGoal;
 import coda.bookofdragons.common.entities.util.goal.TerrorIntimidateGoal;
 import coda.bookofdragons.registry.BODEntities;
@@ -17,7 +16,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
@@ -34,12 +32,12 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 
-public class TerribleTerrorEntity extends AbstractFlyingDragonEntity implements FlyingAnimal, IAnimatable, IAnimationTickable {
+public class TerribleTerrorEntity extends FlyingRideableDragonEntity implements IAnimatable, IAnimationTickable {
     private final AnimationFactory factory = new AnimationFactory(this);
-    private static final EntityDataAccessor<Boolean> SNAPPING = SynchedEntityData.defineId(AbstractRideableDragonEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> SNAPPING = SynchedEntityData.defineId(FlyingRideableDragonEntity.class, EntityDataSerializers.BOOLEAN);
     private int snapTimer;
 
-    public TerribleTerrorEntity(EntityType<? extends AbstractFlyingDragonEntity> type, Level world) {
+    public TerribleTerrorEntity(EntityType<? extends FlyingRideableDragonEntity> type, Level world) {
         super(type, world);
     }
 
