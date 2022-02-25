@@ -36,7 +36,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 
-// TODO for the nadder - fix blinking, fix which animations play and when, probably more idfk lol
+// TODO for the nadder - fix blinking, fix which animations play and when, figure out why its lowering tps, and probably more idfk lol
 public class DeadlyNadderEntity extends FlyingRideableDragonEntity implements FlyingAnimal, IAnimatable, IAnimationTickable {
     private final AnimationFactory factory = new AnimationFactory(this);
     public Vec3 targetPosition;
