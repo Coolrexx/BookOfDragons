@@ -5,10 +5,6 @@ import coda.bookofdragons.common.entities.util.FlyingRideableDragonEntity;
 import coda.bookofdragons.registry.BODEntities;
 import coda.bookofdragons.registry.BODItems;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.ItemTags;
@@ -41,7 +37,6 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import javax.annotation.Nullable;
 
 public class DeadlyNadderEntity extends FlyingRideableDragonEntity implements FlyingAnimal, IAnimatable, IAnimationTickable {
-    public static final EntityDataAccessor<String> TYPE = SynchedEntityData.defineId(DeadlyNadderEntity.class, EntityDataSerializers.STRING);
     private final AnimationFactory factory = new AnimationFactory(this);
     public Vec3 targetPosition;
     public BlockPos circlingCenter = BlockPos.ZERO;
@@ -51,47 +46,7 @@ public class DeadlyNadderEntity extends FlyingRideableDragonEntity implements Fl
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createLivingAttributes().add(Attributes.MAX_HEALTH, 40.0D).add(Attributes.MOVEMENT_SPEED, 0.285F).add(Attributes.ARMOR, 5.0F).add(Attributes.ATTACK_DAMAGE, 7.0F).add(Attributes.ATTACK_KNOCKBACK, 7.0F).add(Attributes.FLYING_SPEED, 0.8F);
-    }
-
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        if (this.random.nextInt(10) == 0) {
-            this.entityData.set(TYPE, NadderType.IMPERIAL.toString());
-        } else {
-            if (this.random.nextInt(3) == 0) {
-                this.entityData.set(TYPE, NadderType.LAPIS.toString());
-            } else {
-                if (this.random.nextBoolean()) {
-                    this.entityData.set(TYPE, NadderType.GOLDEN.toString());
-                } else {
-                    this.entityData.set(TYPE, NadderType.TEAL.toString());
-                }
-            }
-        }
-    }
-
-    @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        if (tag.contains("Type")) {
-            this.setNadderType(NadderType.valueOf(tag.getString("Type")));
-        }
-    }
-
-    @Override
-    public void addAdditionalSaveData(CompoundTag nbt) {
-        super.addAdditionalSaveData(nbt);
-        nbt.putString("Type", this.getNadderType().toString());
-    }
-
-    public NadderType getNadderType() {
-        return NadderType.valueOf(this.entityData.get(TYPE));
-    }
-
-    public void setNadderType(NadderType type) {
-        this.entityData.set(TYPE, type.toString());
+        return Mob.createLivingAttributes().add(Attributes.MAX_HEALTH, 40.0D).add(Attributes.MOVEMENT_SPEED, 0.285F).add(Attributes.ARMOR, 5.0F).add(Attributes.ATTACK_DAMAGE, 7.0F).add(Attributes.ATTACK_KNOCKBACK, 7.0F).add(Attributes.FOLLOW_RANGE, 128.0F).add(Attributes.FLYING_SPEED, 0.8F);
     }
 
     @Override
