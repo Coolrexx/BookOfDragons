@@ -1,7 +1,6 @@
 package coda.bookofdragons.common.entities;
 
 import coda.bookofdragons.common.entities.util.FlyingRideableDragonEntity;
-import coda.bookofdragons.common.entities.util.goal.FlyingDragonWanderGoal;
 import coda.bookofdragons.registry.BODEntities;
 import coda.bookofdragons.registry.BODItems;
 import net.minecraft.server.level.ServerLevel;
@@ -31,13 +30,12 @@ public class GronckleEntity extends FlyingRideableDragonEntity implements IAnima
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 50.0D).add(Attributes.MOVEMENT_SPEED, 0.25F).add(Attributes.FLYING_SPEED, 0.4F);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 50.0D).add(Attributes.MOVEMENT_SPEED, 0.25F).add(Attributes.FLYING_SPEED, 0.2F);
     }
 
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(4, new FlyingDragonWanderGoal(this, 150));
     }
 
     @Override

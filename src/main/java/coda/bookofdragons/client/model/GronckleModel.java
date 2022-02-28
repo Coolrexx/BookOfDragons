@@ -30,7 +30,7 @@ public class GronckleModel extends AnimatedTickingGeoModel<GronckleEntity> {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
         EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
         IBone head = this.getAnimationProcessor().getBone("head");
-        IBone body = this.getAnimationProcessor().getBone("body");
+        IBone body = this.getAnimationProcessor().getBone("root");
 
         head.setRotationX(extraData.headPitch * ((float) Math.PI / 180F));
         head.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 180F));
@@ -39,7 +39,7 @@ public class GronckleModel extends AnimatedTickingGeoModel<GronckleEntity> {
             body.setScaleX(0.4f);
             body.setScaleY(0.4f);
             body.setScaleZ(0.4f);
-            body.setPositionY(-15F);
+            body.setPositionZ(-9F);
         }
     }
 }

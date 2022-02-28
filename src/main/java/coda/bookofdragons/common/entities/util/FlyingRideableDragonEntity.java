@@ -2,6 +2,7 @@ package coda.bookofdragons.common.entities.util;
 
 import coda.bookofdragons.common.entities.EelEntity;
 import coda.bookofdragons.common.entities.util.goal.FlyingDragonWanderGoal;
+import coda.bookofdragons.common.entities.util.goal.FollowDriverGoal;
 import coda.bookofdragons.registry.BODKeyBindings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -35,7 +36,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -69,6 +69,12 @@ public abstract class FlyingRideableDragonEntity extends TamableAnimal implement
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
+        if (!isTame() && getIngredient().test(stack) && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player)) {
+            this.tame(player);
+            this.navigation.stop();
+            this.level.broadcastEntityEvent(this, (byte)7);
+        }
+
         if (isTame() && isOwnedBy(player)) {
             if (stack.getItem() == Items.SADDLE && !hasSaddle()) {
                 if (!player.isCreative()) {
@@ -238,6 +244,7 @@ public abstract class FlyingRideableDragonEntity extends TamableAnimal implement
         if (flying) {
             this.moveRelative(speed, vec3d);
             this.move(MoverType.SELF, getDeltaMovement());
+            this.setSpeed(getSpeed() * 0.15F);
             this.setDeltaMovement(getDeltaMovement().scale(0.91f));
             this.calculateEntityAnimation(this, true);
         }
@@ -342,46 +349,6 @@ public abstract class FlyingRideableDragonEntity extends TamableAnimal implement
             } else {
                 mob.setYya(0.0F);
                 mob.setZza(0.0F);
-            }
-        }
-    }
-
-    private static class FollowDriverGoal extends Goal {
-        final FlyingRideableDragonEntity user;
-        int time;
-        int timeToRecalcPath;
-
-        public FollowDriverGoal(FlyingRideableDragonEntity user) {
-            this.user = user;
-
-            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK, Flag.JUMP));
-        }
-
-        @Override
-        public boolean canUse() {
-            return this.user.previousDriver != null;
-        }
-
-        public boolean canContinueToUse() {
-            return this.canUse() && !this.user.isLeashed() && !this.user.isPassenger() && this.user.distanceToSqr(this.user.previousDriver) < 100 && ++time < 120;
-        }
-
-        public void start() {
-            this.time = 0;
-            this.timeToRecalcPath = 0;
-        }
-
-        public void stop() {
-            this.user.previousDriver = null;
-            this.user.navigation.stop();
-        }
-
-        public void tick() {
-            Entity following = this.user.previousDriver;
-            this.user.getLookControl().setLookAt(following, 10.0F, (float) this.user.getMaxHeadXRot());
-            if (--this.timeToRecalcPath <= 0) {
-                this.timeToRecalcPath = 10;
-                this.user.navigation.moveTo(following, 1f);
             }
         }
     }
