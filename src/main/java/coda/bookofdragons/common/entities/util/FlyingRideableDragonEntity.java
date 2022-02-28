@@ -244,7 +244,6 @@ public abstract class FlyingRideableDragonEntity extends TamableAnimal implement
         if (flying) {
             this.moveRelative(speed, vec3d);
             this.move(MoverType.SELF, getDeltaMovement());
-            this.setSpeed(getSpeed() * 0.15F);
             this.setDeltaMovement(getDeltaMovement().scale(0.91f));
             this.calculateEntityAnimation(this, true);
         }
