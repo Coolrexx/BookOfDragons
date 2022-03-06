@@ -17,7 +17,8 @@ public class DeadlyNadderModel extends AnimatedTickingGeoModel<DeadlyNadderEntit
 
     @Override
     public ResourceLocation getTextureLocation(DeadlyNadderEntity object) {
-        return new ResourceLocation(BookOfDragons.MOD_ID, "textures/entity/deadly_nadder/deadly_nadder.png");
+        // todo - variants
+        return new ResourceLocation(BookOfDragons.MOD_ID, "textures/entity/deadly_nadder/deadly_nadder_hero.png");
     }
 
     @Override
