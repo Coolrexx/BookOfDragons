@@ -139,9 +139,9 @@ public class DeadlyNadderEntity extends FlyingRideableDragonEntity implements Fl
             double getFlightDelta = ClientEvents.getFlightDelta();
             this.xRotO = (float) Mth.clamp(this.xRotO - getFlightDelta * 10, -70, 70);
             this.setXRot(this.xRotO);
-            this.setYRot((float) this.yRotO);
+            this.setYRot(this.yRotO);
             this.setRot(this.getYRot(), this.getXRot());
-            this.yBodyRot = (float) this.yRotO;
+            this.yBodyRot = this.yRotO;
 
             if (!flying && getFlightDelta > 0) {
                 this.jumpFromGround();
