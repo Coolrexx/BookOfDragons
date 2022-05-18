@@ -1,10 +1,7 @@
 package coda.bookofdragons.client;
 
 import coda.bookofdragons.BookOfDragons;
-import coda.bookofdragons.client.renderer.DeadlyNadderRenderer;
-import coda.bookofdragons.client.renderer.EelRenderer;
-import coda.bookofdragons.client.renderer.GronckleRenderer;
-import coda.bookofdragons.client.renderer.TerribleTerrorRenderer;
+import coda.bookofdragons.client.renderer.*;
 import coda.bookofdragons.registry.BODEntities;
 import coda.bookofdragons.registry.BODKeyBindings;
 import net.minecraft.client.Minecraft;
@@ -22,6 +19,7 @@ public class ClientEvents {
         event.registerEntityRenderer(BODEntities.TERRIBLE_TERROR.get(), TerribleTerrorRenderer::new);
         event.registerEntityRenderer(BODEntities.GRONCKLE.get(), GronckleRenderer::new);
         event.registerEntityRenderer(BODEntities.DEADLY_NADDER.get(), DeadlyNadderRenderer::new);
+        event.registerEntityRenderer(BODEntities.NIGHT_FURY.get(), NightFuryRenderer::new);
     }
 
     public static Minecraft getClient() {

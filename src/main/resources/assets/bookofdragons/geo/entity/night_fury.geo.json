@@ -21,12 +21,32 @@
 					"pivot": [0, 21.5, 3],
 					"cubes": [
 						{"origin": [-7, 15, -8], "size": [14, 13, 16], "uv": [0, 0]},
-						{"origin": [0, 28, 2], "size": [0, 6, 16], "uv": [76, 11]},
 						{"origin": [-4, 28, -8], "size": [8, 1, 14], "uv": [135, 159]},
 						{"origin": [7.5, 14.9, -8], "size": [0, 13, 7], "uv": [134, 153]},
 						{"origin": [-7.5, 14.9, -6], "size": [15, 0, 3], "uv": [139, 174]},
 						{"origin": [-7.5, 28, -6], "size": [15, 0, 3], "uv": [139, 174]},
 						{"origin": [-7.5, 14.9, -8], "size": [0, 13, 7], "uv": [134, 153], "mirror": true}
+					]
+				},
+				{
+					"name": "spikes",
+					"parent": "body",
+					"pivot": [0, 28, 10]
+				},
+				{
+					"name": "spikesLeft",
+					"parent": "spikes",
+					"pivot": [0, 28, 10],
+					"cubes": [
+						{"origin": [0, 28, 2], "size": [0, 6, 16], "uv": [76, 11]}
+					]
+				},
+				{
+					"name": "spikesRight",
+					"parent": "spikes",
+					"pivot": [0, 28, 10],
+					"cubes": [
+						{"origin": [0, 28, 2], "size": [0, 6, 16], "uv": [76, 11]}
 					]
 				},
 				{
@@ -42,7 +62,27 @@
 					"parent": "body2",
 					"pivot": [0, 24.5, 17.5],
 					"cubes": [
-						{"origin": [-4.5, 19, 18], "size": [9, 9, 33], "uv": [87, 0]},
+						{"origin": [-4.5, 19, 18], "size": [9, 9, 33], "uv": [87, 0]}
+					]
+				},
+				{
+					"name": "tailSpikes",
+					"parent": "tail1",
+					"pivot": [0, 28, 34.5]
+				},
+				{
+					"name": "tailSpikesLeft",
+					"parent": "tailSpikes",
+					"pivot": [0, 28, 34.5],
+					"cubes": [
+						{"origin": [0, 28, 18], "size": [0, 6, 33], "uv": [138, -6]}
+					]
+				},
+				{
+					"name": "tailSpikesRight",
+					"parent": "tailSpikes",
+					"pivot": [0, 28, 34.5],
+					"cubes": [
 						{"origin": [0, 28, 18], "size": [0, 6, 33], "uv": [138, -6]}
 					]
 				},

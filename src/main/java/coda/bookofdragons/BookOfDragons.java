@@ -1,9 +1,6 @@
 package coda.bookofdragons;
 
-import coda.bookofdragons.common.entities.DeadlyNadderEntity;
-import coda.bookofdragons.common.entities.EelEntity;
-import coda.bookofdragons.common.entities.GronckleEntity;
-import coda.bookofdragons.common.entities.TerribleTerrorEntity;
+import coda.bookofdragons.common.entities.*;
 import coda.bookofdragons.registry.BODBiomes;
 import coda.bookofdragons.registry.BODBlocks;
 import coda.bookofdragons.registry.BODEntities;
@@ -47,5 +44,6 @@ public class BookOfDragons {
         event.put(BODEntities.TERRIBLE_TERROR.get(), TerribleTerrorEntity.createAttributes().build());
         event.put(BODEntities.GRONCKLE.get(), GronckleEntity.createAttributes().build());
         event.put(BODEntities.DEADLY_NADDER.get(), DeadlyNadderEntity.createAttributes().build());
+        event.put(BODEntities.NIGHT_FURY.get(), NightFuryEntity.createAttributes().build());
     }
 }

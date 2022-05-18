@@ -1,10 +1,7 @@
 package coda.bookofdragons.registry;
 
 import coda.bookofdragons.BookOfDragons;
-import coda.bookofdragons.common.entities.DeadlyNadderEntity;
-import coda.bookofdragons.common.entities.EelEntity;
-import coda.bookofdragons.common.entities.GronckleEntity;
-import coda.bookofdragons.common.entities.TerribleTerrorEntity;
+import coda.bookofdragons.common.entities.*;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -19,6 +16,7 @@ public class BODEntities {
     public static final RegistryObject<EntityType<TerribleTerrorEntity>> TERRIBLE_TERROR = create("terrible_terror", EntityType.Builder.of(TerribleTerrorEntity::new, MobCategory.CREATURE).sized(1.0f, 0.75f));
     public static final RegistryObject<EntityType<GronckleEntity>> GRONCKLE = create("gronckle", EntityType.Builder.of(GronckleEntity::new, MobCategory.CREATURE).sized(2.0f, 2.0f));
     public static final RegistryObject<EntityType<DeadlyNadderEntity>> DEADLY_NADDER = create("deadly_nadder", EntityType.Builder.of(DeadlyNadderEntity::new, MobCategory.CREATURE).sized(2.0f, 2.3f));
+    public static final RegistryObject<EntityType<NightFuryEntity>> NIGHT_FURY = create("night_fury", EntityType.Builder.of(NightFuryEntity::new, MobCategory.CREATURE).sized(2.0f, 2.0f));
 
     private static <T extends Entity> RegistryObject<EntityType<T>> create(String name, EntityType.Builder<T> builder) {
         return ENTITIES.register(name, () -> builder.build(BookOfDragons.MOD_ID + "." + name));
