@@ -5,6 +5,10 @@ import coda.bookofdragons.common.entities.util.FlyingRideableDragonEntity;
 import coda.bookofdragons.registry.BODEntities;
 import coda.bookofdragons.registry.BODItems;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.ItemTags;
@@ -35,10 +39,13 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.Comparator;
 
 // TODO for the nadder - fix blinking, fix which animations play and when, figure out why its lowering tps, and probably more idfk lol
 public class DeadlyNadderEntity extends FlyingRideableDragonEntity implements FlyingAnimal, IAnimatable, IAnimationTickable {
     private final AnimationFactory factory = new AnimationFactory(this);
+    private static final EntityDataAccessor<Integer> DATA_VARIANT = SynchedEntityData.defineId(DeadlyNadderEntity.class, EntityDataSerializers.INT);
     public Vec3 targetPosition;
     public BlockPos circlingCenter = BlockPos.ZERO;
 
@@ -90,6 +97,51 @@ public class DeadlyNadderEntity extends FlyingRideableDragonEntity implements Fl
         Vec3 pos = getYawVec(yBodyRot, 0.0F, -0.35F).add(getX(), getY() + 1.5F, getZ());
         passenger.setPos(pos.x, pos.y, pos.z);
     }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_VARIANT, 0);
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putInt("Variant", this.getVariant().getId());
+    }
+
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+            this.entityData.set(DATA_VARIANT, tag.getInt("Variant"));
+    }
+
+    public enum Variant {
+        HERO(0),
+        COPPER(1),
+        IMPERIAL(2),
+        TEAL(3);
+
+        public static final DeadlyNadderEntity.Variant[] BY_ID = Arrays.stream(values()).sorted(Comparator.comparingInt(DeadlyNadderEntity.Variant::getId)).toArray((p_149255_) -> {
+            return new DeadlyNadderEntity.Variant[p_149255_];
+        });
+
+        private final int id;
+        public int getId() {
+            return this.id;
+        }
+        private Variant(int p_149239_) {
+            this.id = p_149239_;
+        }
+    }
+
+    public DeadlyNadderEntity.Variant getVariant() {
+        return DeadlyNadderEntity.Variant.BY_ID[this.entityData.get(DATA_VARIANT)];
+    }
+
+    private void setVariant(DeadlyNadderEntity.Variant p_149118_) {
+        this.entityData.set(DATA_VARIANT, p_149118_.getId());
+    }
+
 
     @Override
     public void registerControllers(AnimationData data) {
